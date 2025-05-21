@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CompteDTO {
-    private int id;
+    private String id;
     private double solde;
     private StatusCompte status;
 }

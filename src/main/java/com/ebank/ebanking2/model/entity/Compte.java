@@ -2,6 +2,7 @@ package com.ebank.ebanking2.model.entity;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Compte{
-    private int id;
+    @Id
+    private String id;
     private double solde;
     @Enumerated(EnumType.STRING)
     private StatusCompte status;
