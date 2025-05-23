@@ -13,8 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class ClientDTO {
-    private String id;
+    private String firstName;
+    private String lastName;
     private String username;
     private String email;
-    private List<CompteDTO> comptes;
+    private String phone;
+    private String job;
+    private String password;
+
 }

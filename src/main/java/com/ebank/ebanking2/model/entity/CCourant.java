@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.TypeAlias;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@TypeAlias("courant")
 public class CCourant extends Compte{
-    private boolean autorisePaiementEnLigne;
-
+    private boolean autorisePaiementEnLigne=false;
 }

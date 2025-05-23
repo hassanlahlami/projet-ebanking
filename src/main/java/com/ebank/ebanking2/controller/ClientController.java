@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("api/clients")
 public class ClientController {
 
     @Autowired
     ClientService clientService;
 
-    @PostMapping("/add-client")
+    @PostMapping("/client")
     public ResponseEntity<ClientDTO> addClient(@RequestBody ClientDTO clientdto) {
         ClientDTO cdto= clientService.save(clientdto);
         return new ResponseEntity<>(cdto, HttpStatus.CREATED);

@@ -1,18 +1,15 @@
 package com.ebank.ebanking2.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.TypeAlias;
 
-import java.util.List;
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@TypeAlias("client")
 public class Client extends User{
-    private List<Compte> comptes;
-
+    private String job;
 }

@@ -40,11 +40,7 @@
             <artifactId>spring-data-mongodb</artifactId>
             <version>4.4.2</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-            <version>4.0.0-M1</version>
-        </dependency>
+
 
         <!-- Jersey, JakartaEE, CDI -->
         <dependency>
@@ -63,6 +59,13 @@
             <artifactId>jersey-media-json-jackson</artifactId>
             <version>4.0.0-M1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.19.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-cdi2-se</artifactId>
@@ -111,6 +114,7 @@
             <artifactId>jspecify</artifactId>
             <version>1.0.0</version>
         </dependency>
+
     </dependencies>
 
     <build>

@@ -1,18 +1,16 @@
 package com.ebank.ebanking2.model.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("users")
-
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -29,9 +27,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
-    private String username;
-    private String password;
-    private String email;
-    private String phone;
 
+    private String firstName;
+    private String lastName;
+
+    @Indexed(unique = true)
+    private String username;
+
+    private String password;
+
+    @Indexed(unique = true)
+    private String email;
+
+    @Indexed(unique = true)
+    private String phone;
 }

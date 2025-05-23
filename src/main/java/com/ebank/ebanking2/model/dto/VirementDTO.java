@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class VirementDTO {
-    private String emetteurId;
-    private String recepteurId;
+    private String emetteurCompteId;
+    private String recepteurCompteId;
     private double montant;
     private Type type;
 }
