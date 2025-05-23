@@ -1,4 +1,4 @@
 package com.ebank.ebanking2.repository;
 
-public interface CompteRepo {
+public interface CEpargneRepo {
 }
