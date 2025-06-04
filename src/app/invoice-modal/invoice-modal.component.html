@@ -1,0 +1,38 @@
+<div *ngIf="showModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="close-button" (click)="closeModal()">×</button>
+    <h2>Find Your Invoice in {{provider}}</h2>
+    <form (ngSubmit)="searchReference()">
+      <label for="reference">Reference No:</label>
+      <input [(ngModel)]="reference" name="reference" id="reference" type="text" placeholder="Enter contract number" />
+      <button type="submit">Search</button>
+    </form>
+
+
+    <form (ngSubmit)="payInvoice()">
+      <div class="invoice" *ngIf="showInvoiceToPay">
+
+        <div class="invoice-details">
+          <!-- display the referenceNumber +  amount + dueDate  -->
+
+
+          <div class="invoice-details" *ngFor="let compte of comptesCourants">
+            <p><strong>RIB:</strong> {{ compte.rib }}</p>
+            <p><strong>Solde:</strong> {{ compte.solde }} MAD</p>
+            <p><strong>Status:</strong> {{ compte.status }}</p>
+          </div>
+          
+
+        </div>
+
+        <div class="accounts-list">
+          get accounts
+        </div>
+
+        <button type="submit">Pay Invoice</button>
+
+      </div>
+    </form>
+
+  </div>
+</div>

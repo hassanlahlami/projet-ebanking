@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-warning text-dark">
+      <h4 class="mb-0">Transfers</h4>
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="mb-3">
+          <label for="fromAccount" class="form-label">From Account</label>
+          <select id="fromAccount" class="form-select">
+            <option selected>Choose account</option>
+            <option>123456789 - Checking</option>
+            <option>987654321 - Savings</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="toAccount" class="form-label">To Account</label>
+          <input type="text" id="toAccount" class="form-control" placeholder="Enter recipient account number">
+        </div>
+
+        <div class="mb-3">
+          <label for="amount" class="form-label">Amount</label>
+          <input type="number" id="amount" class="form-control" placeholder="$0.00">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Transfer</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="invoice-container">
+  <div class="invoice-section">
+    <h2 class="section-title">Eau & Électricité</h2>
+    <div class="image-grid">
+      <div class="image-container" *ngFor="let image of eauElectricite">
+        <img [src]="image" alt="Eau et electricite" class="invoice-image" />
+        <div class="overlay">
+          <button class="pay-button">Payer facture</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="invoice-section">
+    <h2 class="section-title">Taxes</h2>
+    <div class="image-grid">
+      <div class="image-container" *ngFor="let image of taxes">
+        <img [src]="image" alt="Taxes" class="invoice-image" />
+        <div class="overlay">
+          <button class="pay-button">Payer facture</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="invoice-section">
+    <h2 class="section-title">Internet & Téléphonie</h2>
+    <div class="image-grid">
+      <div class="image-container" *ngFor="let image of internet">
+        <img [src]="image" alt="Internet" class="invoice-image" />
+        <div class="overlay">
+          <button class="pay-button">Payer facture</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

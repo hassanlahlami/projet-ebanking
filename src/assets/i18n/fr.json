@@ -1,0 +1,58 @@
+{
+  "appTitle": "Banque en ligne",
+  "navDashboard": "Tableau de bord",
+  "navAccounts": "Comptes",
+  "navTransfers": "Virements",
+  "navPayments": "Paiements",
+  "navLogout": "Se déconnecter",
+  "footerText": "© 2025 Application eBanking",
+  "dashboardTitle": "Bienvenue sur votre tableau de bord bancaire",
+  "dashboardIntro": "Gérez vos comptes, consultez les transactions récentes et effectuez des virements facilement.",
+  "checkingAccountTitle": "Compte courant",
+  "savingsAccountTitle": "Compte épargne",
+  "creditCardTitle": "Carte de crédit",
+  "accountNumber1": "Numéro de compte : 123456789",
+  "accountNumber2": "Numéro de compte : 987654321",
+  "creditCardNumber": "Numéro de carte : **** 1234",
+  "recentTransactionsTitle": "Transactions récentes",
+  "thDate": "Date",
+  "thDescription": "Description",
+  "thAmount": "Montant",
+  "thBalance": "Solde",
+  "descGroceryStore": "Épicerie",
+  "descSalaryDeposit": "Dépôt de salaire",
+  "descElectricityBill": "Facture d'électricité",
+  "actionTransfer": "Effectuer un virement",
+  "actionPayBills": "Payer les factures",
+  "actionViewStatements": "Voir les relevés",
+  "STATUS": {
+    "ACTIVE": "Actif",
+    "INACTIVE": "Inactif",
+    "SUSPENDED": "Suspendu"
+  },
+  "ACCOUNT": {
+    "ACCOUNTS": "Comptes {{status}}",
+    "RIB": "RIB",
+    "SOLDE": "Solde"
+  },
+  "TRANSFER": {
+    "TITLE": "Virements pour {{rib}}",
+    "ID": "ID",
+    "SENDER": "Émetteur",
+    "RECEIVER": "Récepteur",
+    "AMOUNT": "Montant"
+  },
+  "operator": {
+  "inwi": {
+    "description": "Recharge Inwi facile et rapide"
+  },
+  "orange": {
+    "description": "Recharge Orange en un clic"
+  },
+  "iam": {
+    "description": "Recharge IAM sécurisée"
+  }
+},
+"rechargeNow": "Recharger maintenant"
+
+}

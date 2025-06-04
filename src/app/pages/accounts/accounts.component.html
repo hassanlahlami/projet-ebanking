@@ -1,0 +1,83 @@
+<!-- <div class="container mt-4">
+  <div class="row d-flex justify-content-center">
+    <ng-container *ngFor="let status of getVisibleStatuses(); let i = index; let len = count">
+      <div
+        class="mb-4"
+        [ngClass]="{
+          'col-md-4 offset': len === 3,
+          'col-md-5': len === 2,
+          'col-md-6': len === 1,
+
+        }"
+      >
+        <div class="card custom-card shadow-sm border-0 rounded-4" [ngClass]="status + '-card'">
+          <div class="card-header text-white text-capitalize rounded-top-4 fw-bold">
+            {{ 'ACCOUNT.ACCOUNTS' | translate:{ status: ('STATUS.' + status.toUpperCase()) | translate } }}
+          </div>
+          <div class="card-body d-flex flex-column gap-3">
+            <div
+              *ngFor="let account of getAccountsByStatus(status)"
+              class="account-card p-3 rounded-3 shadow-sm"
+              [class.selected-account]="selectedAccount?.rib === account.rib"
+              (click)="selectAccount(account)"
+              style="cursor: pointer; transition: 0.3s ease;"
+            >
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold text-uppercase small text-muted">
+                    {{ 'ACCOUNT.RIB' | translate }}
+                  </div>
+                  <div class="fs-6">{{ account.rib }}</div>
+                </div>
+                <div class="text-end">
+                  <div class="fw-semibold text-uppercase small text-muted">
+                    {{ 'ACCOUNT.SOLDE' | translate }}
+                  </div>
+                  <div class="fs-5 fw-bold text-success">{{ account.solde }} $</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+ Transfers Section
+  <div *ngIf="selectedAccount" class="mt-4">
+    <div class="card shadow border-0 rounded-4">
+      <div class="card-header bg-info text-white rounded-top-4 fw-bold">
+        {{ 'TRANSFER.TITLE' | translate:{ rib: selectedAccount.rib } }}
+      </div>
+      <div class="card-body">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+          <tr>
+            <th>{{ 'TRANSFER.ID' | translate }}</th>
+            <th>{{ 'TRANSFER.SENDER' | translate }}</th>
+            <th>{{ 'TRANSFER.RECEIVER' | translate }}</th>
+            <th>{{ 'TRANSFER.AMOUNT' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let v of selectedVirements">
+            <td>{{ v.id }}</td>
+            <td>{{ v.emetteur }}</td>
+            <td>{{ v.recepteur }}</td>
+            <td
+              [ngClass]="{
+                  'text-danger': v.emetteur === selectedAccount?.rib,
+                  'text-success': v.recepteur === selectedAccount?.rib
+                }"
+              class="fw-bold"
+            >
+              {{ v.solde }} $
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+-->

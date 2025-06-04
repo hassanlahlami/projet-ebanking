@@ -1,0 +1,14 @@
+.balance {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.card {
+  border-width: 2px !important;
+}
+
+.btn {
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 12px 0;
+}

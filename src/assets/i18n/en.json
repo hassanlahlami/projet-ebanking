@@ -1,0 +1,57 @@
+{
+  "appTitle": "eBanking",
+  "navDashboard": "Dashboard",
+  "navAccounts": "Accounts",
+  "navTransfers": "Transfers",
+  "navPayments": "Payments",
+  "navLogout": "Logout",
+  "footerText": "© 2025 eBanking App",
+  "dashboardTitle": "Welcome to Your Bank Dashboard",
+  "dashboardIntro": "Manage your accounts, view recent transactions, and perform transfers easily.",
+  "checkingAccountTitle": "Checking Account",
+  "savingsAccountTitle": "Savings Account",
+  "creditCardTitle": "Credit Card",
+  "accountNumber1": "Account Number: 123456789",
+  "accountNumber2": "Account Number: 987654321",
+  "creditCardNumber": "Card Number: **** 1234",
+  "recentTransactionsTitle": "Recent Transactions",
+  "thDate": "Date",
+  "thDescription": "Description",
+  "thAmount": "Amount",
+  "thBalance": "Balance",
+  "descGroceryStore": "Grocery Store",
+  "descSalaryDeposit": "Salary Deposit",
+  "descElectricityBill": "Electricity Bill",
+  "actionTransfer": "Make a Transfer",
+  "actionPayBills": "Pay Bills",
+  "actionViewStatements": "View Statements",
+  "STATUS": {
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive",
+    "SUSPENDED": "Suspended"
+  },
+  "ACCOUNT": {
+    "ACCOUNTS": "{{status}} Accounts",
+    "RIB": "RIB",
+    "SOLDE": "Balance"
+  },
+  "TRANSFER": {
+    "TITLE": "Transfers for {{rib}}",
+    "ID": "ID",
+    "SENDER": "Sender",
+    "RECEIVER": "Receiver",
+    "AMOUNT": "Amount"
+  },
+  "operator": {
+    "inwi": {
+      "description": "Easy and fast Inwi recharge"
+    },
+    "orange": {
+      "description": "One-click Orange recharge"
+    },
+    "iam": {
+      "description": "Secure IAM recharge"
+    }
+  },
+  "rechargeNow": "Recharge Now"
+}

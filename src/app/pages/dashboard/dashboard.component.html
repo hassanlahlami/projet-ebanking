@@ -1,0 +1,91 @@
+<div class="container my-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h2 class="text-primary">{{ 'dashboardTitle' | translate }}</h2>
+      <p class="lead">{{ 'dashboardIntro' | translate }}</p>
+    </div>
+  </div>
+
+  <!-- Account summary -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-primary">
+        <div class="card-body">
+          <h5 class="card-title">{{ 'checkingAccountTitle' | translate }}</h5>
+          <p class="card-text balance">$5,320.75</p>
+          <small class="text-muted">{{ 'accountNumber1' | translate }}</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm border-success">
+        <div class="card-body">
+          <h5 class="card-title">{{ 'savingsAccountTitle' | translate }}</h5>
+          <p class="card-text balance">$12,845.10</p>
+          <small class="text-muted">{{ 'accountNumber2' | translate }}</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm border-warning">
+        <div class="card-body">
+          <h5 class="card-title">{{ 'creditCardTitle' | translate }}</h5>
+          <p class="card-text balance text-danger">-$2,150.40</p>
+          <small class="text-muted">{{ 'creditCardNumber' | translate }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent transactions -->
+  <div class="row mb-4">
+    <div class="col">
+      <h4>{{ 'recentTransactionsTitle' | translate }}</h4>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+          <tr>
+            <th>{{ 'thDate' | translate }}</th>
+            <th>{{ 'thDescription' | translate }}</th>
+            <th>{{ 'thAmount' | translate }}</th>
+            <th>{{ 'thBalance' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>2025-05-20</td>
+            <td>{{ 'descGroceryStore' | translate }}</td>
+            <td class="text-danger">- $78.45</td>
+            <td>$5,242.30</td>
+          </tr>
+          <tr>
+            <td>2025-05-19</td>
+            <td>{{ 'descSalaryDeposit' | translate }}</td>
+            <td class="text-success">+ $2,000.00</td>
+            <td>$5,320.75</td>
+          </tr>
+          <tr>
+            <td>2025-05-18</td>
+            <td>{{ 'descElectricityBill' | translate }}</td>
+            <td class="text-danger">- $120.00</td>
+            <td>$3,320.75</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <button class="btn btn-primary w-100">{{ 'actionTransfer' | translate }}</button>
+    </div>
+    <div class="col-md-4 mb-3">
+      <button class="btn btn-outline-secondary w-100">{{ 'actionPayBills' | translate }}</button>
+    </div>
+    <div class="col-md-4 mb-3">
+      <button class="btn btn-outline-info w-100">{{ 'actionViewStatements' | translate }}</button>
+    </div>
+  </div>
+</div>
