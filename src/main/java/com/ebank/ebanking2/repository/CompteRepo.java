@@ -18,7 +18,7 @@ public interface CompteRepo extends JpaRepository<Compte, Long> {
 
     //@Query("{ 'clientId': ?0, 'status': ?1, '_class': ?2 }")
     List<CCourant> findByClientIdAndStatusAndClass(Long clientId, StatusCompte statusCompte, String className);
-
+    Optional<CCourant> findByRib(String rib);
     //@Query("SELECT c.solde FROM Compte c WHERE c.rib = rib")
     double findSoldeByRib(@Param("rib") String rib);
 

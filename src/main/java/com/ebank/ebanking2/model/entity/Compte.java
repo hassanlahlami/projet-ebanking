@@ -43,5 +43,16 @@ public class Compte{
     public String getAccountType() {
         return this.getClass().getSimpleName();
     }
+    @Override
+    public String toString() {
+        return "Compte {" +
+                "RIB='" + rib + '\'' +
+                ", Solde=" + solde + "€" +
+                ", Statut=" + status +
+                ", Créé le=" + (createdAt != null ? createdAt.toLocalDate() : "N/A") +
+                ", Mis à jour le=" + (updatedAt != null ? updatedAt.toLocalDate() : "N/A") +
+                (deletedAt != null ? ", Supprimé le=" + deletedAt.toLocalDate() : "") +
+                '}';
+    }
 
 }

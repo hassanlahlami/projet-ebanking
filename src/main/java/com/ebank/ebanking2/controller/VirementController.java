@@ -33,8 +33,13 @@ public class VirementController {
         return "Hello from virements";
     }
 //    @PostMapping("/virement")
+//    public ResponseEntity<VirementDTO> effectuerVirement(@RequestBody VirementDTO virementDTO) {
 //    public ResponseEntity<VirementResDTO> effectuerVirement(@RequestBody VirementDTO virementDTO) {
 //        return ResponseEntity.ok(virementService.effectuerVirement(virementDTO));
+//    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<List<VirementDTO>> getAllVirementsByEmetteurCompteIdOrRecepteurCompteId(@PathVariable Long id) {
+//        return ResponseEntity.ok(virementService.getAllVirementByEmetteurCompteIdOrRecepteurCompteId(id,id));
 //    }
     @GetMapping("/{id}")
     public ResponseEntity<Page<VirementResDTO>> getAllVirementsByEmetteurCompteIdOrRecepteurCompteId(@PathVariable("id") Long id, @RequestParam("offset") Integer offset, @RequestParam("size") Integer size) {

@@ -17,5 +17,6 @@ public interface CompteMapper {
     CEpargneResDTO toResDTO(CEpargne cEpargne);
     @Mapping(target = "accountType", expression = "java(compte.getAccountType())")
     CompteResDTO toCompteResDTO(Compte compte);
+    CCourantDTO toDtoCoutant(CCourant courant);
 
 }

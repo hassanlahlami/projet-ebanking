@@ -25,6 +25,7 @@ public class ClientResDTO {
     private String email;
     private String phone;
     private String job;
+    private boolean valid;
     private List<CompteResDTO> comptes;
     private List<InvoiceResDTO> invoices;
 }

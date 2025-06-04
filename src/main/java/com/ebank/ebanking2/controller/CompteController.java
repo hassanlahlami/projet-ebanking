@@ -25,10 +25,19 @@ public class CompteController {
     public ResponseEntity<List<?>> getAll(@PathVariable("status") String status, @PathVariable("type") String type) {
         return ResponseEntity.ok(compteService.get(type,status));
     }
+    @GetMapping("solde/{rib}")
+    public double getSolde( @PathVariable("rib") String rib){
+        return compteService.getSolde(rib);
+    }
 
-//    @GetMapping("/compte/{id}")
-//    public ResponseEntity<Compte> getById(@PathVariable Long id) {
-//        return ResponseEntity.ok(compteService.getById(id));
+    @GetMapping("/compte/{id}")
+    public ResponseEntity<Compte> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(compteService.getById(id));
+    }
+//
+//    @GetMapping("/client/{clientId}/{type}/{status}")
+//    public ResponseEntity<List<?>> getByClientId(@PathVariable("clientId") Long clientId, @PathVariable("type") String type, @PathVariable("status") String status) {
+//        return ResponseEntity.ok(compteService.getByClientId(clientId,type,status));
 //    }
 //
     @GetMapping("/client/{clientId}/{type}/{status}")
@@ -40,6 +49,10 @@ public class CompteController {
     public ResponseEntity<CCourantResDTO> create(@RequestBody CCourantDTO dto) {
         return ResponseEntity.ok(compteService.saveCCourant(dto));
     }
+@GetMapping("/getallbyid/{id}/{type}/{status}")
+public String getallbyid(@PathVariable("id")Long id,@PathVariable("type")String type,@PathVariable("status")String status){
+        return compteService.getAllComptes(id,type,status);
+}
 
 
 

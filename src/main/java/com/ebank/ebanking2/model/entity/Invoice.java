@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -19,10 +20,10 @@ public class Invoice {
     private Long id;
     private String provider;
     private double amount;
-    private Date dueDate;
+    private LocalDateTime dueDate;
     private String referenceNumber;
     private boolean paid;
-    private Date paidDate;
+    private LocalDateTime paidDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")

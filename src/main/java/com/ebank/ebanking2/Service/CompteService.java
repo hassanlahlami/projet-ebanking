@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CompteService{
@@ -34,6 +36,11 @@ public class CompteService{
     @Autowired
     private RibGenerator ribGenerator;
     @Transactional
+
+    public double getSolde( String rib){
+        return compteRepo.findByRib(rib).get().getSolde();
+    }
+
     public CCourantResDTO saveCCourant(CCourantDTO cCourantDTO) {
         Client client= clientRepo.findById(cCourantDTO.getClientId()).orElseThrow(() -> new RuntimeException("Client not found"));
         CCourant ccourant = compteMapper.toEntity(cCourantDTO);
@@ -68,6 +75,55 @@ public class CompteService{
         return compteMapper.toResDTO(cEpargne);
     }
 
+    public String getAllComptes(
+            Long id,
+            String status,
+             String type) {
+
+        // Validation
+        System.out.println(id.toString()+" "+status+" "+type);
+
+        // Get and format results
+        List<?> comptes = getByClientId(id, status, type);
+        for (Object compte : comptes) {
+            System.out.println(compte.toString());
+        }
+        if (comptes.isEmpty()) {
+            return String.format(
+                    "Aucun compte trouvé pour id=%d (type=%s, status=%s)",
+                    id, status, type
+            );
+        }
+        String result = formatAccounts(comptes);
+        System.out.println(result);
+        return  result;
+    }
+
+    private String formatAccounts(List<?> comptes) {
+        StringBuilder sb = new StringBuilder("Vos comptes:\n\n");
+        comptes.forEach(c -> {
+            if (c instanceof CompteResDTO dto) {
+                sb.append(String.format("""
+                • Type: %s
+                  RIB: %s
+                  Solde: %.2f
+                  Statut: %s
+                ------------------------
+                """,
+                        dto.getAccountType(),
+                        dto.getRib(),
+                        dto.getSolde(),
+                        dto.getStatus()
+                ));
+            }
+        });
+        return sb.toString();
+    }
+
+    public List<?> getByClientId(Long clientId,String type, String status) {
+        List<Compte> comptes = compteRepo.findByClientId(clientId);
+        return filterListCompte(comptes, type, status);
+    }
 
     public List<?> filterListCompte(List<Compte> comptes, String type, String status){
         List<?> returnedList = new ArrayList<>();
@@ -126,4 +182,7 @@ public class CompteService{
     }
 
 
+    public Compte getById(Long id) {
+        return compteRepo.findById(id).get();
+    }
 }

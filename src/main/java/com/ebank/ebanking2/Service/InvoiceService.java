@@ -23,4 +23,19 @@ public class InvoiceService {
     @Autowired
     private UserRepo userRepo;
 
+
+//    public InvoiceDTO addInvoice(InvoiceDTO invoiceDto) {
+//        Invoice invoice = invoiceMapper.toEntity(invoiceDto);
+//        User client = userRepo.findById(invoiceDto.getClientId()).orElseThrow(null);
+//        invoice.setClient(client);
+//        invoiceRepo.save(invoice);
+//        return invoiceMapper.toInvoiceDto(invoice);
+//    }
+//
+//
+//    public InvoiceDTO getInvoice(Long clientId, String provider, String reference) {
+//        Invoice invoice = invoiceRepo.findByClientIdAndProviderAndReferenceNumber(clientId, provider, reference);
+//        System.out.println("invoice : "+invoice);
+//        return invoiceMapper.toInvoiceDto(invoice);
+//    }
 }
