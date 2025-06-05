@@ -1,0 +1,121 @@
+{
+  "appTitle": "eBanking",
+  "navDashboard": "Dashboard",
+  "navAccounts": "Accounts",
+  "navTransfers": "Transfers",
+  "navLogout": "Logout",
+  "footerText": "© 2025 eBanking App",
+  "dashboardTitle": "Welcome to Your Bank Dashboard",
+  "dashboardIntro": "Manage your accounts, view recent transactions, and perform transfers easily.",
+  "checkingAccountTitle": "Checking Account",
+  "savingsAccountTitle": "Savings Account",
+  "creditCardTitle": "Credit Card",
+  "accountNumber1": "Account Number: 123456789",
+  "accountNumber2": "Account Number: 987654321",
+  "creditCardNumber": "Card Number: **** 1234",
+  "recentTransactionsTitle": "Recent Transactions",
+  "thDate": "Date",
+  "thDescription": "Description",
+  "thAmount": "Amount",
+  "thBalance": "Balance",
+  "descGroceryStore": "Grocery Store",
+  "descSalaryDeposit": "Salary Deposit",
+  "descElectricityBill": "Electricity Bill",
+  "actionTransfer": "Make a Transfer",
+  "actionPayBills": "Pay Bills",
+  "actionViewStatements": "View Statements",
+
+
+
+
+  "STATUS": {
+    "ACTIF": "active",
+    "BLOQUE": "blocked",
+    "FERME": "closed"
+  },
+  "ACCOUNT": {
+    "ACCOUNTS": "{{status}} Accounts",
+    "RIB": "RIB",
+    "SOLDE": "Balance",
+    "COURANT": "Checking account",
+    "EPARGNE": "Savings account",
+    "EPARGNE_DETAILS": "Savings account details",
+    "TAUX_INTERET":"interest rate"
+  },
+  "TRANSFER": {
+    "TITLE": "Transfers of checking account",
+    "ID": "ID",
+    "SENDER": "Sender",
+    "RECEIVER": "Receiver",
+    "VIEW_RECEIPT": "View receipt",
+    "TITLE1": "Transfers",
+    "FROM_ACCOUNT": "From Account",
+    "CHOOSE_ACCOUNT": "Choose account",
+    "TO_ACCOUNT": "To Account",
+    "TO_ACCOUNT_PLACEHOLDER": "Enter recipient account rib",
+    "AMOUNT": "Amount",
+    "AMOUNT_PLACEHOLDER": "$0.00",
+    "TYPE_TRANSACTION": "Transaction Type",
+    "TYPE_INSTANT": "Instant",
+    "TYPE_NORMAL": "Normal",
+    "TRANSFER_BUTTON": "Transfer",
+    "RECEIPT": "Transfer Receipt",
+    "CLOSE": "Close"
+  },
+  "OPERATION": {
+    "VIREMENT": "Transfers",
+    "RECHARGE": "mobile top-up",
+    "FACTURE": "Invoices"
+  },
+  "RECHARGE":{
+    "ID": "Id",
+    "TITLE": "Mobile top-up history",
+    "OPERATOR": "Operator",
+    "PHONENUMBER": "Phone number"
+  },
+  "INVOICE":{
+    "ID": "Id",
+    "PAIDDATE": "Date of payement",
+    "PROVIDER": "Provider"
+  },
+  "operator": {
+    "inwi": {
+      "description": "Easy and fast Inwi recharge"
+    },
+    "orange": {
+      "description": "One-click Orange recharge"
+    },
+    "iam": {
+      "description": "Secure IAM recharge"
+    }
+  },
+  "rechargeNow": "Recharge Now",
+  "PAYMENT": {
+    "EAU_ELECTRICITE": "Water & Electricity",
+    "TAXES": "Taxes",
+    "INTERNET": "Internet & Telephony",
+    "PAY": "Pay {{provider}}",
+    "MODAL_TITLE": "Find Your Invoice in {{provider}}",
+    "REFERENCE_LABEL": "Reference No:",
+    "REFERENCE_PLACEHOLDER": "Enter contract number",
+    "SEARCH_BUTTON": "Search",
+    "INVOICE_AMOUNT": "{{amount}} DH",
+    "INVOICE_DUE_DATE": "Due date: {{date}}",
+    "SELECT_RIB": "RIB: {{rib}}",
+    "BALANCE": "Balance: {{balance}} MAD",
+    "ENABLE_DOTATION": "Please enable dotation",
+    "INSUFFICIENT_BALANCE": "Insufficient balance",
+    "PAY_INVOICE": "Pay Invoice",
+    "NO_INVOICE_FOUND": "No invoice found",
+    "SUCCESS_TITLE": "Payment Successful!",
+    "SUCCESS_MESSAGE": "Thank you, your payment was processed successfully.",
+    "FAILURE_TITLE": "Payment Failed",
+    "FAILURE_MESSAGE": "Unfortunately, your payment could not be processed. Please try again.",
+
+
+
+
+    "PHONE_RECHARGE": "Phone Recharge",
+    "INVOICES": "Invoices"
+  }
+}
