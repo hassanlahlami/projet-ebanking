@@ -20,7 +20,7 @@ public class Virement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER) //@ManyToOne means many records of the current entity are associated with one record of another entity
     @JoinColumn(name = "compte_emetteur_id")
     @JsonManagedReference
     private CCourant compteEmetteur;
@@ -32,10 +32,12 @@ public class Virement {
 
     private double montant;
 
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @Enumerated(EnumType.STRING)
-    private Type type;
+
 }

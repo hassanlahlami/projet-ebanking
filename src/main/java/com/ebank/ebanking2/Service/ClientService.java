@@ -47,7 +47,6 @@ public class ClientService {
     }
 
     //ajoutee pour  deleter un tel client
-
     public void deleteClient(Long id) {
         clientRepo.deleteById(id);
     }

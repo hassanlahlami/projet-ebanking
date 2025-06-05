@@ -57,7 +57,6 @@ public class CompteService{
         compteRepo.save(ccourant);
         return compteMapper.toResDTO(ccourant);
     }
-    @Transactional
     public CEpargneResDTO saveCEpargne(CEpargneDTO cEpargneDTO) {
         Client client= clientRepo.findById(cEpargneDTO.getClientId()).orElseThrow(() -> new RuntimeException("Client not found"));
         CEpargne cEpargne = compteMapper.toEntity(cEpargneDTO);
@@ -132,6 +131,10 @@ public class CompteService{
                 returnedList=comptes;
                 break;
             case "ACTIF":
+                returnedList= comptes.stream()
+                        .filter(c->c.getStatus().equals(StatusCompte.valueOf(status)))
+                        .toList();
+                break;
             case "BLOQUE":
             case "FERME":
                 returnedList= comptes.stream()
@@ -172,14 +175,41 @@ public class CompteService{
         return returnedList;
     }
 
+    public List<?> getComptes(Long clientId,String type, String status) {
+        List<Compte> comptes = compteRepo.findByClientId(clientId);
+        return filterListCompte(comptes, type,status);
+    }
+
+
+
     public List<?> get(String type, String status) {
         List<Compte> comptes = compteRepo.findAll();
         return filterListCompte(comptes, type, status);
     }
 
+    CCourant getCompteByRib(String rib) {
+        return compteRepo.findByRib(rib).orElseThrow(() -> new RuntimeException("Compte not found"));
+    }
 
+//    @Tool("Récupère le solde d'un compte à partir de son RIB")
+//    public double getSolde(@P("Le RIB du compte") String rib){
+//        return compteRepo.findByRib(rib).get().getSolde();
+//    }
 
     public Compte getById(Long id) {
         return compteRepo.findById(id).get();
     }
+
+
+    public CCourantResDTO diminuerSolde(CCourant courant,double montant){
+        double newSolde = courant.getSolde()-montant;
+        courant.setSolde(newSolde);
+        compteRepo.save(courant);
+        return compteMapper.toResDTO(courant);
+    }
+
+
+
+
+
 }

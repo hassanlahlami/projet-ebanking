@@ -34,7 +34,6 @@ public class VirementController {
     }
 //    @PostMapping("/virement")
 //    public ResponseEntity<VirementDTO> effectuerVirement(@RequestBody VirementDTO virementDTO) {
-//    public ResponseEntity<VirementResDTO> effectuerVirement(@RequestBody VirementDTO virementDTO) {
 //        return ResponseEntity.ok(virementService.effectuerVirement(virementDTO));
 //    }
 //    @GetMapping("/{id}")

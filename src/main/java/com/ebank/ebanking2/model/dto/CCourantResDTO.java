@@ -18,7 +18,7 @@ import java.util.List;
 @SuperBuilder
 public class CCourantResDTO {
     private Long id;
-    private Client client;
+    private ClientResDTO client;
     private String rib;
     private double solde;
     private StatusCompte status;
@@ -27,7 +27,7 @@ public class CCourantResDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime updatedAt;
     private boolean autorisePaiementEnLigne;
-    private List<Virement> virementsEmis;
-    private List<Virement> virementsRecu;
+    private List<VirementResDTO> virementsEmis;
+    private List<VirementResDTO> virementsRecu;
     private List<RechargeResDTO> recharges;
 }

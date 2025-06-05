@@ -17,7 +17,6 @@ import java.util.List;
 @DiscriminatorValue("CLIENT")
 @Entity
 public class Client extends User {
-
     private String job;
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JsonBackReference
