@@ -52,10 +52,7 @@ public class ClientController {
     public void deleteClient(@PathVariable("id") Long id) {
         clientService.deleteClient(id);
     }
-    @PutMapping("/updatevalidation/{id}")
-    public ResponseEntity<ClientResDTO> updateClientValidation(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(clientService.updatevalidation(id));
-    }
+
     @PostMapping("/post/token/{id}")
     public boolean posttoken(@PathVariable("id") long id) throws MessagingException {
         String token=tokenmailservice.generateSixDigitToken();

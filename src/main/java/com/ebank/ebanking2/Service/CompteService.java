@@ -176,10 +176,7 @@ public class CompteService{
         List<Compte> comptes = compteRepo.findAll();
         return filterListCompte(comptes, type, status);
     }
-    public List<?> getByClientId(Long clientId,String type, String status) {
-        List<Compte> comptes = compteRepo.findByClientId(clientId);
-        return filterListCompte(comptes, type, status);
-    }
+
 
 
     public Compte getById(Long id) {

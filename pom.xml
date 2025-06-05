@@ -211,6 +211,13 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.19.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>3.5.0</version>
+         </dependency>
 
     </dependencies>
 

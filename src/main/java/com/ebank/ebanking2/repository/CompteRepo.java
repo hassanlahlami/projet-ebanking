@@ -22,7 +22,7 @@ public interface CompteRepo extends JpaRepository<Compte, Long> {
     //@Query("SELECT c.solde FROM Compte c WHERE c.rib = rib")
     double findSoldeByRib(@Param("rib") String rib);
 
-    Optional<CCourant> findByRib(String rib);
+
 
 
 }

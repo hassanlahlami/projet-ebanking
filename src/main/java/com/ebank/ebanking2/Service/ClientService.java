@@ -51,13 +51,6 @@ public class ClientService {
     public void deleteClient(Long id) {
         clientRepo.deleteById(id);
     }
-    public ClientResDTO updatevalidation(long id) {
-
-        Client client = clientRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Client non trouvé avec l'ID: " + id));
-        client.setValid(true);
-        return clientMapper.toResDTO(client);
-    }
 public void updateclient(long id,Clientchangedto clientchangedto) {
 
     Client client=getClientnodtoById(id);

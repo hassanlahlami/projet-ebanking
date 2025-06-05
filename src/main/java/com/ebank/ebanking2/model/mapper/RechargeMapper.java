@@ -19,5 +19,4 @@ public interface RechargeMapper {
 
     @Mapping(target = "compte", ignore = true)
     Recharge ToEntity(RechargeDTO rechargeDTO);
-    RechargeResDTO ToResDTO(Recharge recharge);
 }
