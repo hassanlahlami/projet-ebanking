@@ -1,18 +1,17 @@
 package com.ebank.ebanking2.model.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class RechargeDTO {
+public class ChatbotResDTO {
 
-    private String operateur;
-    private String phoneNumber;
-    private int montant;
-    private String rib;
+    private String responseText; // message texte pour l'utilisateur
+    private List<?> comptes;
+
 }

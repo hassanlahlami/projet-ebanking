@@ -13,10 +13,12 @@ import com.ebank.ebanking2.model.mapper.InvoiceMapper;
 import com.ebank.ebanking2.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,4 +63,10 @@ public class InvoiceService {
         return invoiceMapper.toResDto(invoiceUpdated);
     }
 
+    public List<InvoiceResDTO> addInvoices(List<InvoiceDTO> invoiceDTOs) {
+        List<Invoice> invoices = invoiceMapper.toEntity(invoiceDTOs);
+        List<Invoice> invoicesSaved = invoiceRepo.saveAll(invoices);
+
+        return invoiceMapper.toResDTO(invoicesSaved);
+    }
 }

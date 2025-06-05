@@ -25,6 +25,4 @@ public class Banque {
     private double commissionCrypto;
     private double negatifMontantAutorise;
 
-
-
 }

@@ -3,10 +3,7 @@ package com.ebank.ebanking2.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.TypeAlias;
 
@@ -20,14 +17,14 @@ import java.util.List;
 @DiscriminatorValue("CCOURANT")
 @Entity
 public class CCourant extends Compte{
-    private boolean autorisePaiementEnLigne;
-    @OneToMany(mappedBy = "compteEmetteur",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private boolean autorisePaiementEnLigne=false;
+    @OneToMany(mappedBy = "compteEmetteur",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Virement> virementsEmis=new ArrayList<>();
-    @OneToMany(mappedBy = "compteRecepteur",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "compteRecepteur",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Virement> virementsRecu = new ArrayList<>();
-    @OneToMany(mappedBy = "compte",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "compte",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<Recharge> recharges = new ArrayList<>();
 }

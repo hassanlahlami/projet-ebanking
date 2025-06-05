@@ -11,5 +11,6 @@ import org.mapstruct.Mapping;
 public interface RechargeMapper {
     @Mapping(target = "compte", ignore = true)
     Recharge ToEntity(RechargeDTO rechargeDTO);
+    @Mapping(target = "compte", ignore = true)
     RechargeResDTO ToResDTO(Recharge recharge);
 }

@@ -20,7 +20,6 @@ public class Invoice {
     private Long id;
     private String provider;
     private double amount;
-
     private LocalDateTime dueDate;
     private String referenceNumber;
     private boolean paid;
@@ -30,7 +29,4 @@ public class Invoice {
     @JoinColumn(name = "client_id")
     @JsonBackReference
     private Client client;
-
-
-    //don't add createdAt, updateAt ... 7it hadi rah b7al chi api externe, machghlnach imta tcreeat l invoice
 }

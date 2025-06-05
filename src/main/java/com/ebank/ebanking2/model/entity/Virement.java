@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -27,11 +28,9 @@ public class Virement {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "compte_recepteur_id")
-
     private CCourant compteRecepteur;
 
     private double montant;
-
 
     @Enumerated(EnumType.STRING)
     private Type type;

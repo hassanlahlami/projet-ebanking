@@ -47,10 +47,6 @@
             <version>3.3.0</version>
         </dependency>
 
-
-
-
-
         </dependencies>
 
     </dependencyManagement>
@@ -191,11 +187,23 @@
             <artifactId>jspecify</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!-- LangChain4j core -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j</artifactId>
+            <version>0.34.0</version>
+        </dependency>
 
 
 
 
 <!--        bach t7wl dakchi li taydkhl l user f dto f ay input dyal LocalDateTime l LocalDateTime-->
+        <!-- OpenAI provider (ou autre selon vos besoins) -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-open-ai</artifactId>
+            <version>0.34.0</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>

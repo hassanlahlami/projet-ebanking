@@ -23,12 +23,10 @@ public class Recharge {
     private String operateur;
     private String phoneNumber;
     private int montant;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private CCourant compte;
-
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    private CCourant compte;
 
 }

@@ -1,18 +1,20 @@
 package com.ebank.ebanking2.model.dto;
 
+
+import com.ebank.ebanking2.model.entity.StatusCompte;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class RechargeDTO {
+@SuperBuilder
+public class CompteResDTOChat {
 
-    private String operateur;
-    private String phoneNumber;
-    private int montant;
+    private Long id;
     private String rib;
+    private String accountType;
 }

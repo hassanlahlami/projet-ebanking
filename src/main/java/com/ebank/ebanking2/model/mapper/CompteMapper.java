@@ -7,7 +7,7 @@ import com.ebank.ebanking2.model.entity.Compte;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",uses={VirementMapper.class,RechargeMapper.class})
 public interface CompteMapper {
     @Mapping(target = "client", ignore = true)
     CCourant toEntity(CCourantDTO cCourantDTO);
@@ -18,4 +18,5 @@ public interface CompteMapper {
     CEpargneResDTO toResDTO(CEpargne cEpargne);
     @Mapping(target = "accountType", expression = "java(compte.getAccountType())")
     CompteResDTO toCompteResDTO(Compte compte);
+    CompteResDTOChat toCompteResDTOChat(Compte compte);
 }

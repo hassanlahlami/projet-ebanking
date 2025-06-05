@@ -8,16 +8,20 @@ import com.ebank.ebanking2.repository.ClientRepo;
 import com.ebank.ebanking2.repository.CompteRepo;
 import com.ebank.ebanking2.repository.UserRepo;
 import com.ebank.ebanking2.util.RibGenerator;
+import dev.langchain4j.agent.tool.P;
+import dev.langchain4j.agent.tool.Tool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CompteService{
+public class CompteService implements CompteTools{
     @Autowired
     private CompteRepo compteRepo;
     @Autowired
@@ -29,7 +33,7 @@ public class CompteService{
 
     @Autowired
     private RibGenerator ribGenerator;
-    @Transactional
+
     public CCourantResDTO saveCCourant(CCourantDTO cCourantDTO) {
         Client client= clientRepo.findById(cCourantDTO.getClientId()).orElseThrow(() -> new RuntimeException("Client not found"));
         CCourant ccourant = compteMapper.toEntity(cCourantDTO);
@@ -46,7 +50,7 @@ public class CompteService{
         compteRepo.save(ccourant);
         return compteMapper.toResDTO(ccourant);
     }
-    @Transactional
+
     public CEpargneResDTO saveCEpargne(CEpargneDTO cEpargneDTO) {
         Client client= clientRepo.findById(cEpargneDTO.getClientId()).orElseThrow(() -> new RuntimeException("Client not found"));
         CEpargne cEpargne = compteMapper.toEntity(cEpargneDTO);
@@ -121,6 +125,38 @@ public class CompteService{
         List<Compte> comptes = compteRepo.findByClientId(clientId);
         return filterListCompte(comptes, type,status);
     }
+
+
+
+    public List<?> get(String type, String status) {
+        List<Compte> comptes = compteRepo.findAll();
+        return filterListCompte(comptes, type, status);
+    }
+
+    CCourant getCompteByRib(String rib) {
+        return compteRepo.findByRib(rib).orElseThrow(() -> new RuntimeException("Compte not found"));
+    }
+
+//    @Tool("Récupère le solde d'un compte à partir de son RIB")
+//    public double getSolde(@P("Le RIB du compte") String rib){
+//        return compteRepo.findByRib(rib).get().getSolde();
+//    }
+
+    @Tool("Le RIB du compte à consulter")
+    public double getSoldee(@P("Le RIB du compte") String rib){
+        return compteRepo.findByRib(rib).get().getSolde();
+    }
+
+
+    public CCourantResDTO diminuerSolde(CCourant courant,double montant){
+        double newSolde = courant.getSolde()-montant;
+        courant.setSolde(newSolde);
+        compteRepo.save(courant);
+        return compteMapper.toResDTO(courant);
+    }
+
+
+
 
 
 }

@@ -4,11 +4,12 @@ import com.ebank.ebanking2.Service.InvoiceService;
 import com.ebank.ebanking2.model.dto.InvoiceDTO;
 import com.ebank.ebanking2.model.dto.InvoicePayDTO;
 import com.ebank.ebanking2.model.dto.InvoiceResDTO;
-import com.ebank.ebanking2.model.entity.Invoice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -41,5 +42,11 @@ public class InvoiceController {
     @PostMapping("invoice")
     public ResponseEntity<InvoiceResDTO> addInvoice(@RequestBody InvoiceDTO invoiceDTO){
         return new ResponseEntity<>(invoiceService.addInvoice(invoiceDTO), HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("invoices")
+    public ResponseEntity<List<InvoiceResDTO>> addInvoices(@RequestBody List<InvoiceDTO> invoiceDTOs){
+        return ResponseEntity.ok(invoiceService.addInvoices(invoiceDTOs));
     }
 }

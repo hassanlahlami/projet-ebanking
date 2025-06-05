@@ -2,6 +2,7 @@ package com.ebank.ebanking2.model.dto;
 
 import com.ebank.ebanking2.model.entity.CCourant;
 import com.ebank.ebanking2.model.entity.Type;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class VirementResDTO {
     private CompteResDTO compteEmetteur;
     private CompteResDTO compteRecepteur;
     private double montant;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
     private Type type;
 }

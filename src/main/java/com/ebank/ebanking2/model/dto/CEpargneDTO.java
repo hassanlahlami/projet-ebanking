@@ -16,7 +16,7 @@ public class CEpargneDTO {
     private Long clientId;
     private double solde;
     private StatusCompte status;
-    private double tauxInterets;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private Double tauxInterets;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateInterets;
 }
