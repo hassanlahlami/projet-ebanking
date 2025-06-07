@@ -95,7 +95,7 @@ public class AuthService {
             ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", accessTokenDto.getToken())
                     .httpOnly(true)
                     .secure(!isDevEnvironment)
-                    .maxAge(Math.max((accessTokenDto.getExpiredAt().getTime() - System.currentTimeMillis()) / 1000, 0))
+                    .maxAge(Math.max((refreshTokenDto.getExpiredAt().getTime() - System.currentTimeMillis()) / 1000, 0))
                     .sameSite(isDevEnvironment ? "Lax" : "Strict")
                     .path("/")  // accessible on all paths
                     .build();
@@ -126,7 +126,7 @@ public class AuthService {
             return new ResponseEntity<>(AuthenticationResponse.builder()
                     .accessToken(accessTokenDto.getToken())
                     .refreshToken(refreshTokenDto.getToken())
-                    .id(clientA.getId())
+                    .userId(clientA.getId())
                     .build(), HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<>("failed", HttpStatus.FORBIDDEN);
@@ -142,13 +142,13 @@ public class AuthService {
             User authenticatedUser = userPrincipal.getUser();
             TokenWrapper accessTokenDto = jwtService.generateAccessToken(request, authenticatedUser.getEmail());
             TokenWrapper refreshTokenDto = jwtService.generateRefreshToken(request, authenticatedUser.getEmail());
-            revokeAllUserTokens(authenticatedUser.getId());
+            //revokeAllUserTokens(authenticatedUser.getId());
             saveUserToken(authenticatedUser, refreshTokenDto);
 
             ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", accessTokenDto.getToken())
                     .httpOnly(true)
                     .secure(!isDevEnvironment)
-                    .maxAge(Math.max((accessTokenDto.getExpiredAt().getTime() - System.currentTimeMillis()) / 1000, 0))
+                    .maxAge(Math.max((refreshTokenDto.getExpiredAt().getTime() - System.currentTimeMillis()) / 1000, 0))
                     .sameSite(isDevEnvironment ? "Lax" : "Strict")
                     .path("/")
                     .build();
@@ -176,7 +176,7 @@ public class AuthService {
             return new ResponseEntity<>(AuthenticationResponse.builder()
                     .accessToken(accessTokenDto.getToken())
                     .refreshToken(refreshTokenDto.getToken())
-                    .id(userPrincipal.getId())
+                    .userId(userPrincipal.getId())
                     .build(), HttpStatus.OK);
         }
         else {
@@ -206,7 +206,7 @@ public class AuthService {
             User user = this.userService.getUserByEmail(userEmail);
             boolean isTokenValid = (!tokenService.getTokenObjByToken(refreshToken).isExpired() && !tokenService.getTokenObjByToken(refreshToken).isRevoked());
             if(jwtService.validateToken(refreshToken, new UserPrincipal(user)) && isTokenValid){
-                    TokenWrapper accessTokenDto = jwtService.generateAccessToken(request, user.getEmail());
+                TokenWrapper accessTokenDto = jwtService.generateAccessToken(request, user.getEmail());
 
                 ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", accessTokenDto.getToken())
                         .httpOnly(true)
@@ -215,14 +215,13 @@ public class AuthService {
                         .sameSite(isDevEnvironment ? "Lax" : "Strict")
                         .path("/")
                         .build();
-
-                // Update access token cookie only (refresh token remains the same)
                 response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
-                    return new ResponseEntity<>(AuthenticationResponse.builder()
-                            .id(user.getId())
-                            .accessToken(accessTokenDto.getToken())
-                            .refreshToken(refreshToken)
-                            .build(), HttpStatus.OK);
+
+                return new ResponseEntity<>(AuthenticationResponse.builder()
+                        .userId(user.getId())
+                        .accessToken(accessTokenDto.getToken())
+                        .refreshToken(refreshToken)
+                        .build(), HttpStatus.OK);
                 }
         }
         return new ResponseEntity<>("token not refreshed", HttpStatus.FORBIDDEN);

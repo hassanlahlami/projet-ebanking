@@ -1,17 +1,25 @@
 package com.ebank.ebanking2.configuration;
 
+import com.ebank.ebanking2.Service.AuthService;
 import com.ebank.ebanking2.Service.JwtService;
 import com.ebank.ebanking2.Service.MyUserDetailsService;
 import com.ebank.ebanking2.Service.TokenService;
+import com.ebank.ebanking2.model.dto.TokenWrapper;
 import com.ebank.ebanking2.model.entity.Token;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
+import org.aspectj.weaver.bcel.ExceptionRange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,121 +32,119 @@ import java.io.IOException;
 
 @Component
 //@RequiredArgsConstructor
+@PropertySource("classpath:application.properties")
 public class JwtFilter extends OncePerRequestFilter {
+    @Value("${isDevEnvironment}")
+    private boolean isDevEnvironment;
     @Autowired
     JwtService jwtService;
     @Autowired
     ApplicationContext context;
     @Autowired
     TokenService tokenService;
-//    @Override
-//    protected void doFilterInternal(@NonNull HttpServletRequest request,@NonNull HttpServletResponse response,@NonNull FilterChain filterChain) throws ServletException, IOException {
-//        String authHeader = request.getHeader("Authorization");
-//        String token = null;
-//        String userEmail = null;
-//        System.out.println("1");
-//        if(authHeader != null && authHeader.startsWith("Bearer ")){
-//            token = authHeader.substring(7);
-//            userEmail = jwtService.extractUserEmail(token);
-//            System.out.println("2");
-//            System.out.println(userEmail);
-//        }
-//
-//        if(userEmail != null && SecurityContextHolder.getContext().getAuthentication()==null){
-//
-//            UserDetails userDetails = context.getBean(MyUserDetailsService.class).loadUserByUsername(userEmail);
-//            System.out.println("3");
-//            System.out.println(userDetails);
-////            boolean isTokenValid = (!tokenService.getTokenObjByToken(token).isExpired() && !tokenService.getTokenObjByToken(token).isRevoked());
-//            if(jwtService.validateToken(token, userDetails)){ //&& isTokenValid   && !tokenService.getTokenObjByToken(token).isRevoked()
-//                UsernamePasswordAuthenticationToken authToken =
-//                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                SecurityContextHolder.getContext().setAuthentication(authToken);
-//
-////                Token tokenObj = tokenService.getTokenObjByToken(token);
-////                tokenObj.setLastUsedAt(new Date());
-////                tokenService.updateToken(tokenObj.getId() ,tokenObj);
-//            }
-//        }
-//        filterChain.doFilter(request, response);
-//    }
-@Override
-protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                @NonNull HttpServletResponse response,
-                                @NonNull FilterChain filterChain) throws ServletException, IOException {
+    @Autowired
+    AuthService authService;
+    @Override
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-    System.out.println("=== JWT FILTER EXECUTING ===");
-    System.out.println("Request URI: " + request.getRequestURI());
-    System.out.println("Request Method: " + request.getMethod());
+        System.out.println("=== JWT FILTER EXECUTING ===");
+        System.out.println("Request URI: " + request.getRequestURI());
+        System.out.println("Request Method: " + request.getMethod());
 
-    String authHeader = request.getHeader("Authorization");
-    String token = null;
-    String userEmail = null;
+        String accessToken = null;
+        String refreshToken = null;
+        String userEmail = null;
 
-    System.out.println("Authorization Header: " + authHeader);
-
-//    if (authHeader != null && authHeader.startsWith("Bearer ")) {
-//        token = authHeader.substring(7);
-//        System.out.println("Token extracted successfully");
-//
-//        try {
-//            userEmail = jwtService.extractUserEmail(token);
-//            System.out.println("Extracted email: " + userEmail);
-//        } catch (Exception e) {
-//            System.err.println("Error extracting email: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    } else {
-//        System.out.println("No valid Authorization header found");
-//    }
-    if (request.getCookies() != null) {
-        for (Cookie cookie : request.getCookies()) {
-            if (cookie.getName().equals("accessToken")) {
-                token = cookie.getValue();
-                try{
-                    userEmail = jwtService.extractUserEmail(token);
-                } catch (Exception e) {
-                    System.err.println("Error extracting email: " + e.getMessage());
-                    e.printStackTrace();
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("accessToken")) {
+                    accessToken = cookie.getValue();
+                    System.out.println("accessToken: " + accessToken);
                 }
-                break;
+                if (cookie.getName().equals("refreshToken")) {
+                    refreshToken = cookie.getValue();
+                    System.out.println("refreshToken: " + refreshToken);
+                }
             }
         }
-    } else {
-        System.out.println("No valid Authorization header found");
-    }
-
-    if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-        System.out.println("Attempting to authenticate user: " + userEmail);
-
-        try {
-            UserDetails userDetails = context.getBean(MyUserDetailsService.class).loadUserByUsername(userEmail);
-            System.out.println("User loaded: " + userDetails.getUsername());
-            System.out.println("User authorities: " + userDetails.getAuthorities());
-
-            if (jwtService.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-
-                System.out.println("✅ Authentication set successfully!");
-                System.out.println("Authenticated user: " + SecurityContextHolder.getContext().getAuthentication().getName());
-                System.out.println("User authorities: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-            } else {
-                System.out.println("❌ Token validation failed");
+        if (accessToken != null) {
+            try {
+                System.out.println("okokok");
+                userEmail = jwtService.extractUserEmail(accessToken);
+            } catch (Exception e) {
+                System.err.println("Error extracting email from access token: " + e.getMessage());
+                if(refreshToken != null){
+                    try{
+                        userEmail = jwtService.extractUserEmail(refreshToken);
+                    } catch (Exception ex) {
+                        System.err.println("Error extracting email from refresh token: " + e.getMessage());
+                    }
+                }
             }
-        } catch (Exception e) {
-            System.err.println("Authentication error: " + e.getMessage());
-            e.printStackTrace();
         }
+
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            System.out.println("Attempting to authenticate user: " + userEmail);
+
+            try {
+                UserDetails userDetails = context.getBean(MyUserDetailsService.class).loadUserByUsername(userEmail);
+                System.out.println("User loaded: " + userDetails.getUsername());
+                System.out.println("User authorities: " + userDetails.getAuthorities());
+
+                if (accessToken != null && jwtService.validateToken(accessToken, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                    System.out.println("Authentication set successfully!");
+                    System.out.println("Authenticated user: " + SecurityContextHolder.getContext().getAuthentication().getName());
+                    System.out.println("User authorities: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+                } else {
+                    System.out.println("refreshToken PEOE");
+                    try {
+                        System.out.println("refreshToken PEOE 1");
+                        if (refreshToken != null && jwtService.validateToken(refreshToken, userDetails)) {
+                            System.out.println("refreshToken PEOE 2");
+                            Token tokenObj = tokenService.getTokenObjByToken(refreshToken);
+                            if (!tokenObj.isExpired() && !tokenObj.isRevoked()) {
+                                System.out.println("refreshToken PEOE 3");
+                                // Generate a new access token
+                                TokenWrapper newAccessToken = jwtService.generateAccessToken(request, userEmail);
+
+                                // Set new access token cookie
+                                ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", newAccessToken.getToken())
+                                        .httpOnly(true)
+                                        .secure(!isDevEnvironment)
+                                        .maxAge(Math.max((tokenService.getTokenObjByToken(refreshToken).getExpiredAt().getTime() - System.currentTimeMillis()) / 1000, 0))
+                                        .sameSite(isDevEnvironment ? "Lax" : "Strict")
+                                        .path("/")
+                                        .build();
+                                response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
+
+                                // Set authentication context
+                                UsernamePasswordAuthenticationToken authToken =
+                                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                                SecurityContextHolder.getContext().setAuthentication(authToken);
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Error during refresh token processing: " + e.getMessage());
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Authentication error: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+        Authentication finalAuth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Final authentication: " + (finalAuth != null ? finalAuth.getName() : "null"));
+        System.out.println("=== END JWT FILTER ===");
+
+        filterChain.doFilter(request, response);
     }
-
-    Authentication finalAuth = SecurityContextHolder.getContext().getAuthentication();
-    System.out.println("Final authentication: " + (finalAuth != null ? finalAuth.getName() : "null"));
-    System.out.println("=== END JWT FILTER ===");
-
-    filterChain.doFilter(request, response);
-}
 }
