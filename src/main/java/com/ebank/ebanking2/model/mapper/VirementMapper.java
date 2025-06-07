@@ -26,6 +26,4 @@ public interface VirementMapper {
     @Mapping(target = "compteEmetteur.recharges", ignore = true)
     public VirementResDTO toResDTO(Virement virement);
     List<VirementResDTO> toResDTOList(List<Virement> virements);
-
-
 }

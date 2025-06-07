@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -144,6 +145,10 @@ public class VirementService{
         Compte rCompte=compteRepo.findById(rCompteId).orElseThrow();
 
         return this.virementRepo.findVirementByCompteEmetteurOrCompteRecepteur((CCourant) eCompte, (CCourant) rCompte,pageable).map(virement -> virementMapper.toResDTO(virement));
+    }
+    public Virement getById(Long virementId) throws AccountNotFoundException {
+        return virementRepo.findById(virementId)
+                .orElseThrow(() -> new AccountNotFoundException("Virement with Id " + virementId + " not found"));
     }
 //    public VirementDTO effectuerVirement(VirementDTO dto) {
 //        // Validation des clients

@@ -38,21 +38,18 @@ public class Cryptoservice {
         compteRepo.save(compte1);
         Crypto crypto = new Crypto();
         crypto.setNamecrypto(name);
-        crypto.setValuevendre(prix_acheter);
+        crypto.setValueacheter(prix_acheter);
         crypto.setCcourant(compte1);
         cryptorepo.save(crypto);
         return true;
-
-
-
     }
     public boolean vendre(String name,double montant,double actuealprisecurrency,String rib){
 
-        double prix_acheter=montant*actuealprisecurrency;
+        double prix_vendre=montant*actuealprisecurrency;
 
 
         double compte=compteService.getSolde(rib);
-        double prix_ajouter=compte+prix_acheter;
+        double prix_ajouter=compte+prix_vendre;
         System.out.println("he");
         CCourant compte1=compteRepo.findByRib(rib).get();
         System.out.println(compte1.getId());
@@ -60,18 +57,15 @@ public class Cryptoservice {
         compteRepo.save(compte1);
         Crypto crypto = new Crypto();
         crypto.setNamecrypto(name);
-        crypto.setValueacheter(prix_acheter);
+        crypto.setValuevendre(prix_vendre);
         crypto.setCcourant(compte1);
         cryptorepo.save(crypto);
         return true;
-
-
-
     }
-    public List<Crypto>getall(){
+    public List<Crypto> getall(){
         return cryptorepo.findAll();
     }
-
-
-
+    public Crypto getByCCourantId(Long id){
+        return cryptorepo.findByCcourantId(id);
+    }
 }

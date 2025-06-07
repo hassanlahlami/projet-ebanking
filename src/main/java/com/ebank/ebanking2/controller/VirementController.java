@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.method.P;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,15 +25,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/virements")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200/")
 public class VirementController {
 
     @Autowired
     private VirementService virementService;
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello from virements";
-    }
 //    @PostMapping("/virement")
 //    public ResponseEntity<VirementDTO> effectuerVirement(@RequestBody VirementDTO virementDTO) {
 //        return ResponseEntity.ok(virementService.effectuerVirement(virementDTO));
@@ -40,12 +38,14 @@ public class VirementController {
 //    public ResponseEntity<List<VirementDTO>> getAllVirementsByEmetteurCompteIdOrRecepteurCompteId(@PathVariable Long id) {
 //        return ResponseEntity.ok(virementService.getAllVirementByEmetteurCompteIdOrRecepteurCompteId(id,id));
 //    }
+    @PreAuthorize("hasRole('EMPLOYEE') or ( hasRole('CLIENT') and @compteService.getClientByCompteId(#id).id == authentication.principal.id)")
     @GetMapping("/{id}")
-    public ResponseEntity<Page<VirementResDTO>> getAllVirementsByEmetteurCompteIdOrRecepteurCompteId(@PathVariable("id") Long id, @RequestParam("offset") Integer offset, @RequestParam("size") Integer size) {
+    public ResponseEntity<Page<VirementResDTO>> getAllVirementsByEmetteurCompteIdOrRecepteurCompteId(@PathVariable("id") @P("id") Long id, @RequestParam("offset") Integer offset, @RequestParam("size") Integer size) {
         return ResponseEntity.ok(virementService.getAllVirementByEmetteurCompteIdOrRecepteurCompteId(id,id,offset,size));
     }
+    @PreAuthorize("hasRole('EMPLOYEE') or ( hasRole('CLIENT') and ( @compteService.getClientByCompteId(@virementService.getById(#id).compteEmetteur.id).id == authentication.principal.id or @compteService.getClientByCompteId(@virementService.getById(#id).compteRecepteur.id).id == authentication.principal.id))")
     @GetMapping("/{id}/recu")
-    public ResponseEntity<byte[]> getRecuPdf(@PathVariable("id") Long id) throws IOException {
+    public ResponseEntity<byte[]> getRecuPdf(@PathVariable("id") @P("id") Long id) throws IOException {
         Path path = Paths.get(System.getProperty("user.dir"),"recus/recu_virement_" + id + ".pdf");
 
         if (!Files.exists(path)) {
@@ -59,8 +59,9 @@ public class VirementController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdfContent);
     }
+    @PreAuthorize("hasRole('CLIENT') and @compteService.getClientByCompteRib(#request.compteEmetteur).id == authentication.principal.id")
     @PostMapping("/virement")
-    public ResponseEntity<?> executeVirement(@RequestBody VirementDTOrib request) {
+    public ResponseEntity<?> executeVirement(@RequestBody @P("request") VirementDTOrib request) {
         try {
             VirementResDTO response = virementService.executeVirement(request);
             return ResponseEntity.ok(Map.of(

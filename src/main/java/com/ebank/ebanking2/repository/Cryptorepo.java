@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface Cryptorepo extends JpaRepository<Crypto, Long> {
      Crypto findByCcourant(CCourant ccourant);
+     Crypto findByCcourantId(Long id);
 }

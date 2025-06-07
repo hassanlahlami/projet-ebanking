@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/chatbot")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200/")
 public class ChatbotController {
 
     private final ChatbotService chatbotService;
@@ -24,6 +24,7 @@ public class ChatbotController {
         this.chatbotService = chatbotService;
         this.objectMapper = objectMapper;
     }
+
 
     @PostMapping
     public ChatResponse chat(@RequestBody ChatRequestDTO chatRequestDTO) {

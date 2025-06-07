@@ -211,6 +211,33 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.19.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>6.4.4</version> <!-- or compatible version -->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>6.4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId> <!-- for using Jackson as JSON processor -->
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
         <dependency>

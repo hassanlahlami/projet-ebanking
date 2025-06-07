@@ -15,6 +15,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Autorise toutes les routes
                         .allowedOrigins("http://localhost:4200") // Frontend Angular
+                        .allowedOriginPatterns("*") // use this only in dev mode
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

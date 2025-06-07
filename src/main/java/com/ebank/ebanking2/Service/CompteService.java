@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +33,14 @@ public class CompteService{
     private UserRepo userRepo;
     @Autowired
     private ClientRepo clientRepo;
-
     @Autowired
     private RibGenerator ribGenerator;
-    @Transactional
 
     public double getSolde( String rib){
         return compteRepo.findByRib(rib).get().getSolde();
     }
 
+    @Transactional
     public CCourantResDTO saveCCourant(CCourantDTO cCourantDTO) {
         Client client= clientRepo.findById(cCourantDTO.getClientId()).orElseThrow(() -> new RuntimeException("Client not found"));
         CCourant ccourant = compteMapper.toEntity(cCourantDTO);
@@ -57,6 +57,7 @@ public class CompteService{
         compteRepo.save(ccourant);
         return compteMapper.toResDTO(ccourant);
     }
+    @Transactional
     public CEpargneResDTO saveCEpargne(CEpargneDTO cEpargneDTO) {
         Client client= clientRepo.findById(cEpargneDTO.getClientId()).orElseThrow(() -> new RuntimeException("Client not found"));
         CEpargne cEpargne = compteMapper.toEntity(cEpargneDTO);
@@ -123,7 +124,6 @@ public class CompteService{
         List<Compte> comptes = compteRepo.findByClientId(clientId);
         return filterListCompte(comptes, type, status);
     }
-
     public List<?> filterListCompte(List<Compte> comptes, String type, String status){
         List<?> returnedList = new ArrayList<>();
         switch (status.toUpperCase()) {
@@ -208,8 +208,14 @@ public class CompteService{
         return compteMapper.toResDTO(courant);
     }
 
-
-
-
-
+    public Client getClientByCompteId(Long compteId) throws AccountNotFoundException {
+        return compteRepo.findById(compteId)
+                .map(Compte::getClient)
+                .orElseThrow(() -> new AccountNotFoundException("Compte with ID " + compteId + " not found"));
+    }
+    public Client getClientByCompteRib(String rib) throws AccountNotFoundException {
+        return compteRepo.findByRib(rib)
+                .map(Compte::getClient)
+                .orElseThrow(() -> new AccountNotFoundException("Compte with Rib " + rib + " not found"));
+    }
 }

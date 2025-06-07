@@ -24,5 +24,4 @@ public class Client extends User {
     @JsonBackReference
     @OneToMany(mappedBy = "client",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Invoice> invoices=new ArrayList<>();
-
 }

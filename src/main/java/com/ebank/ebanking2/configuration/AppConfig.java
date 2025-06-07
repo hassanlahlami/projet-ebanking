@@ -4,6 +4,7 @@ package com.ebank.ebanking2.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -21,6 +22,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(basePackages = "com.ebank.ebanking2.repository")
 @EnableTransactionManagement
+@ComponentScan(basePackages = "com.ebank.ebanking2")
 public class AppConfig {
 
     @Bean
@@ -29,7 +31,7 @@ public class AppConfig {
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5432/ebanking");
         dataSource.setUsername("postgres");
-        dataSource.setPassword("rreerree");
+        dataSource.setPassword("0000");
         return dataSource;
     }
 
