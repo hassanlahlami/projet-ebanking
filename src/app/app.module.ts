@@ -7,11 +7,11 @@ import { LayoutComponent } from './layout/layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AccountsComponent } from './pages/accounts/accounts.component';
 import { TransfersComponent } from './pages/transfers/transfers.component';
-import {HttpClient, HttpClientModule, provideHttpClient} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule, provideHttpClient} from '@angular/common/http';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, NgModel, ReactiveFormsModule} from '@angular/forms';
 import {CryptoDashboardComponent} from './pages/trading/crypto-dashboard/crypto-dashboard.component';
 import {TradingViewWidgetComponent} from './pages/trading/tradingbtc/tradingview-widget.component';
 import {TradingComponent} from './pages/trading/trading.component';
@@ -21,6 +21,10 @@ import {ChatbotComponent} from './pages/payment/chatbot/chatbot.component';
 import {RechargeComponent} from './pages/payment/recharge/recharge.component';
 import {PaymentsComponent} from './pages/payment/payments.component';
 import {InvoiceModalComponent} from './pages/modals/invoice-modal/invoice-modal.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+// import { AuthInterceptor } from './Service/AuthInterceptor';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -37,13 +41,17 @@ export function HttpLoaderFactory(http: HttpClient) {
     ChatbotComponent,
     RechargeComponent,
     PaymentsComponent,
-    InvoiceModalComponent
+    InvoiceModalComponent,
+    LoginComponent,
+    RegisterComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+
 
     TranslateModule.forRoot({
       loader: {
@@ -55,11 +63,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     AccountsComponent,
     ReactiveFormsModule,
     TradingethComponent,
-    FormsModule
+    FormsModule,
+    
 
 
   ],
-  providers: [],
+  providers: [
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

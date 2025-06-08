@@ -16,7 +16,7 @@ export class RechargeService {
     const params = new HttpParams()
       .set('size', size.toString())
       .set('offset', offset.toString());
-    let observ= this.http.get<any>(`${this.apiUrl}/${id}`, { params });
+    let observ= this.http.get<any>(`${this.apiUrl}/${id}`, { params, withCredentials: true });
     console.log(observ);
     return observ;
 

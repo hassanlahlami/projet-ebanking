@@ -9,6 +9,7 @@ import 'sweetalert2';
 import Swal from 'sweetalert2';
 import {VirementResDTO} from '../../model/dto/VirementResDTO';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { AuthService } from '../../Service/Auth.service';
 
 @Component({
   selector: 'app-transfers',
@@ -32,17 +33,26 @@ export class TransfersComponent implements OnInit {
   });
   pdfUrl:SafeResourceUrl | null = null
   idVirement:number|null = null;
-  constructor(private compteService: CompteService, private virementService: VirementService,private sanitizer: DomSanitizer ) {
+  constructor(private compteService: CompteService, private virementService: VirementService,private sanitizer: DomSanitizer, private authService: AuthService ) {
   }
   fromComptes : CCourantResDTO[] = [];
-  clientId : string = "1";
+  // clientId : string = sessionStorage.getItem('userid') ?? '';
+  clientId : string = localStorage.getItem('userid') ?? '';
   viewReceipt(): void {
     if(this.idVirement){
-      this.virementService.getReceiptByVirementId(this.idVirement).subscribe(blob => {
+      this.virementService.getReceiptByVirementId(this.idVirement).subscribe({
+        next: blob => {
         const url = URL.createObjectURL(blob);
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
         const modal = new (window as any).bootstrap.Modal(document.getElementById('receiptModal'));
         modal.show();
+        }, error: (err) =>{
+          if (err.status === 401 || err.status === 403) {
+            this.authService.logout();
+          } else {
+            console.error('Error loading informations', err);
+          }
+        }
       });
     }
 
@@ -56,7 +66,11 @@ export class TransfersComponent implements OnInit {
           console.log("compte courant actif : ", this.fromComptes)
         },
         error: (err) => {
-          console.error("Error fetching le compte courant de l'utilisateur :", this.clientId, err);
+          if (err.status === 401 || err.status === 403) {
+            this.authService.logout();
+          } else {
+            console.error("Error fetching le compte courant de l'utilisateur :", this.clientId, err);
+          }
         }
       }
     );
@@ -97,14 +111,17 @@ export class TransfersComponent implements OnInit {
             this.idVirement=response.data.id;
           },
           error: (err) => {
-            console.error("Erreur virement :", err);
-            Swal.fire({
-              icon: 'error',
-              title: 'Erreur',
-              text: 'Une erreur est survenue lors du virement. Veuillez réessayer.'
+              if (err.status === 401 || err.status === 403) {
+              this.authService.logout();
+            } else {
+              console.error("Erreur virement :", err);
+              Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: 'Une erreur est survenue lors du virement. Veuillez réessayer.'
             });
           }
-        });
+        }});
       } else {
         console.error("Certains champs sont vides ou null !");
       }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LayoutComponent } from './layout/layout.component';
@@ -10,11 +10,24 @@ import {InvoiceModalComponent} from './pages/modals/invoice-modal/invoice-modal.
 import {InvoicesComponent} from './pages/payment/invoices/invoices.component';
 import {RechargeComponent} from './pages/payment/recharge/recharge.component';
 import {PaymentsComponent} from './pages/payment/payments.component';
+import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './auth.guard';
+import { LoginGuard } from './login.guard';
+import { RegisterComponent } from './pages/register/register.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 const routes: Routes = [
+  {path: 'register', component: RegisterComponent},
+  { path: 'forgot-password', component: ForgotPasswordComponent},
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [LoginGuard]
+  },
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [AuthGuard], // <--- Protect the entire layout group
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'accounts', component: AccountsComponent },

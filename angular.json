@@ -39,7 +39,8 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/assets/logo/logoBankino"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",

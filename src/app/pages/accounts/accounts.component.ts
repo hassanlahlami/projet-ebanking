@@ -10,6 +10,8 @@ import { RechargeResDTO } from '../../model/dto/RechargeResDTO';
 import { InvoiceResDTO } from '../../model/dto/InvoiceResDTO';
 import { RechargeService } from '../../Service/RechargeService';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AuthService } from '../../Service/Auth.service';
+import { InvoicesService } from '../../Service/invoices.service';
 
 @Component({
   selector: 'app-accounts',
@@ -41,32 +43,58 @@ export class AccountsComponent implements OnInit {
     private compteService: CompteService,
     private virementService: VirementService,
     private rechargeService: RechargeService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private authService: AuthService,
+    private invoicesService: InvoicesService,
   ) {}
 
   ngOnInit() {
-    this.compteService.getByClientId("1", "compte", "tout").subscribe((comptes: CompteResDTO[]) => {
-      this.accounts.push(...comptes);
-      if (!this.selectedAccount && this.accounts.length > 0) {
-        const courantAccount = this.accounts.find(acc => acc.accountType === "CCourant");
-        this.selectAccount(courantAccount || this.accounts[0]);
+    // const userId = sessionStorage.getItem('userid') ?? '';
+    const userId = localStorage.getItem('userid')  ?? '';
+
+    this.compteService.getByClientId(userId, "compte", "tout").subscribe({
+      next: (comptes: CompteResDTO[]) => {
+        this.accounts.push(...comptes);
+        if (!this.selectedAccount && this.accounts.length > 0) {
+          const courantAccount = this.accounts.find(acc => acc.accountType === "CCourant");
+          this.selectAccount(courantAccount || this.accounts[0]);
+        }
+      },
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          this.authService.logout();
+        } else {
+          console.error('Error loading contents', err);
+        }
       }
-    });
-  }
+    }
+  );
+}
 
   viewReceipt(virement: VirementResDTO): void {
-    this.virementService.getReceiptByVirementId(virement.id).subscribe(blob => {
-      const url = URL.createObjectURL(blob);
-      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-      const modal = new (window as any).bootstrap.Modal(document.getElementById('receiptModal'));
-      modal.show();
-    });
+    this.virementService.getReceiptByVirementId(virement.id).subscribe(
+      {
+        next: blob => {
+          const url = URL.createObjectURL(blob);
+          this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+          const modal = new (window as any).bootstrap.Modal(document.getElementById('receiptModal'));
+          modal.show();
+        },
+        error: (err) => {
+          if (err.status === 401 || err.status === 403) {
+            this.authService.logout();
+          } else {
+            console.error('Error loading contents', err);
+          }
+        }
+      }
+    )
   }
 
-  onOperationTypeChange() {
+  onOperationTypeChange(type: string) {
     if (!this.selectedAccount) return;
 
-    switch (this.selectedOperation) {
+    switch (type) { //this.selectedOperation
       case 'virement':
         this.loadVirements();
         break;
@@ -74,14 +102,14 @@ export class AccountsComponent implements OnInit {
         this.loadRecharges();
         break;
       case 'facture':
-        // Load factures if needed
+        this.loadFactures();
         break;
     }
   }
 
   selectOperation(type: string) {
     this.selectedOperation = type;
-    this.onOperationTypeChange();
+    this.onOperationTypeChange(type);
   }
 
   getAccountsByStatus(status: string): CompteResDTO[] {
@@ -92,23 +120,67 @@ export class AccountsComponent implements OnInit {
     if (this.selectedAccount) {
       this.virements = [];
       this.virementService.getVirementsByCompteId(this.selectedAccount.id, this.page, this.maxItems)
-        .subscribe(response => {
-          this.virements = response.content;
-          this.totalPages = response.totalPages;
-        });
+        .subscribe(
+          {
+            next:
+            response => {
+            this.virements = response.content;
+            this.totalPages = response.totalPages;
+            },
+            error: (err) => {
+              if (err.status === 401 || err.status === 403) {
+                this.authService.logout();
+              } else {
+                console.error('Error loading contents', err);
+              }
+            }
+          }
+        )
+      }
     }
-  }
 
   loadRecharges() {
     if (this.selectedAccount) {
       this.recharges = [];
       this.rechargeService.getRechargesByCompteId(this.selectedAccount.id, this.page, this.maxItems)
-        .subscribe(response => {
-          this.recharges = response.content;
-          this.totalPagesR = response.totalPages;
-        });
+        .subscribe(
+          {
+            next:
+            response => {
+            this.recharges = response.content;
+            this.totalPagesR = response.totalPages;},
+            error: (err) => {
+              if (err.status === 401 || err.status === 403) {
+                this.authService.logout();
+              } else {
+                console.error('Error loading contents', err);
+              }
+            }
+          }
+        )
+      }
     }
-  }
+    loadFactures() {
+    if (this.selectedAccount) {
+      this.factures = [];
+      this.invoicesService.getInvoicesByCompteId(this.selectedAccount.id, this.page, this.maxItems)
+        .subscribe(
+          {
+            next:
+            response => {
+            this.factures = response.content;
+            this.totalPagesR = response.totalPages;},
+            error: (err) => {
+              if (err.status === 401 || err.status === 403) {
+                this.authService.logout();
+              } else {
+                console.error('Error loading contents', err);
+              }
+            }
+          }
+        )
+      }
+    }
 
   setPage(p: number) {
     if (p < 1 || p > this.totalPages) return;

@@ -15,11 +15,11 @@ import { RechargeResDTO } from '../model/dto/RechargeResDTO';
 export class RechargeService {
 
   private baseUrl = 'http://localhost:8080/e_banking_2_war_exploded/api';
-  
+
 
   constructor(private http: HttpClient) { }
 
-  
+
   // getComptesCourantsAutorises(clientId: number): Observable<CCourantResDTO[]> {
   //   // On appelle l'endpoint que tu as en backend (à adapter si besoin)
   //   const url = `${this.baseUrl}/comptes/client/${clientId}/ccourant/ACTIF`;
@@ -28,6 +28,6 @@ export class RechargeService {
 
   effectuerRecharge(recharge: RechargeDTO): Observable<RechargeResDTO> {
     const url = `${this.baseUrl}/recharges/effectuer`;
-    return this.http.post<RechargeResDTO>(url, recharge);
+    return this.http.post<RechargeResDTO>(url, recharge, { withCredentials: true });
   }
 }

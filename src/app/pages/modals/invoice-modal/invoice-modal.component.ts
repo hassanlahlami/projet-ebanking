@@ -6,6 +6,7 @@ import { ComptesService } from '../../../Service/comptes.service'; // adjust pat
 import { StatusCompte } from '../../../model/dto/StatusCompte';
 import { CompteResDTO } from '../../../model/dto/CompteResDTO';
 import { InvoicePayDTO } from '../../../model/dto/InvoicePayDTO';
+import { AuthService } from '../../../Service/Auth.service';
 
 @Component({
   selector: 'invoice-modal',
@@ -15,13 +16,14 @@ import { InvoicePayDTO } from '../../../model/dto/InvoicePayDTO';
 })
 export class InvoiceModalComponent {
 
-  constructor(private invoiceService: InvoicesService, private comptesService: ComptesService) { }
+  constructor(private invoiceService: InvoicesService, private comptesService: ComptesService, private authService: AuthService) { }
 
   @Input() showModal: boolean = false;
   @Input() provider: string = "";
   @Output() close = new EventEmitter<void>();
 
-  clientId = 1; //TODO : bring it from the token
+  // clientId = Number(sessionStorage.getItem('userid')); //TODO : bring it from the token
+  clientId = Number(localStorage.getItem('userid'));
   reference: string = "";
   showInvoiceToPay: boolean = false;
   invoiceResDto!: InvoiceResDTO
@@ -80,7 +82,11 @@ export class InvoiceModalComponent {
           console.log("compte courant actif : ", this.CCourantActifComptes)
         },
         error: (err) => {
-          console.error("Error fetching le compte courant de l'utilisateur :", this.clientId, err);
+          if (err.status === 401 || err.status === 403) {
+            this.authService.logout();
+          } else {
+              console.error("Error fetching le compte courant de l'utilisateur :", this.clientId, err);
+          }
         }
       });
   }
@@ -98,7 +104,9 @@ export class InvoiceModalComponent {
           console.log("invoice not found ? ", this.invoiceNotFound);
         },
         error: (err) => {
-          if (err.status === 404) {
+          if (err.status === 401 || err.status === 403) {
+            this.authService.logout();
+          } else if (err.status === 404) {
             this.invoiceNotFound = true;
             this.showInvoiceToPay = false;
           } else {
@@ -108,11 +116,6 @@ export class InvoiceModalComponent {
 
       });
   }
-
-
-
-
-
 
   payInvoice() {
     const invoiceDTO: InvoicePayDTO = {
@@ -128,9 +131,13 @@ export class InvoiceModalComponent {
         this.closeModal();
       },
       error: (error) => {
-        console.error('Error paying invoice:', error);
-        this.openFailureModal();
-        this.closeModal();
+        if (error.status === 401 || error.status === 403) {
+          this.authService.logout();
+        } else {
+          console.error('Error paying invoice:', error);
+          this.openFailureModal();
+          this.closeModal();
+        }
       }
     });
   }

@@ -27,6 +27,13 @@
 
 
 
+  "LOGIN": {
+    "TITLE": "Authenticate",
+    "PASSWORD": "Password",
+    "CLICK": "Login",
+    "RECOVER": "Forgotten password?",
+    "CREATE": "Create an account"
+  },
 
   "STATUS": {
     "ACTIF": "active",

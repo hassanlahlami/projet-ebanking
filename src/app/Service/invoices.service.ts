@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { InvoiceResDTO } from '../model/dto/InvoiceResDTO';
 import { InvoicePayDTO } from '../model/dto/InvoicePayDTO';
@@ -14,11 +14,20 @@ export class InvoicesService {
 
   getInvoice(clientId: number, provider: string, reference: string): Observable<InvoiceResDTO> {
     const url = `${this.invoiceUrl}/invoice/${clientId}/${provider}/${reference}`;
-    return this.http.get<InvoiceResDTO>(url); //this.http.get<RetourDuBackend>(url);
+    return this.http.get<InvoiceResDTO>(url, { withCredentials: true }); //this.http.get<RetourDuBackend>(url);
   }
 
   payInvoice(invoicePayDTO:InvoicePayDTO): Observable<InvoiceResDTO> {
     const url = `${this.invoiceUrl}/invoice/pay`;
-    return this.http.put<InvoiceResDTO>(url, invoicePayDTO);
+    return this.http.put<InvoiceResDTO>(url, invoicePayDTO, { withCredentials: true });
   }
+  getInvoicesByCompteId(compteId: number,  page: number, size: number): Observable<any> {
+    let offset = page - 1;
+    const url = `${this.invoiceUrl}/${compteId}`;
+    const params = new HttpParams().set('size', size.toString()).set('offset', offset.toString());;
+    return this.http.get<InvoiceResDTO[]>(url, {
+      params,
+      withCredentials: true
+    });
+}
 }

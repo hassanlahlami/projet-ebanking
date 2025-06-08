@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { ChatService } from '../../../Service/chat.service';
 import { CompteResDTO } from '../../../model/dto/CompteResDTO';
+import { AuthService } from '../../../Service/Auth.service';
 
 
 @Component({
@@ -18,10 +19,11 @@ export class ChatbotComponent implements AfterViewChecked {
     { text: 'Bonjour ! Comment puis-je vous aider aujourd\'hui ?', isUser: false }
   ];
 
-  clientId: string = '1';
+  // clientId: string = sessionStorage.getItem('userid') ?? '';
+  clientId: string = localStorage.getItem('userid') ?? '';
   comptes : CompteResDTO[]=[];
   constructor(
-    private chatService: ChatService
+    private chatService: ChatService, private authService: AuthService
   ){
 
   }
@@ -58,7 +60,13 @@ export class ChatbotComponent implements AfterViewChecked {
             });
           }
         },
-        error: (err) => console.error('Erreur lors du chargement des comptes', err)
+        error: (err) => {
+          if (err.status === 401 || err.status === 403) {
+            this.authService.logout();
+          } else {
+            console.error('Erreur lors du chargement des comptes', err)
+          }
+        }
       });
 
       this.userMessage = '';

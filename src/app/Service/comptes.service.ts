@@ -16,7 +16,7 @@ export class ComptesService {
 
   getCompte(clientId: number, typeCompte:string, statusCompte:StatusCompte): Observable<CompteResDTO[]> {
       const url = `${this.comptesUrl}/client/${clientId}/${typeCompte}/${statusCompte}`;
-      return this.http.get<CompteResDTO[]>(url);
+      return this.http.get<CompteResDTO[]>(url, { withCredentials: true });
   }
 
 }

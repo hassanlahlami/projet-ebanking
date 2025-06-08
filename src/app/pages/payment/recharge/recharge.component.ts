@@ -6,6 +6,7 @@ import { RechargeResDTO } from '../../../model/dto/RechargeResDTO';
 import { ComptesService } from '../../../Service/comptes.service';
 import { StatusCompte } from '../../../model/dto/StatusCompte';
 import { CompteResDTO } from '../../../model/dto/CompteResDTO';
+import { AuthService } from '../../../Service/Auth.service';
 
 @Component({
   selector: 'recharge',
@@ -35,7 +36,8 @@ export class RechargeComponent {
 
   showRechargeForm = false;
   selectedOperator: string = '';
-  clientId: number = 1;
+  // clientId: number = Number(sessionStorage.getItem('userid'));
+  clientId: number = Number(localStorage.getItem('userid'));
   selectedRib: string = '';
   selectedCompte: CompteResDTO | null = null;
   selectedMontant: string = '';
@@ -48,7 +50,8 @@ export class RechargeComponent {
   constructor(
     private rechargeService: RechargeService,
     private fb: FormBuilder,
-    private comptesService: ComptesService
+    private comptesService: ComptesService,
+    private authService: AuthService
   ) {
     this.rechargeForm = this.fb.group({
       phoneNumber: ['', [Validators.required, Validators.pattern('^(06|07)[0-9]{8}$')]],
@@ -63,7 +66,11 @@ export class RechargeComponent {
               this.comptesCourants=response;
             },
             error: (err) => {
-              console.error("Error fetching le compte courant de l'utilisateur :", this.clientId, err);
+              if (err.status === 401 || err.status === 403) {
+              this.authService.logout();
+              } else {
+                console.error("Error fetching le compte courant de l'utilisateur :", this.clientId, err);
+              }
             }
           });
   }
@@ -129,13 +136,17 @@ export class RechargeComponent {
           }, 8000);
         },
         error: (error) => {
-          console.error('Erreur lors de la recharge', error);
-          this.showSuccessMessage = true;
-          this.successMessage = 'Une erreur est survenue lors de la recharge. Veuillez réessayer.';
-          setTimeout(() => {
-            this.showSuccessMessage = false;
-            this.successMessage = '';
-          }, 8000);
+          if (error.status === 401 || error.status === 403) {
+            this.authService.logout();
+          } else {
+            console.error('Erreur lors de la recharge', error);
+            this.showSuccessMessage = true;
+            this.successMessage = 'Une erreur est survenue lors de la recharge. Veuillez réessayer.';
+            setTimeout(() => {
+              this.showSuccessMessage = false;
+              this.successMessage = '';
+            }, 8000);
+          }
         },
         complete: () => {
           this.isProcessing = false;

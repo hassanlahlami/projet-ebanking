@@ -15,7 +15,7 @@ export class CryptoserviceService {
       'Content-Type': 'application/json'
     });
     return this.http.post(`http://localhost:8080/e_banking_2_war_exploded/crypto?rib=${rib}`,achatdto,  // Serialize payload to JSON
-      { headers });
+      { headers, withCredentials: true });
 
   }
   postvendre(achatdto:any,rib:string){
@@ -26,7 +26,7 @@ export class CryptoserviceService {
       'Content-Type': 'application/json'
     });
     return this.http.post(`http://localhost:8080/e_banking_2_war_exploded/crypto/vendre?rib=${rib}`,achatdto,  // Serialize payload to JSON
-      { headers });
+      { headers, withCredentials: true });
 
   }
 }

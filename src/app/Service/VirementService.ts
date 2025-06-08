@@ -19,14 +19,14 @@ export class VirementService {
       .set('size', size.toString())
       .set('offset', offset.toString());
 
-    return this.http.get<any>(`${this.apiUrl}/${id}`, { params });
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { params, withCredentials: true });
   }
   getReceiptByVirementId(virementId: number): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/${virementId}/recu`, {
-      responseType: 'blob'
+      responseType: 'blob', withCredentials: true
     });
   }
   executeVirement(request: VirementDTO): Observable<{ message: string, data: VirementResDTO }> {
-    return this.http.post<{ message: string, data: VirementResDTO }>(this.apiUrl+"/virement", request);
+    return this.http.post<{ message: string, data: VirementResDTO }>(this.apiUrl+"/virement", request, { withCredentials: true });
   }
 }

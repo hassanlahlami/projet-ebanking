@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
+// import { AuthInitService } from './Service/authInitService';
 
 
 @Component({
@@ -8,9 +9,9 @@ import {TranslateService} from '@ngx-translate/core';
   standalone: false,
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'ebankingClientFrontEnd';
-  constructor(private translateService: TranslateService) {
+  constructor(private translateService: TranslateService/*, private authInitService: AuthInitService*/) {
     const savedLang = localStorage.getItem('lang');
     const browserLang = navigator.language.split('-')[0]; // Use 'en', 'fr', etc.
 
@@ -23,5 +24,8 @@ export class AppComponent {
 
     this.translateService.setDefaultLang('en');
     this.translateService.use(lang);
+  }
+  ngOnInit() {
+    // this.authInitService.init();
   }
 }

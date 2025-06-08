@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../Service/Auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -12,7 +13,7 @@ export class LayoutComponent {
 
 
 
-  constructor(private location: Location, private translateService: TranslateService) {}
+  constructor(private location: Location, private translateService: TranslateService, private authService: AuthService) {}
 
   switchLang(event: Event) {
     const select = event.target as HTMLSelectElement;
@@ -24,7 +25,7 @@ export class LayoutComponent {
   }
 
   logout() {
-    console.log('Logout clicked');
+    this.authService.logout();
   }
 
   protected readonly localStorage = localStorage;

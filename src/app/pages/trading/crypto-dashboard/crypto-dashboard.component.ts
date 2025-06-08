@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CryptoModel } from '../../../model/dto/CryptoModel';
 import {CryptoserviceService} from '../../../Service/cryptoservice.service';
+import { AuthService } from '../../../Service/Auth.service';
 
 @Component({
   selector: 'app-crypto-dashboard',
@@ -29,6 +30,7 @@ export class CryptoDashboardComponent implements OnInit, OnDestroy ,OnChanges{
     private wsService: BinanceWebSocketService,
     private cdr: ChangeDetectorRef,
     private http:CryptoserviceService,
+    private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
 
@@ -43,7 +45,8 @@ export class CryptoDashboardComponent implements OnInit, OnDestroy ,OnChanges{
 
   ngOnInit() {
     this.wsService.connect();
-    this.wsService.cryptoData$.subscribe(data => {
+    this.wsService.cryptoData$.subscribe({
+      next: data => {
       this.updateCryptoData(data);
       if (isPlatformBrowser(this.platformId) && this.activeInputSymbol) {
         setTimeout(() => {
@@ -54,7 +57,13 @@ export class CryptoDashboardComponent implements OnInit, OnDestroy ,OnChanges{
         }, 0);
       }
       this.cdr.markForCheck();
-    });
+    }, error: (err)=>{
+      if (err.status === 401 || err.status === 403) {
+        this.authService.logout();
+      } else {
+        console.error('Error loading contents', err);
+      }
+    }});
 
     if (isPlatformBrowser(this.platformId)) {
       document.addEventListener('focusin', this.handleFocusIn.bind(this));
@@ -103,8 +112,16 @@ export class CryptoDashboardComponent implements OnInit, OnDestroy ,OnChanges{
   const rib = this.ribs[symbol] || '';
 
 
-   let Object:any=`{"name":"${symbol}","montant":${quantity},"actuealprisecurrency":${curent}}`;
-    this.http.post(Object,rib).subscribe((ref:any)=>console.log(ref));
+  let Object:any=`{"name":"${symbol}","montant":${quantity},"actuealprisecurrency":${curent}}`;
+    this.http.post(Object,rib).subscribe({
+      next:
+    (ref:any)=>console.log(ref),
+    error: (err) => {
+      if (err.status === 401 || err.status === 403) {
+        this.authService.logout();
+      } else {
+        console.error('Error loading contents', err);
+    }}});
     console.log(`${Object}+${rib}`);
     this.hasBought[symbol] = true;
     this.quantities[symbol] = 0; // Réinitialiser après achat
@@ -115,9 +132,18 @@ export class CryptoDashboardComponent implements OnInit, OnDestroy ,OnChanges{
   sell(symbol: string,curent:string) {
       const quantity = this.quantities[symbol] || 0;
   const rib = this.ribs[symbol] || '';
-   let Object:any=`{"name":"${symbol}","montant":${quantity},"actuealprisecurrency":${curent}}`;
+  let Object:any=`{"name":"${symbol}","montant":${quantity},"actuealprisecurrency":${curent}}`;
     console.log(`Vente de ${this.quantities[symbol] || 0} unités de ${symbol}`);
-    this.http.postvendre(Object,rib).subscribe((ref:any)=>console.log(ref));
+    this.http.postvendre(Object,rib).subscribe({
+    next: (ref:any)=> console.log(ref),
+    error: (err) => {
+      if (err.status === 401 || err.status === 403) {
+            this.authService.logout();
+          } else {
+            console.error('Error loading contents', err);
+          }
+    }
+  });
     this.hasBought[symbol] = false;
     this.quantities[symbol] = 0; // Réinitialiser après vente
     this.ribs[symbol] = ''; // Réinitialiser le RIB après vente
