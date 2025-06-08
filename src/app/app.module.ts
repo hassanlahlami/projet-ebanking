@@ -51,8 +51,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-
-
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -64,8 +62,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReactiveFormsModule,
     TradingethComponent,
     FormsModule,
-    
-
 
   ],
   providers: [
@@ -74,3 +70,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+function provideFirebaseApp(arg0: () => any): any[] | import("@angular/core").Type<any> | import("@angular/core").ModuleWithProviders<{}> {
+  throw new Error('Function not implemented.');
+}
+

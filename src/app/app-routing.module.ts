@@ -17,13 +17,9 @@ import { RegisterComponent } from './pages/register/register.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 const routes: Routes = [
-  {path: 'register', component: RegisterComponent},
-  { path: 'forgot-password', component: ForgotPasswordComponent},
-  {
-    path: 'login',
-    component: LoginComponent,
-    canActivate: [LoginGuard]
-  },
+  {path: 'register', component: RegisterComponent, canActivate: [LoginGuard]},
+  { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [LoginGuard]},
+  {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
   {
     path: '',
     component: LayoutComponent,
