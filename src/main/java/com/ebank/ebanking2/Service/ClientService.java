@@ -7,6 +7,7 @@ import com.ebank.ebanking2.model.entity.Client;
 import com.ebank.ebanking2.model.entity.User;
 import com.ebank.ebanking2.model.mapper.ClientMapper;
 import com.ebank.ebanking2.repository.ClientRepo;
+import com.ebank.ebanking2.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class ClientService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepo userRepo;
 
 
     public ClientResDTO addClient(ClientDTO clientDTO) {
@@ -74,7 +77,7 @@ public class ClientService {
 //            return clientRepo.findByEmail(email);
 //    }
     public User getUserByEmail(String email) {
-        User user = clientRepo.findByEmail(email)
+        User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User non trouvé avec l'Email: " + email));
         return user;
     }

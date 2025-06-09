@@ -1,6 +1,5 @@
 package com.ebank.ebanking2.repository;
 
-import com.ebank.ebanking2.Service.CompteService;
 import com.ebank.ebanking2.model.entity.Client;
 import com.ebank.ebanking2.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +12,5 @@ public interface ClientRepo extends JpaRepository<Client, Long> {
     Optional<Client> getFirstByOrderByIdDesc();
 
     Optional<User> findByEmail(String email);
+    long count();
 }

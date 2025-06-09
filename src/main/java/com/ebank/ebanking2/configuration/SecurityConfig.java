@@ -59,6 +59,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/auth/**")
                         .permitAll()
+                        .requestMatchers("/api/employees/**")
+                        .permitAll()
                         .anyRequest().authenticated())
 //                .formLogin(Customizer.withDefaults())
 //                .httpBasic(Customizer.withDefaults())

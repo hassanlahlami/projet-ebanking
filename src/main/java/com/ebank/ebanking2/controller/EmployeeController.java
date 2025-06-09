@@ -1,0 +1,43 @@
+package com.ebank.ebanking2.controller;
+
+import com.ebank.ebanking2.Service.EmployeeService;
+import com.ebank.ebanking2.model.dto.EmployeeDTO;
+import com.ebank.ebanking2.model.dto.EmployeeResDTO;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping
+public class EmployeeController {
+    @Autowired
+    private EmployeeService employeeService;
+    @GetMapping
+    public ResponseEntity<List<EmployeeResDTO>> getEmployees() {
+        List<EmployeeResDTO> employees = employeeService.getAllEmp();
+        return ResponseEntity.ok(employees);
+    }
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<EmployeeResDTO> getEmployees(@PathVariable("id") Long id) {
+        EmployeeResDTO employee = employeeService.getEmpById(id);
+        return ResponseEntity.ok(employee);
+    }
+    @PostMapping("/employee")
+    public ResponseEntity<EmployeeResDTO> saveEmployee(@RequestBody EmployeeDTO employee) {
+        return ResponseEntity.ok(employeeService.saveEmp(employee));
+    }
+    @PostMapping
+    public ResponseEntity<List<EmployeeResDTO>> saveEmployees(@RequestBody List<EmployeeDTO> employeesDTO) {
+        List<EmployeeResDTO> employees=new ArrayList<>();
+        employeesDTO.forEach(employee -> employees.add(employeeService.saveEmp(employee)));
+        return ResponseEntity.ok(employees);
+    }
+
+
+
+}
