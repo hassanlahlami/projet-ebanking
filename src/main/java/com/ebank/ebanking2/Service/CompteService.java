@@ -4,6 +4,7 @@ import com.ebank.ebanking2.model.dto.*;
 
 import com.ebank.ebanking2.model.entity.*;
 import com.ebank.ebanking2.model.mapper.CompteMapper;
+import com.ebank.ebanking2.repository.CCourantRepo;
 import com.ebank.ebanking2.repository.ClientRepo;
 import com.ebank.ebanking2.repository.CompteRepo;
 import com.ebank.ebanking2.repository.UserRepo;
@@ -35,6 +36,8 @@ public class CompteService{
 
     @Autowired
     private RibGenerator ribGenerator;
+    @Autowired
+    private CCourantRepo cCourantRepo;
     @Transactional
 
     public double getSolde( String rib){
@@ -209,7 +212,11 @@ public class CompteService{
     }
 
 
-
-
-
+    @Transactional
+    public boolean changeDotationStatus(long accountId,boolean autorisePaiementEnLigne) {
+        CCourant compte =cCourantRepo.getById(accountId);
+        compte.setAutorisePaiementEnLigne(autorisePaiementEnLigne);
+        cCourantRepo.save(compte);
+        return true;
+    }
 }

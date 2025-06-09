@@ -71,7 +71,11 @@ public String getallbyid(@PathVariable("id")Long id,@PathVariable("type") String
     @GetMapping("soldee/{rib}")
     public double getSoldee( @PathVariable("rib") String rib){
         return compteService.getSolde(rib);
+    }
 
+    @PostMapping("activeDotation/{accountId}/{autorisePaiementEnLigne}")
+    public boolean changeDotationStatus(@PathVariable("accountId") long accountId,@PathVariable("autorisePaiementEnLigne") boolean autorisePaiementEnLigne){
+        return compteService.changeDotationStatus(accountId,autorisePaiementEnLigne);
     }
 
 
