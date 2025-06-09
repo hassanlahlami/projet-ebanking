@@ -10,7 +10,7 @@ import { CompteResDTO } from '../model/dto/CompteResDTO';
 })
 export class ComptesService {
 
-  private comptesUrl = 'http://localhost:8080/e_banking_2_war_exploded/api/comptes';
+  private comptesUrl = 'http://localhost:8095/e_banking_2_war_exploded/api/comptes';
   constructor(private http: HttpClient) {}
 
 

@@ -203,6 +203,11 @@ h2 {
 }
 
 /* Responsive tweaks */
+@media(min-width:767px){
+  .crypto-card {
+    top: 20px;
+  }
+}
 @media (max-width: 767px) {
   .crypto-row {
     flex-direction: column;
