@@ -51,6 +51,4 @@ public class Tokenmailservice {
         tokenmail tokenmail = tokenmailrepo.save(tokenn);
         return true;
     }
-
-
 }

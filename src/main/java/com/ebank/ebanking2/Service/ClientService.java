@@ -62,10 +62,9 @@ public class ClientService {
 
 
     }
-
     public Client getclientbyemail(String email) {
-            return clientRepo.findByEmail(email);
-    }
+        return clientRepo.findByEmail(email);
+}
 
 
     public boolean saveEcode(EcodeDTO ecodeDTO) {

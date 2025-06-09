@@ -72,6 +72,4 @@ public class Cryptoservice {
         return cryptorepo.findAll();
     }
 
-
-
 }

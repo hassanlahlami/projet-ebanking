@@ -43,7 +43,6 @@ public class CompteService{
     public double getSolde( String rib){
         return compteRepo.findByRib(rib).get().getSolde();
     }
-
     public CCourantResDTO saveCCourant(CCourantDTO cCourantDTO) {
         Client client= clientRepo.findById(cCourantDTO.getClientId()).orElseThrow(() -> new RuntimeException("Client not found"));
         CCourant ccourant = compteMapper.toEntity(cCourantDTO);
@@ -100,7 +99,6 @@ public class CompteService{
         System.out.println(result);
         return  result;
     }
-
     private String formatAccounts(List<?> comptes) {
         StringBuilder sb = new StringBuilder("Vos comptes:\n\n");
         comptes.forEach(c -> {
@@ -121,12 +119,10 @@ public class CompteService{
         });
         return sb.toString();
     }
-
     public List<?> getByClientId(Long clientId,String type, String status) {
         List<Compte> comptes = compteRepo.findByClientId(clientId);
         return filterListCompte(comptes, type, status);
     }
-
     public List<?> filterListCompte(List<Compte> comptes, String type, String status){
         List<?> returnedList = new ArrayList<>();
         switch (status.toUpperCase()) {
@@ -177,33 +173,20 @@ public class CompteService{
 
         return returnedList;
     }
-
     public List<?> getComptes(Long clientId,String type, String status) {
         List<Compte> comptes = compteRepo.findByClientId(clientId);
         return filterListCompte(comptes, type,status);
     }
-
-
-
     public List<?> get(String type, String status) {
         List<Compte> comptes = compteRepo.findAll();
         return filterListCompte(comptes, type, status);
     }
-
     CCourant getCompteByRib(String rib) {
         return compteRepo.findByRib(rib).orElseThrow(() -> new RuntimeException("Compte not found"));
     }
-
-//    @Tool("Récupère le solde d'un compte à partir de son RIB")
-//    public double getSolde(@P("Le RIB du compte") String rib){
-//        return compteRepo.findByRib(rib).get().getSolde();
-//    }
-
     public Compte getById(Long id) {
         return compteRepo.findById(id).get();
     }
-
-
     public CCourantResDTO diminuerSolde(CCourant courant,double montant){
         double newSolde = courant.getSolde()-montant;
         courant.setSolde(newSolde);

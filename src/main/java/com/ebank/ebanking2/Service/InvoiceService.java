@@ -32,18 +32,11 @@ public class InvoiceService {
 
     @Autowired
     InvoiceMapper invoiceMapper;
+
+
     @Autowired
-    private UserRepo userRepo;
     private ClientRepo clientRepo;
 
-    public InvoiceResDTO addInvoice(InvoiceDTO invoiceDTO) {
-        Client client = clientRepo.findById(invoiceDTO.getClientId())
-                .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + invoiceDTO.getClientId()));
-        Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
-        invoice.setClient(client);
-        Invoice savedInvoice = invoiceRepo.save(invoice);
-        return invoiceMapper.toResDto(savedInvoice);
-    }
 
     public InvoiceResDTO getInvoice(Long clientId, String provider, String reference) {
         Optional<Invoice> invoice = invoiceRepo.findByClientIdAndProviderAndReferenceNumberAndDueDateAfter(clientId, provider, reference, LocalDateTime.now());
@@ -84,4 +77,13 @@ public class InvoiceService {
 
         return invoiceMapper.toResDTO(invoicesSaved);
     }
+    public InvoiceResDTO addInvoice(InvoiceDTO invoiceDTO) {
+        Client client = clientRepo.findById(invoiceDTO.getClientId())
+                .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + invoiceDTO.getClientId()));
+        Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
+        invoice.setClient(client);
+        Invoice savedInvoice = invoiceRepo.save(invoice);
+        return invoiceMapper.toResDto(savedInvoice);
+    }
+
 }

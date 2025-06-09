@@ -26,6 +26,4 @@ public class tokenmail {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
-
-
 }
