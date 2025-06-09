@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../Service/Auth.service';
+import { MaybeClientDTO } from '../../model/dto/MaybeClientDTO';
+import { RegisterVerification } from '../../Service/registerVerification.service';
+import { MaybeClientWithEmailTokenDTO } from '../../model/dto/MaybeClientWithEmailTokenDTO';
+import { UserRegisterDTO } from '../../model/dto/UserRegistryDTO';
 
 @Component({
   selector: 'app-register',
@@ -10,87 +14,201 @@ import { AuthService } from '../../Service/Auth.service';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  dto = {firstName: '', lastName: '', username: '', email: '', phone: '', job: '', password: ''};
   step = 1;
   emailTokenSent = false;
   phoneTokenSent = false;
   emailToken = '';
   phoneToken = '';
+  isEmailCodeValid = false;
+  isPhoneCodeValid = false;
   error = '';
-  private redirectUrl: string = '/dashboard';  // default redirect
 
-  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, private authService: AuthService) {
-    this.route.queryParams.subscribe(params => {
-      this.redirectUrl = params['redirect'] || '/dashboard';
-    });
-  }
+  dto : UserRegisterDTO = {
+    firstName: '',
+    lastName: '',
+    username: '',
+    email: '',
+    phone: '',
+    job: '',
+    password: ''
+  };
+  constructor(private registerVerification: RegisterVerification, private authService: AuthService, private router: Router) {}
 
-  sendEmailToken() {
-    // Validate required fields first
-    if (!this.dto.firstName || !this.dto.lastName || !this.dto.email) {
-      this.error = "Veuillez remplir tous les champs requis";
+  sendEmailToken(): void {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!this.dto.firstName.trim() || !this.dto.lastName.trim() || !this.dto.email.trim()) {
+      if (!this.dto.firstName.trim()) {
+        this.error = 'Veuillez saisir votre prénom';
+      }else if(!this.dto.lastName.trim()){
+        this.error = 'Veuillez saisir votre nom';
+      }
+      else{
+        this.error = 'Veuillez saisir votre email';
+      }
       return;
     }
-
-    this.error = '';
-    // TODO: Call backend to send email token
-    this.emailTokenSent = true;
-    this.step = 2; // Move to email verification step
-  }
-
-  verifyEmailToken() {
-    // TODO: Verify email token with backend
-    // For now, just check if token is provided
-    if (!this.emailToken || this.emailToken.length !== 6) {
-      this.error = "Code de vérification invalide";
+    if (!emailRegex.test(this.dto.email.trim())) {
+      this.error = 'Veuillez saisir un email valide';
       return;
     }
-
-    this.error = '';
-    this.step = 3; // Move to contact information step
-  }
-
-  sendPhoneToken() {
-    // Validate required fields first
-    if (!this.dto.username || !this.dto.phone) {
-      this.error = "Veuillez remplir tous les champs requis";
-      return;
-    }
-
-    this.error = '';
-    // TODO: Call backend to send SMS token
-    this.phoneTokenSent = true;
-    this.step = 4; // Move to phone verification step
-  }
-
-  verifyPhoneToken() {
-    // TODO: Verify phone token with backend
-    // For now, just check if token is provided
-    if (!this.phoneToken || this.phoneToken.length !== 6) {
-      this.error = "Code de vérification invalide";
-      return;
-    }
-
-    this.error = '';
-    this.step = 5; // Move to security step
-  }
-
-  handleRegister(event: Event) {
-    event.preventDefault();
-    this.error = '';
-
-    if (!this.dto.password) {
-      this.error = "Veuillez saisir un mot de passe";
-      return;
-    }
-
-    this.authService.register(this.dto).subscribe({
-      next: (authData) => {
-        localStorage.setItem('userid', authData.userId);
-        this.authService.setAuthenticated(true);
-        this.router.navigateByUrl(this.redirectUrl);
+    let maybeClientDTO = new MaybeClientDTO(this.dto.firstName, this.dto.lastName, this.dto.email);
+    this.registerVerification.generateTokenByEmail(maybeClientDTO).subscribe({
+      next: (res) => {
+        if(res === true){
+          this.emailTokenSent = true;
+          return;
+        } else{
+          this.error = "Failed to generate token. Please check the email or try again";
+          return;
+        }
       },
-      error: () => this.error = "Erreur lors de la création du compte"
+      error: (err) => {
+        this.error = "An error occurred while generating the token:, " + err;
+        return;
+      }
     });
+    this.error = '';
+    this.step = 2;
+  }
+
+  onEmailCodeComplete(code: string): void {
+    this.emailToken = code;
+    this.isEmailCodeValid = true;
+    console.log('Email verification code completed:', code);
+
+    // Auto-verify when code is complete
+    this.verifyEmailToken();
+  }
+
+  onEmailCodeChanged(code: string): void {
+    this.emailToken = code;
+    this.isEmailCodeValid = code.length === 6;
+
+    // Clear error when user starts typing
+    if (this.error) {
+      this.error = '';
+    }
+  }
+
+  verifyEmailToken(): void {
+    if (!this.emailToken.trim() || this.emailToken.trim().length !== 6) {
+      this.error = 'Veuillez saisir le code de vérification complet';
+      return;
+    }
+    let maybeClientWithEmailTokenDTO = new MaybeClientWithEmailTokenDTO(this.dto.firstName, this.dto.lastName, this.dto.email, this.emailToken);
+
+    // Simulate email verification
+    this.registerVerification.checkEmailToken(maybeClientWithEmailTokenDTO).subscribe({
+      next: (res) => {
+        if(res === true){
+          this.step = 3;
+          return;
+        } else{
+          this.step = 2;
+          this.error = "Token incorrect";
+          return;
+        }
+      },
+      error: (err) => {
+        this.step = 2;
+        this.error = "An error occurred while verifying the token:, " + err;
+        return;
+      }
+    });
+
+    // For demo purposes, accept any 6-digit code
+    this.error = '';
+  }
+
+  sendPhoneToken(): void {
+    if (!this.dto.username.trim() || !this.dto.phone.trim()) {
+      if(!this.dto.username.trim()){
+        this.error = 'Veuillez saisir votre nom d\'utilisateur';
+      }
+      else{
+        this.error = 'Veuillez saisir votre numéro de téléphone';
+      }
+      return;
+    }
+
+    // Simulate sending phone token
+    console.log('Sending phone token to:', this.dto.phone);
+    this.phoneTokenSent = true;
+    this.error = '';
+    this.step = 4;
+  }
+  continueToLastStep(): void{
+    if (!this.dto.password) {
+      this.error = 'Veuillez saisir votre mot de passe';
+      return;
+    }
+
+    this.error = '';
+    this.step = 6;
+  }
+
+  onPhoneCodeComplete(code: string): void {
+    this.phoneToken = code;
+    this.isPhoneCodeValid = true;
+    console.log('Phone verification code completed:', code);
+
+    // Auto-verify when code is complete
+    this.verifyPhoneToken();
+  }
+
+  onPhoneCodeChanged(code: string): void {
+    this.phoneToken = code;
+    this.isPhoneCodeValid = code.length === 6;
+
+    // Clear error when user starts typing
+    if (this.error) {
+      this.error = '';
+    }
+  }
+
+  verifyPhoneToken(): void {
+    if (!this.phoneToken.trim() || this.phoneToken.trim().length !== 6) {
+      this.error = 'Veuillez saisir le code de vérification complet';
+      return;
+    }
+
+    // Simulate phone verification
+    console.log('Verifying phone token:', this.phoneToken);
+
+    // For demo purposes, accept any 6-digit code
+    this.error = '';
+    this.step = 5;
+  }
+
+  handleRegister(event: Event): void {
+    event.preventDefault();
+
+    // Validate all required fields
+    if (!this.dto.firstName.trim() || !this.dto.lastName.trim() || !this.dto.email.trim() ||
+    !this.dto.username.trim() || !this.dto.phone.trim() || !this.dto.password) {
+      this.error = 'Veuillez remplir tous les champs obligatoires';
+      return;
+    }
+
+    // Simulate registration
+    this.authService.register(this.dto).subscribe({
+      next: (res) => {
+        this.authService.setAuthenticated(true);
+        this.router.navigateByUrl("/dashboard");
+        localStorage.setItem('userid', res.userId)
+      },
+      error: (err) => {
+        this.error = "An error occurred while registrating, " + err;
+        return;
+      }
+    });
+  }
+  // Navigation helpers
+  goBackToLogin(): void {
+    this.router.navigate(['/login']);
+  }
+  handleRetourStep2(){
+    this.step = 2;
+    console.log(this.emailToken);
   }
 }
