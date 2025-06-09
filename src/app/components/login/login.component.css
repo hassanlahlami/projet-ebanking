@@ -1,0 +1,11 @@
+.btn-primary {
+  background: linear-gradient(45deg, #e6d3a3, #d4af37, #c5a300);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+}
+.btn-primary:hover {
+  background: linear-gradient(45deg, #ffeb8a, #f5c842);
+  color: #1e1e1e;
+}

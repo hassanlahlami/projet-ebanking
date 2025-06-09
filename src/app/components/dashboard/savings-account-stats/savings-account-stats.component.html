@@ -1,0 +1,50 @@
+<div class="detail-card">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5>Savings Account Statistics</h5>
+
+    <div class="d-flex align-items-center gap-2">
+      <select class="form-select form-select-sm w-auto" [(ngModel)]="filter" (change)="onFilterChange()">
+        <option value="month">Monthly</option>
+        <option value="year">Yearly</option>
+      </select>
+
+      <select class="form-select form-select-sm w-auto" [(ngModel)]="lastN" (change)="onFilterChange()">
+        <option *ngFor="let n of lastNOptions" [value]="n">Last {{ n }}</option>
+      </select>
+    </div>
+  </div>
+
+
+  <!-- Main Bar Chart -->
+  <div style="height: 360px;">
+    <canvas baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="barChartType">
+    </canvas>
+  </div>
+
+  <!-- Extra Stats Section -->
+  <div class="row mt-4">
+    <div class="col-md-4 mb-3">
+      <div class="p-3 bg-light border rounded text-center">
+        <h6 class="text-muted">Average Deposit</h6>
+        <h4 class="text-success">{{ averageDeposit | currency }}</h4>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="p-3 bg-light border rounded text-center">
+        <h6 class="text-muted">Monthly Growth</h6>
+        <h4 class="text-primary">{{ growthRate }}%</h4>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="p-3 bg-light border rounded text-center">
+        <h6 class="text-muted">New Accounts</h6>
+        <h4 class="text-info">{{ newAccounts }}</h4>
+      </div>
+    </div>
+  </div>
+</div>

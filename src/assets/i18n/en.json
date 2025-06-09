@@ -1,0 +1,36 @@
+  {
+    "navDASHBOARD": "Dashboard",
+    "navCLIENTS": "Clients",
+    "navTRANSFERS ": "Transfers",
+    "navDEPOSITS": "Deposits",
+    "LOGOUT": "Logout",
+    "navLANGUAGE": "Language",
+    "stats": {
+      "totalAccounts": "Total Accounts",
+      "totalBalance": "Total Balance",
+      "averageBalance": "Average Balance",
+      "newThisMonth": "New This Month",
+      "showLastMonths": "Show:",
+      "lastXMonths": "Last {{count}} months",
+      "openedPerMonth": "Accounts Opened Per Month",
+      "balanceDistribution": "Balance Distribution"
+    },
+    "dashboard": {
+      "title": "Bank Dashboard",
+      "totalClients": "Total Clients",
+      "currentAccounts": "Current Accounts",
+      "savingsAccounts": "Savings Accounts",
+      "loading": "Loading..."
+    },
+    "clientRegistrations": {
+      "title": "Client Registrations",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "month_plural": "months",
+      "month": "month",
+      "year_plural": "years",
+      "year": "year",
+      "lastPeriods": "Last {{count}} {{period}}"
+    }
+
+  }

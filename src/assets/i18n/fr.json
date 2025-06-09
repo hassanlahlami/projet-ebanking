@@ -1,0 +1,36 @@
+{
+  "navDASHBOARD": "Tableau de bord",
+  "navCLIENTS": "Clients",
+  "navTRANSFERS": "Virements",
+  "navDEPOSITS": "Dépôts",
+  "LOGOUT": "Se déconnecter",
+  "navLANGUAGE": "Langue",
+  "stats": {
+    "totalAccounts": "Comptes Totals",
+    "totalBalance": "Solde Total",
+    "averageBalance": "Solde Moyen",
+    "newThisMonth": "Nouveaux Ce Mois",
+    "showLastMonths": "Afficher :",
+    "lastXMonths": "Derniers {{count}} mois",
+    "openedPerMonth": "Comptes Ouverts Par Mois",
+    "balanceDistribution": "Répartition des Soldes"
+  },
+  "dashboard": {
+    "title": "Tableau de Bord Bancaire",
+    "totalClients": "Clients Totals",
+    "currentAccounts": "Comptes Courants",
+    "savingsAccounts": "Comptes Épargne",
+    "loading": "Chargement..."
+  },
+  "clientRegistrations": {
+    "title": "Inscriptions Clients",
+    "monthly": "Mensuel",
+    "month_plural": "mois",
+    "yearly": "Annuel",
+    "month": "mois",
+    "year_plural": "années",
+    "year": "An",
+    "lastPeriods": "Derniers {{count}} {{period}}"
+  }
+
+}
