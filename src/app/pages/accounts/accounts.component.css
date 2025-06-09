@@ -183,4 +183,17 @@ td:first-child {
     padding-bottom: 75%; /* ratio 4:3 */
   }
 }
+.enable-toggle {
+  width: 2.5rem;
+  height: 1.4rem;
+  background-color: #ddd;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+.enable-toggle:checked {
+  background-color: #28a745;
+}
+
 

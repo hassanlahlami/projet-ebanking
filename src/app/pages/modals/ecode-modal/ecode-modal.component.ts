@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChildren , ElementRef, QueryList } from '@angular/core';
 import { ClientService } from '../../../Service/client.service';
 import { EcodeDTO } from '../../../model/dto/EcodeDTO';
 
@@ -34,6 +34,8 @@ export class EcodeModalComponent {
   invalidTokenError=''
   showSuccessModal : boolean=false;
   showFailureModal : boolean=false;
+  errorMessage : string ='';
+  
   
 
 
@@ -55,6 +57,8 @@ export class EcodeModalComponent {
     }
   }
 
+  
+
   onVerificationCodeChange(){
     if(this.invalidTokenError){
       this.invalidTokenError='';
@@ -64,10 +68,54 @@ export class EcodeModalComponent {
   closeSuccessModal() {
     this.showSuccessModal = false;
     this.display=true;
+    this.generateVerificationCodeModal=false;
+
   }
 
   closeFailureModal() {
     this.showFailureModal = false;
+    this.generateVerificationCodeModal=true;
+  }
+
+
+  verificationCodeDigits: string[] = ['', '', '', '', '', ''];
+  codeDigits = new Array(6);
+
+  @ViewChildren('codeInput') inputs!: QueryList<ElementRef>;
+
+  onDigitInput(event: any, index: number) {
+    const input = event.target;
+    const value = input.value;
+
+    if (/^\d$/.test(value) && index < 5) {
+      this.inputs.toArray()[index + 1].nativeElement.focus();
+    }
+
+    this.updateFullCode();
+  }
+
+  onKeyDown(event: KeyboardEvent, index: number) {
+    if (event.key === 'Backspace' && !this.verificationCodeDigits[index] && index > 0) {
+      this.inputs.toArray()[index - 1].nativeElement.focus();
+    }
+  }
+
+  handlePaste(event: ClipboardEvent) {
+    const pastedText = event.clipboardData?.getData('text') ?? '';
+    const digits = pastedText.replace(/\D/g, '').slice(0, 6).split('');
+    digits.forEach((d, i) => {
+      this.verificationCodeDigits[i] = d;
+    });
+    this.updateFullCode();
+
+    setTimeout(() => {
+      const inputsArray = this.inputs.toArray();
+      inputsArray[Math.min(digits.length, 5)].nativeElement.focus();
+    });
+  }
+
+  updateFullCode() {
+    this.verificationCode = this.verificationCodeDigits.join('');
   }
 
 
@@ -103,19 +151,19 @@ export class EcodeModalComponent {
           } else {
             this.ecodeNotSecure = "Le code entré est invalide ou non sécurisé.";
           }
-        }, 4000);
+        }, 2000);
       },
       error: (err) => {
         setTimeout(() => {
           this.isLoading = false;
           console.error("Erreur lors de la vérification du code :", err);
-        }, 4000);
+        }, 2000);
       }
     });
   }
 
   verifyEmailCode() {
-    console.log("function is called")
+    
     this.clientService.verififyTokenEcodeSubmittedByClient(this.verificationCode, this.clientId).subscribe({
       next: (sendResult: boolean) => {
         if (sendResult) {
@@ -127,19 +175,29 @@ export class EcodeModalComponent {
           this.clientService.saveEcode(this.ecodeDTO).subscribe({
             next: (result: boolean) => {
               if (result) {
-                this.showSuccessModal = true;
-                this.generateVerificationCodeModal = false;
+                setTimeout(()=>{
+                  this.showSuccessModal = true;
+                  this.generateVerificationCodeModal = false;
+                },500)
               } else {
-                this.showFailureModal = true;
+                this.errorMessage="erreur lors du changement du ecode"
+                setTimeout(()=>{
+                  this.showFailureModal = true;
+                  this.generateVerificationCodeModal=false;
+
+                },500)
               }
             },
             error: (err) => {
-              this.showFailureModal = true;
               console.error("erreur lors de sauvegarde du ecode :", err);
             }
           });
         } else {
-          this.invalidTokenError = "token saisi par client est invalide !";
+          this.errorMessage="token saisi par client est invalide !"
+          setTimeout(()=>{
+            this.generateVerificationCodeModal=false;
+            this.showFailureModal = true;
+          },500)
         }
       },
       error: (err) => {

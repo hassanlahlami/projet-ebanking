@@ -36,6 +36,7 @@ export class AccountsComponent implements OnInit {
   totalPagesR: number = 1;
   totalPagesI: number = 1;
   pdfUrl: SafeResourceUrl | null = null;
+  clientId=1;
 
   constructor(
     private compteService: CompteService,
@@ -139,4 +140,23 @@ export class AccountsComponent implements OnInit {
       status => this.getAccountsByStatus(status).length > 0
     );
   }
+  onDotationToggle(event: Event, account: any): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.toggleDotation(account.id, checked);
+  }
+  
+
+
+  toggleDotation(accountId: number, autorisePaiementEnLigne: boolean): void {
+    console.log('New value:', autorisePaiementEnLigne);
+    this.compteService.changeAutorisedPaymentEnLigne(accountId, autorisePaiementEnLigne).subscribe({
+      next: (result: boolean) => {
+        console.log('changed successfully');
+      },
+      error: (err) => {
+        console.error('problème pour changement de dotation status de compte :', err);
+      }
+    });
+  }
+  
 }

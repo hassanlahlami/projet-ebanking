@@ -46,4 +46,12 @@ export class CompteService {
   getCCourantByClientId(clientId: string): Observable<CCourantResDTO[]> {
     return this.http.get<CCourantResDTO[]>(`${this.apiUrl}/client/${clientId}/ccourant/ACTIF`);
   }
+
+  changeAutorisedPaymentEnLigne(accountId: number, autorisePaiementEnLigne: boolean): Observable<boolean> {
+    return this.http.post<boolean>(
+      `${this.apiUrl}/activeDotation/${accountId}/${autorisePaiementEnLigne}`  // envoie dans le body
+    ,{});
+  }
+  
+
 }

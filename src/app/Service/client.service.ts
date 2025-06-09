@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { EcodeDTO } from '../model/dto/EcodeDTO';
+import { ClientResDTO } from '../model/dto/ClientResDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -36,10 +37,18 @@ export class ClientService {
   }
 
   // verifier ecode saisie par client pour valider operation(virement,paiement)
-  checkEcodeForOperations(eCode: string): Observable<boolean> {
-    const url = `${this.clientUrl}/isValid?ecode=${eCode}`;
-    return this.http.get<boolean>(url);
+  checkEcodeForOperations(ecode: EcodeDTO): Observable<boolean> {
+    const url = `${this.clientUrl}/verifyEcode`;
+    return this.http.post<boolean>(url,ecode);
   }
+
+  getClient(clientId: number): Observable<ClientResDTO> {
+    const url = `${this.clientUrl}/${clientId}`;
+    return this.http.get<ClientResDTO>(url);
+  }
+
+
+
 
 
 

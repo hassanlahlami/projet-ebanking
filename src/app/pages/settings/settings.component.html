@@ -13,16 +13,16 @@
       <div *ngIf="activeTab === 'profile'">
         <h5>Informations du profil</h5>
         <!-- Ajouter ici les informations de l'utilisateur -->
-        <p>firstname : Jean Dupont</p>
-        <p>lastname : mahassine </p>
-        <p>username : hsina</p>
-        <p>job : software enginner</p>
+        <p>firstname : {{client?.firstName}}</p>
+        <p>lastname : {{client?.lastName}} </p>
+        <p>username : {{client?.username}}</p>
+        <p>job : {{client?.job}}</p>
 
 
         <h5>Contact</h5>
         <!-- Ajouter ici les informations de l'utilisateur -->
-        <p>Téléphone :  0707045322</p>
-        <p>Email : yahyagmail.com</p>
+        <p>Téléphone :  {{client?.phone}}</p>
+        <p>Email : {{client?.email}}</p>
       </div>
   
       <!-- Sécurité Tab -->

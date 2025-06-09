@@ -110,14 +110,72 @@
          style="background-color: #004080; color: white;"
          [disabled]="!isFormValid() || isProcessing" 
          (click)="DisplayEcodeModal()">
-          <span *ngIf="!isProcessing">Confirmer</span>
-          <span *ngIf="isProcessing" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          <span *ngIf="isProcessing">Traitement...</span>
+         <ng-container *ngIf="!isProcessing; else loadingTpl">Validate</ng-container>
+          <ng-template #loadingTpl>
+            <span class="spinner-btn"></span> Processing...
+          </ng-template>
+          
         </button>
       </div>
     </form>
   </div>
 </div>
+
+
+<!-- MODALE POUR VERIFICATION PAR EMAIL -->
+<div *ngIf="showEcodeModal" class="ecode-modal-overlay">
+  <div class="ecode-modal-content">
+    <button class="ecode-close-button" (click)="cancel()">×</button>
+    <h3>Enter Votre E-code</h3>
+    <p>Veuillez saisir votre E-code pour valider cette opération</p>
+
+    <form (ngSubmit)="confirmRecharge()">
+      <input
+        name="verificationCode"
+        [(ngModel)]="code"
+        type="text"
+        pattern="[0-9]*"
+        maxlength="4"
+        placeholder="Enter votre E-Code"
+        required
+        (keypress)="allowOnlyNumbers($event)"
+      />
+
+      <div class="ecode-actions">
+        <button type="submit" class="validate-btn">
+          <ng-container *ngIf="!isLoadingForEcodeVeriFication; else loadingTpl">Verify</ng-container>
+          <ng-template #loadingTpl>
+            <span class="spinner-btn"></span> ...Processing
+          </ng-template>
+        </button>
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODALE SUCCÈS -->
+<div class="success-modal-overlay" *ngIf="showSuccessModal">
+  <div class="success-modal-content">
+    <button class="success-close-button" (click)="closeSuccessModal()">×</button>
+    <h2>Succès !</h2>
+    <p>Votre recharge a été effectué avec succès</p>
+  </div>
+</div>
+
+<!-- MODALE ÉCHEC -->
+<div class="failure-modal-overlay" *ngIf="showFailureModal">
+  <div class="failure-modal-content">
+    <button class="failure-close-button" (click)="closeFailureModal()">×</button>
+    <h2>Échec de Votre Opération</h2>
+    <p>Problème lors de la modification de votre eCode. Assurez-vous que toutes les informations sont correctes et que vous êtes connecté.</p>
+  </div>
+</div>
+
+
+
+
+
 
 
   

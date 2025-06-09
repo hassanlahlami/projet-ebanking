@@ -3,6 +3,8 @@
   "navDashboard": "Tableau de bord",
   "navAccounts": "Comptes",
   "navTransfers": "Virements",
+  "navPaiments" : "Paiement",
+  "navCrypto" : "crypto",
   "navLogout": "Se déconnecter",
   "footerText": "© 2025 Application eBanking",
   "dashboardTitle": "Bienvenue sur votre tableau de bord bancaire",

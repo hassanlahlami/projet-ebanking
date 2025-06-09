@@ -67,17 +67,22 @@
     <p>Un code de vérification a été envoyé à votre adresse e-mail. Veuillez le saisir ci-dessous :</p>
 
     <form (ngSubmit)="verifyEmailCode()">
-      <input
-        name="verificationCode"
-        [(ngModel)]="verificationCode"
-        type="text"
-        pattern="[0-9]*"
-        maxlength="6"
-        placeholder="Enter code received by email"
-        required
-        (keypress)="allowOnlyNumbers($event)"
-        (ngModelChange)="onVerificationCodeChange()"
-      />
+      <div class="ecode-digit-container">
+        <input
+          *ngFor="let digit of codeDigits; let i = index"
+          #codeInput
+          type="text"
+          maxlength="1"
+          pattern="[0-9]*"
+          class="ecode-digit-input"
+          [(ngModel)]="verificationCodeDigits[i]"
+          name="code{{i}}"
+          (input)="onDigitInput($event, i)"
+          (keydown)="onKeyDown($event, i)"
+          (paste)="i === 0 ? handlePaste($event) : null"
+        />
+      </div>
+
 
       <div *ngIf="verificationCode && invalidTokenError" class="inline-error">
         {{ invalidTokenError }}
@@ -105,6 +110,6 @@
   <div class="failure-modal-content">
     <button class="failure-close-button" (click)="closeFailureModal()">×</button>
     <h2>Échec de la mise à jour</h2>
-    <p>Problème lors de la modification de votre eCode. Assurez-vous que toutes les informations sont correctes et que vous êtes connecté.</p>
+    <p>{{errorMessage}}</p>
   </div>
 </div>

@@ -227,6 +227,18 @@
       font-size: 14px;
     }
   }
+
+  .ecode-digit-container {
+    display: flex;
+    justify-content: center;  /* centre horizontalement */
+    align-items: center;      /* centre verticalement */
+    gap: 10px;                /* espace entre les cases */
+    margin: 20px 0;
+    flex-wrap: nowrap;        /* empêche de passer à la ligne */
+  }
+  
+
+  
   
 
 

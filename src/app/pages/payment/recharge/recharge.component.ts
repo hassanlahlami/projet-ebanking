@@ -8,6 +8,9 @@ import { StatusCompte } from '../../../model/dto/StatusCompte';
 import { CompteResDTO } from '../../../model/dto/CompteResDTO';
 import { EcodeDTO } from '../../../model/dto/EcodeDTO';
 
+import { EventEmitter , Output , ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { ClientService } from '../../../Service/client.service';
+
 @Component({
   selector: 'recharge',
   standalone: false,
@@ -49,19 +52,28 @@ export class RechargeComponent {
     code: ''
   };
   showEcodeModal : boolean=false
+  verificationCode='';
+  showSuccessModal : boolean=false;
+  showFailureModal : boolean=false;
+
+  code = '';
+  isLoadingForEcodeVeriFication: boolean=false;
+
 
 
 
   constructor(
     private rechargeService: RechargeService,
     private fb: FormBuilder,
-    private comptesService: ComptesService
+    private comptesService: ComptesService,
+    private clinetService: ClientService
   ) {
     this.rechargeForm = this.fb.group({
       phoneNumber: ['', [Validators.required, Validators.pattern('^(06|07)[0-9]{8}$')]],
       montant: ['', Validators.required]
     });
   }
+  @Output() onCancel = new EventEmitter<boolean>();
 
   ngOnInit(): void {
     this.comptesService.getCompte(this.clientId, "ccourant", StatusCompte.ACTIF)
@@ -109,53 +121,97 @@ export class RechargeComponent {
   }
 
 
+
+  
+  cancel() {
+    this.showEcodeModal = false;
+    this.code = '';
+    this.isLoadingForEcodeVeriFication = false;
+    this.onCancel.emit(false);
+  }
+  allowOnlyNumbers(event: KeyboardEvent): void {
+    const charCode = event.key.charCodeAt(0);
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault(); // block non-digit input
+    }
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+  }
+
+  closeFailureModal() {
+    this.showFailureModal = false;
+  }
+
+
   // afficher form pour saisir ecode et valider l'operation 
   DisplayEcodeModal(){
     if (this.isFormValid()) {
       this.isProcessing = true;
-      this.showEcodeModal=true
+      setTimeout(()=>{
+        this.showEcodeModal=true;
+        this.isProcessing = false;
+        this.showRechargeForm=false;
+      },2000)
     }
   }
-  // confirmRecharge() {
-  //   if (this.isFormValid()) {
-  //     this.isProcessing = true;
-  //     const rechargeDTO: RechargeDTO = {
-  //       operateur: this.selectedOperator,
-  //       rib: this.selectedRib,
-  //       phoneNumber: this.rechargeForm.get('phoneNumber')?.value,
-  //       montant: this.parseFloatValue(this.selectedMontant)
-  //     };
 
-  //     this.rechargeService.effectuerRecharge(rechargeDTO).subscribe({
-  //       next: (response: RechargeResDTO) => {
-  //         console.log('Recharge effectuée avec succès', response);
-  //         this.showSuccessMessage = true;
-  //         this.successMessage = `Recharge de ${this.selectedMontant} DH effectuée avec succès pour le numéro ${this.rechargeForm.get('phoneNumber')?.value}`;
 
-  //         this.showRechargeForm = false;
-  //         this.selectedOperator = '';
-  //         this.selectedCompte = null;
-  //         this.rechargeForm.reset();
-  //         this.selectedMontant = '';
+  confirmRecharge() {
+    if (this.isFormValid()) {
 
-  //         setTimeout(() => {
-  //           this.showSuccessMessage = false;
-  //           this.successMessage = '';
-  //         }, 8000);
-  //       },
-  //       error: (error) => {
-  //         console.error('Erreur lors de la recharge', error);
-  //         this.showSuccessMessage = true;
-  //         this.successMessage = 'Une erreur est survenue lors de la recharge. Veuillez réessayer.';
-  //         setTimeout(() => {
-  //           this.showSuccessMessage = false;
-  //           this.successMessage = '';
-  //         }, 8000);
-  //       },
-  //       complete: () => {
-  //         this.isProcessing = false;
-  //       }
-  //     });
-  //   }
-  // }
+      
+      this.ecodeDTO = {
+        clientId: this.clientId,
+        code: this.code
+      };
+
+
+      // verifier ecode saisie par client pour valider operation(virement,paiement)
+      this.clinetService.checkEcodeForOperations(this.ecodeDTO).subscribe({
+        next: (sendResult: boolean) => {
+         
+          if (sendResult) {
+            const rechargeDTO: RechargeDTO = {
+              operateur: this.selectedOperator,
+              rib: this.selectedRib,
+              phoneNumber: this.rechargeForm.get('phoneNumber')?.value,
+              montant: this.parseFloatValue(this.selectedMontant)
+            };
+            this.rechargeService.effectuerRecharge(rechargeDTO).subscribe({
+              next: (response: RechargeResDTO) => {
+                this.isLoadingForEcodeVeriFication=true;
+                setTimeout(()=>{
+                  this.showSuccessModal=true;
+                  this.showEcodeModal = false;
+                  this.selectedOperator = '';
+                  this.selectedCompte = null;
+                  this.rechargeForm.reset();
+                  this.selectedMontant = '';
+                },2000)
+              },
+              error: (error) => {
+                console.error('Erreur lors de la recharge', error);
+              }
+            });
+          } else {
+            this.isLoadingForEcodeVeriFication=true;
+            setTimeout(()=>{
+              this.showEcodeModal = false;
+              this.showFailureModal=true;
+            },2000)
+          }
+        },
+        error: (err) => {
+          console.error("Erreur lors de l'appel à sendEcodeTokenForVerification :", err);
+        }
+      });
+
+      
+
+      
+    
+  }
+}
 }
