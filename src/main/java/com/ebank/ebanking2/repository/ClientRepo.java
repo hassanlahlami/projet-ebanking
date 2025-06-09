@@ -18,4 +18,5 @@ public interface ClientRepo extends JpaRepository<Client, Long> {
     Optional<Client> findByEmailAndIsRecoveryPasswordTokenVerified(String email, boolean status);
     Optional<Client> findByEmailAndIsRecoveryPasswordTokenVerifiedAndRecoveryPasswordTokenAndRecoveryPasswordTokenExpirationTimeAfter(String email, boolean status, String recoveryToken, LocalDateTime recoveryPasswordTokenExpirationTimeAfter);
 
+//    Client findByEmail(String email);
 }

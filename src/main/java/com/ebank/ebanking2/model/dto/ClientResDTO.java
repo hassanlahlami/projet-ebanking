@@ -18,7 +18,6 @@ import java.util.List;
 
 public class ClientResDTO {
     private Long id;
-
     private String firstName;
     private String lastName;
     private String username;

@@ -10,24 +10,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d51e4d27-739c-4076-8922-44727200ba6c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/MaybeClientController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/CheckRecoveryTokenDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/MaybeClientDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/MaybeClientResDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/MaybeClientWithEmailTokenDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/SubMaybeClientDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/mapper/MaybeClientMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/BankingTools.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/chatService/Assistant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/chatService/ChatService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/chatService/ChatServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AiConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/chatController/ChatController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/EcodeDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/chatdto/ChatRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/chatdto/ChatResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/tools/BankTools.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/util/EcodeValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logo/logoBankino.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/ClientService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/CompteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/CompteService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/InvoiceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/InvoiceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/Tokenmailservice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/Tokenmailservice.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/VirementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/VirementService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/InvoiceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/InvoiceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/mail/mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/mail/Mail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/InvoiceResDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/InvoiceResDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/Invoice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/Invoice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/InvoiceRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/InvoiceRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/RechargeRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/RechargeRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ChatbotController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ChatbotController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/CompteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/CompteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/mail/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/mail/Mail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/mail/MailConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/mail/MailConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/ClientResDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/ClientResDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/CCourant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/CCourant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/tokenmail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/tokenmail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/ClientRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/ClientRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CompteRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CompteRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/Tokenmailrepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/Tokenmailrepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/VirementRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/VirementRepo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +106,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "Tomcat Server.Tomcat 10.1.34.executor": "Run",
-    "git-widget-placeholder": "ebankingSecuredDev",
+    "git-widget-placeholder": "Merging ebankingSecuredDev",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/Documents/JavaIntellij/Ecode_Ebanking_backend",
     "node.js.detected.package.eslint": "true",

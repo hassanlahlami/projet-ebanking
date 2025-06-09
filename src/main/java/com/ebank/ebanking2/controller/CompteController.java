@@ -25,6 +25,15 @@ public class CompteController {
     }
 
 
+    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and @compteService.getClientByCompteRib(#rib).id == authentication.principal.id)")
+    @GetMapping("solde/{rib}")
+    public double getSolde(@PathVariable("rib") @P("rib") String rib){
+        return compteService.getSolde(rib);
+    }
+
+
+
+
     @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and @compteService.getClientByCompteId(#id).id == authentication.principal.id)")
     @GetMapping("/compte/{id}")
     public ResponseEntity<Compte> getById(@PathVariable Long id) {
@@ -55,7 +64,6 @@ public class CompteController {
                         ((com.ebank.ebanking2.model.entity.UserPrincipal)org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId() : "null"));
         return ResponseEntity.ok(compteService.saveCCourant(dto));
     }
-
     @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #dto.clientId == authentication.principal.id)")
     @PostMapping("/compteepargne")
     public ResponseEntity<CEpargneResDTO> create(@RequestBody @P("dto") CEpargneDTO dto) {
@@ -79,10 +87,11 @@ public class CompteController {
         return compteService.getSolde(rib);
     }
 
-    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and @compteService.getClientByCompteRib(#rib).id == authentication.principal.id)")
-    @GetMapping("solde/{rib}")
-    public double getSolde(@PathVariable("rib") @P("rib") String rib){
-        return compteService.getSolde(rib);
+
+
+    @PostMapping("activeDotation/{accountId}/{autorisePaiementEnLigne}")
+    public boolean changeDotationStatus(@PathVariable("accountId") Long accountId,@PathVariable("autorisePaiementEnLigne") boolean autorisePaiementEnLigne){
+        return compteService.changeDotationStatus(accountId,autorisePaiementEnLigne);
     }
 
 

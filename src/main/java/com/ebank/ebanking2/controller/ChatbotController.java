@@ -25,7 +25,6 @@ public class ChatbotController {
         this.objectMapper = objectMapper;
     }
 
-
     @PostMapping
     public ChatResponse chat(@RequestBody ChatRequestDTO chatRequestDTO) {
         String response = chatbotService.chat(chatRequestDTO.getMessage());

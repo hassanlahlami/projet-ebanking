@@ -1,5 +1,9 @@
 package com.ebank.ebanking2.Service;
 
+import com.ebank.ebanking2.model.dto.ClientDTO;
+import com.ebank.ebanking2.model.dto.ClientResDTO;
+import com.ebank.ebanking2.model.dto.Clientchangedto;
+import com.ebank.ebanking2.model.dto.EcodeDTO;
 import com.ebank.ebanking2.exception.user.UserUpdateException;
 import com.ebank.ebanking2.mail.Mail;
 import com.ebank.ebanking2.model.dto.*;
@@ -89,7 +93,7 @@ public class ClientService {
     public void deleteClient(Long id) {
         clientRepo.deleteById(id);
     }
-    public void updateclient(long id,Clientchangedto clientchangedto) {
+    public void updateclient(Long id,Clientchangedto clientchangedto) {
 
         Client client=getClientnodtoById(id);
             client.setEmail(clientchangedto.getEmail());
@@ -102,6 +106,9 @@ public class ClientService {
 //    public Client getclientbyEmail(String email) {
 //            return clientRepo.findByEmail(email);
 //    }
+    public Client getclientbyemail(String email) {
+        return clientRepo.findByEmail(email).get();
+    }
     public Client getUserByEmail(String email) {
         return clientRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User non trouvé avec l'Email: " + email));
@@ -188,7 +195,7 @@ public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
         Optional<Client> clientOpt = clientRepo.findByEmail(checkRecoveryTokenDTO.getEmail());
 
         if (clientOpt.isEmpty()) {
-            return false;
+            return (Boolean) false;
         }
 
         Client client = clientOpt.get();
@@ -204,10 +211,10 @@ public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
         if (matches && notExpired) {
             client.setRecoveryPasswordTokenVerified(true);
             clientRepo.save(client);
-            return true;
+            return (Boolean) true;
         }
 
-        return false;
+        return (Boolean) false;
     }
 
 
@@ -222,6 +229,19 @@ public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+        return (Boolean) true;
+    }
+    public boolean verifyEcode(EcodeDTO ecodeDTO) {
+        Optional<Client> client=clientRepo.findById(ecodeDTO.getClientId());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(ecodeDTO.getCode(), client.get().getCode());
+    }
+    public boolean saveEcode(EcodeDTO ecodeDTO) {
+        Optional<Client> client=clientRepo.findById(ecodeDTO.getClientId());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedEcode = encoder.encode(ecodeDTO.getCode());
+        client.get().setCode(hashedEcode);
+        clientRepo.save(client.get());
         return true;
     }
 }

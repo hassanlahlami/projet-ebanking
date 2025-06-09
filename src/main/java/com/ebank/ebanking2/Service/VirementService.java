@@ -127,6 +127,14 @@ public class VirementService{
         compteRepo.save(recepteur);
         byte[] recuPdf = recuPdfGenerator.generate(virement);
 
+
+        try {
+            recuPdf = recuPdfGenerator.generate(virement);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("Erreur lors de la génération du PDF : " + e.getMessage(), e);
+        }
+
         try {
             Files.createDirectories(Paths.get("recus"));
             Path path = Paths.get(System.getProperty("user.dir"), "recus", "recu_virement_" + virement.getId() + ".pdf");
@@ -141,7 +149,6 @@ public class VirementService{
     public CCourant getCCourantByRib(String rib){
         return compteRepo.findByRib(rib).orElseThrow();
     }
-
     public Page<VirementResDTO> getAllVirementByEmetteurCompteIdOrRecepteurCompteId(Long eCompteId, Long rCompteId, int offset, int size) {
         Pageable pageable = PageRequest.of(offset, size);
         Compte eCompte=compteRepo.findById(eCompteId).orElseThrow();
@@ -153,52 +160,4 @@ public class VirementService{
         return virementRepo.findById(virementId)
                 .orElseThrow(() -> new AccountNotFoundException("Virement with Id " + virementId + " not found"));
     }
-//    public VirementDTO effectuerVirement(VirementDTO dto) {
-//        // Validation des clients
-//
-////        Compte cEmetteur = compteRepo.findById(dto.getEmetteurCompteId())
-////                .orElseThrow(() -> new RuntimeException("Émetteur non trouvé avec l'ID: " + dto.getEmetteurCompteId()));
-////        Compte cRecepteur = compteRepo.findById(dto.getRecepteurCompteId())
-////                .orElseThrow(() -> new RuntimeException("Récepteur non trouvé avec l'ID: " + dto.getRecepteurCompteId()));
-////        if(cEmetteur instanceof CEpargne){
-////            throw new RuntimeException("le compte emetteur est epargne, vous ne pouver pas initier virement!");
-////        }
-////        if(cRecepteur instanceof CEpargne){
-////            throw new RuntimeException("le compte recepteur est epargne, vous ne pouver pas initier virement!");
-////        }
-////        CCourant ccEmetteur = (CCourant) cEmetteur;
-////        CCourant ccRecepteur = (CCourant) cRecepteur;
-////        if (ccEmetteur.getStatus() != StatusCompte.ACTIF || ccRecepteur.getStatus() != StatusCompte.ACTIF) {
-////            throw new RuntimeException("Le compte émetteur ou récepteur n'est pas actif");
-////        }
-////        if (ccEmetteur.getSolde() < dto.getMontant()) {
-////            throw new RuntimeException("Solde insuffisant sur le compte émetteur");
-////        }
-////        Virement virement = virementMapper.toEntity(dto);
-////        // Mise à jour des soldes
-////        cEmetteur.setSolde(cEmetteur.getSolde() - dto.getMontant());
-////        cRecepteur.setSolde(cRecepteur.getSolde() + dto.getMontant());
-//////        // Ajout de l'ID du virement aux comptes
-//////        compteEmetteur.getVirements().add(virement.getId());
-//////        compteRecepteur.getVirements().add(virement.getId());
-////        // Sauvegarde des entités
-////        Optional<Virement> lastVirement=virementRepo.getFirstByOrderByIdDesc();
-////        String id;
-////        if(lastVirement.isPresent()){
-////            id=idGenerator.generateNextId(lastVirement.get().getId());
-////        }else{
-////            id=idGenerator.generateNextId(null);
-////        }
-////        virement.setId(id);
-////        virementRepo.save(virement);
-////        compteRepo.save(cEmetteur);
-////        compteRepo.save(cRecepteur);
-////        return virementMapper.toDto(virement);
-//
-//        return null;
-//    }
-//
-//    public List<VirementDTO> getAllVirementByEmetteurCompteIdOrRecepteurCompteId(Long eCompteId, Long rCompteId) {
-//        return this.virementRepo.findVirementByEmetteurCompteIdOrRecepteurCompteId(eCompteId,rCompteId);
-//    }
 }

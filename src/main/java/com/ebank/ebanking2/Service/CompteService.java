@@ -4,6 +4,7 @@ import com.ebank.ebanking2.model.dto.*;
 
 import com.ebank.ebanking2.model.entity.*;
 import com.ebank.ebanking2.model.mapper.CompteMapper;
+import com.ebank.ebanking2.repository.CCourantRepo;
 import com.ebank.ebanking2.repository.ClientRepo;
 import com.ebank.ebanking2.repository.CompteRepo;
 import com.ebank.ebanking2.repository.UserRepo;
@@ -35,6 +36,9 @@ public class CompteService{
     private ClientRepo clientRepo;
     @Autowired
     private RibGenerator ribGenerator;
+    @Autowired
+    private CCourantRepo cCourantRepo;
+    @Transactional
 
     public double getSolde( String rib){
         return compteRepo.findByRib(rib).get().getSolde();
@@ -98,7 +102,6 @@ public class CompteService{
         System.out.println(result);
         return  result;
     }
-
     private String formatAccounts(List<?> comptes) {
         StringBuilder sb = new StringBuilder("Vos comptes:\n\n");
         comptes.forEach(c -> {
@@ -119,7 +122,6 @@ public class CompteService{
         });
         return sb.toString();
     }
-
     public List<?> getByClientId(Long clientId,String type, String status) {
         List<Compte> comptes = compteRepo.findByClientId(clientId);
         return filterListCompte(comptes, type, status);
@@ -174,33 +176,20 @@ public class CompteService{
 
         return returnedList;
     }
-
     public List<?> getComptes(Long clientId,String type, String status) {
         List<Compte> comptes = compteRepo.findByClientId(clientId);
         return filterListCompte(comptes, type,status);
     }
-
-
-
     public List<?> get(String type, String status) {
         List<Compte> comptes = compteRepo.findAll();
         return filterListCompte(comptes, type, status);
     }
-
     CCourant getCompteByRib(String rib) {
         return compteRepo.findByRib(rib).orElseThrow(() -> new RuntimeException("Compte not found"));
     }
-
-//    @Tool("Récupère le solde d'un compte à partir de son RIB")
-//    public double getSolde(@P("Le RIB du compte") String rib){
-//        return compteRepo.findByRib(rib).get().getSolde();
-//    }
-
     public Compte getById(Long id) {
         return compteRepo.findById(id).get();
     }
-
-
     public CCourantResDTO diminuerSolde(CCourant courant,double montant){
         double newSolde = courant.getSolde()-montant;
         courant.setSolde(newSolde);
@@ -208,6 +197,14 @@ public class CompteService{
         return compteMapper.toResDTO(courant);
     }
 
+
+    @Transactional
+    public boolean changeDotationStatus(Long accountId,boolean autorisePaiementEnLigne) {
+        CCourant compte = cCourantRepo.getById(accountId);
+        compte.setAutorisePaiementEnLigne(autorisePaiementEnLigne);
+        cCourantRepo.save(compte);
+        return true;
+    }
     public Client getClientByCompteId(Long compteId) throws AccountNotFoundException {
         return compteRepo.findById(compteId)
                 .map(Compte::getClient)

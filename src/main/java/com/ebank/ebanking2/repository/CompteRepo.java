@@ -25,6 +25,8 @@ public interface CompteRepo extends JpaRepository<Compte, Long> {
     double findSoldeByRib(@Param("rib") String rib);
 
 
+    List<Compte> findByClientIdAndStatus(Long clientId, StatusCompte statusCompte);
+
 
 }
 

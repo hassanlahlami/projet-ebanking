@@ -24,4 +24,10 @@ public class Client extends User {
     @JsonBackReference
     @OneToMany(mappedBy = "client",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Invoice> invoices=new ArrayList<>();
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<tokenmail> tokens = new ArrayList<>();
+    String code;
+
+
+
 }

@@ -41,14 +41,7 @@ public class InvoiceService {
     private UserRepo userRepo;
     private ClientRepo clientRepo;
 
-    public InvoiceResDTO addInvoice(InvoiceDTO invoiceDTO) {
-        Client client = clientRepo.findById(invoiceDTO.getClientId())
-                .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + invoiceDTO.getClientId()));
-        Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
-        invoice.setClient(client);
-        Invoice savedInvoice = invoiceRepo.save(invoice);
-        return invoiceMapper.toResDto(savedInvoice);
-    }
+
 
     public Page<InvoiceResDTO> getInvoicesByCompteId(Long compteId, int offset, int size) {
         Pageable pageable = PageRequest.of(offset, size);
@@ -94,4 +87,21 @@ public class InvoiceService {
 
         return invoiceMapper.toResDTO(invoicesSaved);
     }
+//    public InvoiceResDTO addInvoice(InvoiceDTO invoiceDTO) {
+//        Client client = clientRepo.findById(invoiceDTO.getClientId())
+//                .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + invoiceDTO.getClientId()));
+//        Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
+//        invoice.setClient(client);
+//        Invoice savedInvoice = invoiceRepo.save(invoice);
+//        return invoiceMapper.toResDto(savedInvoice);
+//    }
+    public InvoiceResDTO addInvoice(InvoiceDTO invoiceDTO) {
+        Client client = clientRepo.findById(invoiceDTO.getClientId())
+                .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + invoiceDTO.getClientId()));
+        Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
+        invoice.setClient(client);
+        Invoice savedInvoice = invoiceRepo.save(invoice);
+        return invoiceMapper.toResDto(savedInvoice);
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.ebank.ebanking2.controller;
 
-
 import com.ebank.ebanking2.Service.ClientService;
 import com.ebank.ebanking2.Service.Tokenmailservice;
 import com.ebank.ebanking2.mail.Mail;
@@ -9,6 +8,7 @@ import com.ebank.ebanking2.model.entity.Client;
 import com.ebank.ebanking2.model.entity.User;
 import com.ebank.ebanking2.model.entity.tokenmail;
 import com.ebank.ebanking2.repository.Tokenmailrepo;
+import com.ebank.ebanking2.util.EcodeValidator;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,9 +71,17 @@ public class ClientController {
         mailservice.javasend(client.getEmail(),tokenma,"validation token","token");
         return true;
     }
+    @PostMapping("/emailSend/eCode/token/{clientId}")
+    public boolean sendTokenForEcode(@PathVariable("clientId") Long clientId) throws MessagingException {
+        String token = tokenmailservice.generateSixDigitToken();
+        Client client = clientService.getClientnodtoById(clientId);
+        String savedToken = tokenmailservice.savetoken(token, client).getToken();
+        mailservice.sendTokenEmail(client.getEmail(), savedToken, "validation token pour E-Code","E-Code");
+        return true;
+    }
     @PreAuthorize("hasRole('EMPLOYEE')") // or (hasRole('CLIENT') and #id == authentication.principal.id)
     @PutMapping("/update/{id}")
-    public boolean update(@RequestBody Clientchangedto clientchangedto, @RequestParam("token") String token, @PathVariable("id") @P("id") long id) {
+    public boolean update(@RequestBody Clientchangedto clientchangedto, @RequestParam("token") String token, @PathVariable("id") @P("id") Long id) {
         boolean validation=tokenmailservice.validateToken(token,id);
         if (validation){
             clientService.updateclient(id, clientchangedto);
@@ -106,5 +114,25 @@ public class ClientController {
     @PostMapping("registry/checkRecoveryToken")
     public ResponseEntity<Boolean> checkRecoveryToken(@RequestBody CheckRecoveryTokenDTO checkRecoveryTokenDTO){
         return new ResponseEntity<>(clientService.checkRecoveryToken(checkRecoveryTokenDTO), HttpStatus.OK);
+    }
+    @PostMapping("verifiytoken/ecode/{clientId}")
+    public boolean validateTokenForEcode(@RequestParam("ecodeToken") String ecodeToken,
+                                         @PathVariable("clientId") long clientId) throws MessagingException {
+        return tokenmailservice.validateToken(ecodeToken, clientId);
+    }
+    // Vérifier si le token (Ecode) saisi est sécurisé
+    @GetMapping("isValid")
+    public ResponseEntity<Boolean> validateSecureEcode(@RequestParam("ecode") String ecode) {
+        boolean valid = EcodeValidator.isSecureCode(ecode);
+        return new ResponseEntity<>(valid, HttpStatus.OK);
+    }
+    @PostMapping("saveEcode")
+    public boolean saveEcode(@RequestBody EcodeDTO ecodeDTO) throws MessagingException {
+        return clientService.saveEcode(ecodeDTO);
+    }
+
+    @PostMapping("verifyEcode")
+    public boolean verifyEcode(@RequestBody EcodeDTO ecodeDTO) throws MessagingException {
+        return clientService.verifyEcode(ecodeDTO);
     }
 }
