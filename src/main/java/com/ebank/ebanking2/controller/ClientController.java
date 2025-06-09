@@ -3,10 +3,8 @@ package com.ebank.ebanking2.controller;
 
 import com.ebank.ebanking2.Service.ClientService;
 import com.ebank.ebanking2.Service.Tokenmailservice;
-import com.ebank.ebanking2.mail.mail;
-import com.ebank.ebanking2.model.dto.ClientDTO;
-import com.ebank.ebanking2.model.dto.ClientResDTO;
-import com.ebank.ebanking2.model.dto.Clientchangedto;
+import com.ebank.ebanking2.mail.Mail;
+import com.ebank.ebanking2.model.dto.*;
 import com.ebank.ebanking2.model.entity.Client;
 import com.ebank.ebanking2.model.entity.User;
 import com.ebank.ebanking2.model.entity.tokenmail;
@@ -33,7 +31,7 @@ public class ClientController {
     @Autowired
     Tokenmailrepo tokenrepo;
     @Autowired
-    mail mailservice;
+    Mail mailservice;
 
     @PreAuthorize("hasRole('EMPLOYEE')")
     @PostMapping("/client")
@@ -94,5 +92,19 @@ public class ClientController {
     @DeleteMapping("/delete/token/{id}")
     public void delete(@PathVariable("id") long token) {
         tokenrepo.deleteById(token);
+    }
+
+    @PostMapping("registry/emailSend/recoveryToken")
+    public ResponseEntity<Boolean> generateRecoveryPasswordToken(@RequestBody EmailDTO emailDTO){
+        return new ResponseEntity<>(clientService.generateRecoveryPasswordToken(emailDTO.getEmail()), HttpStatus.OK);
+    }
+//    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and @clientService.getUserByEmail(#changePasswordDTO.email).id = authentication.principal.id)")
+    @PutMapping("registry/changePassword")
+    public ResponseEntity<Boolean> changePassword(@RequestBody @P("changePasswordDTO") ChangePasswordDTO changePasswordDTO){
+        return new ResponseEntity<>(clientService.changePassword(changePasswordDTO), HttpStatus.OK);
+    }
+    @PostMapping("registry/checkRecoveryToken")
+    public ResponseEntity<Boolean> checkRecoveryToken(@RequestBody CheckRecoveryTokenDTO checkRecoveryTokenDTO){
+        return new ResponseEntity<>(clientService.checkRecoveryToken(checkRecoveryTokenDTO), HttpStatus.OK);
     }
 }

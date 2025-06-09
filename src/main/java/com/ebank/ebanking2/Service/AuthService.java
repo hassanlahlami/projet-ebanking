@@ -1,14 +1,8 @@
 package com.ebank.ebanking2.Service;
 
 
-import com.ebank.ebanking2.model.dto.ClientDTO;
-import com.ebank.ebanking2.model.dto.ClientResDTO;
-import com.ebank.ebanking2.model.dto.TokenWrapper;
-import com.ebank.ebanking2.model.dto.UserLoginDTO;
-import com.ebank.ebanking2.model.entity.AuthenticationResponse;
-import com.ebank.ebanking2.model.entity.Token;
-import com.ebank.ebanking2.model.entity.User;
-import com.ebank.ebanking2.model.entity.UserPrincipal;
+import com.ebank.ebanking2.model.dto.*;
+import com.ebank.ebanking2.model.entity.*;
 import com.ebank.ebanking2.model.mapper.ClientMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +31,8 @@ public class AuthService {
     ApplicationContext context;
     @Autowired
     TokenService tokenService;
+    @Autowired
+    CompteService compteService;
     @Autowired
     private JwtService jwtService;
     @Autowired
@@ -90,6 +86,8 @@ public class AuthService {
             TokenWrapper accessTokenDto = jwtService.generateAccessToken(request, user.getEmail());
             TokenWrapper refreshTokenDto = jwtService.generateRefreshToken(request, user.getEmail());
             saveUserToken(clientA, refreshTokenDto);
+            CCourantDTO cCourantDTO = new CCourantDTO(clientA.getId(), 20, StatusCompte.ACTIF, true );
+            compteService.saveCCourant(cCourantDTO);
 
             // Access token cookie
             ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", accessTokenDto.getToken())

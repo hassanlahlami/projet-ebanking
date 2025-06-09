@@ -102,6 +102,9 @@ public class VirementService{
     }
     @Transactional
     public VirementResDTO executeVirement(VirementDTOrib dto) throws IOException {
+        if(dto.getCompteEmetteur().equals(dto.getCompteRecepteur())){
+            throw new IllegalArgumentException("Le compte émetteur et récepteur ne peuvent pas être identiques");
+        }
         CCourant emetteur = getCCourantByRib(dto.getCompteEmetteur());
         CCourant recepteur = getCCourantByRib(dto.getCompteRecepteur());
 

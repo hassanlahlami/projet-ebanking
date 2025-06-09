@@ -23,6 +23,7 @@ public class Invoice {
     private LocalDateTime dueDate;
     private String referenceNumber;
     private boolean paid;
+    private Long compteId;
     private LocalDateTime paidDate;
 
     @ManyToOne(fetch = FetchType.EAGER)

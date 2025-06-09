@@ -4,41 +4,30 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
-@Table(name = "users")
-public class User {
+@Table(name = "maybeClients")
+public class MaybeClient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
-
     private String firstName;
     private String lastName;
-
     private String username;
-
-    private String password;
-
-    private String recoveryPasswordToken;
-
-    private boolean isRecoveryPasswordTokenVerified = false;
-
-    private LocalDateTime recoveryPasswordTokenExpirationTime;
-
     private String email;
-
     private String phone;
+    private String emailToken;
+    private String phoneToken;
+    private boolean isEmailTokenVerified = false;
+    private boolean isPhoneTokenVerified = false;
+    private boolean isReadyTobeClient = false;
+    private LocalDateTime emailTokenExpirationTime;
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;

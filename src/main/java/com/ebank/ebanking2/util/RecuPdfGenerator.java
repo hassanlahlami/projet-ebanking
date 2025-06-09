@@ -39,7 +39,7 @@ public class RecuPdfGenerator {
             table.setWidths(new float[]{1, 2});
             addTableRow(table, "ID Virement:", String.valueOf(virement.getId()), bodyFont);
             addTableRow(table, "Date:", formattedDate, bodyFont);
-            addTableRow(table, "Montant:", virement.getMontant() + " MAD", bodyFont);
+            addTableRow(table, "Montant:", virement.getMontant() + " $", bodyFont);
             addTableRow(table, "Type:", virement.getType().name(), bodyFont);
             addTableRow(table, "Compte Émetteur:", virement.getCompteEmetteur().getRib(), bodyFont);
             addTableRow(table, "Compte Récepteur:", virement.getCompteRecepteur().getRib(), bodyFont);

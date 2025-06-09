@@ -5,6 +5,7 @@ import com.ebank.ebanking2.model.dto.InvoiceDTO;
 import com.ebank.ebanking2.model.dto.InvoicePayDTO;
 import com.ebank.ebanking2.model.dto.InvoiceResDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,5 +52,10 @@ public class InvoiceController {
     @PostMapping("invoices")
     public ResponseEntity<List<InvoiceResDTO>> addInvoices(@RequestBody List<InvoiceDTO> invoiceDTOs){
         return ResponseEntity.ok(invoiceService.addInvoices(invoiceDTOs));
+    }
+    @PreAuthorize("hasRole('EMPLOYEE') or ( hasRole('CLIENT') and @compteService.getClientByCompteId(#id).id == authentication.principal.id)")
+    @GetMapping("{id}")
+    public ResponseEntity<Page<InvoiceResDTO>> getInvoicesByCompteId(@PathVariable("id") @P("id") Long id, @RequestParam("offset") Integer offset, @RequestParam("size") Integer size){
+        return ResponseEntity.ok(invoiceService.getInvoicesByCompteId(id, offset, size));
     }
 }

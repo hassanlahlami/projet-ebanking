@@ -9,6 +9,6 @@ import jakarta.data.repository.Repository;
 
 @Repository
 public interface RechargeRepo extends JpaRepository<Recharge, Long> {
-    public Page<Recharge> findByCompte(Compte compte, Pageable pageable);
+    Page<Recharge> findByCompte(Compte compte, Pageable pageable);
 
 }

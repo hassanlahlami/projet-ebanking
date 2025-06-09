@@ -13,11 +13,16 @@ import com.ebank.ebanking2.model.mapper.InvoiceMapper;
 import com.ebank.ebanking2.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +50,10 @@ public class InvoiceService {
         return invoiceMapper.toResDto(savedInvoice);
     }
 
+    public Page<InvoiceResDTO> getInvoicesByCompteId(Long compteId, int offset, int size) {
+        Pageable pageable = PageRequest.of(offset, size);
+        return invoiceRepo.findByCompteId(compteId, pageable).map(invoiceMapper::toResDto);
+    }
     public InvoiceResDTO getInvoice(Long clientId, String provider, String reference) {
         Optional<Invoice> invoice = invoiceRepo.findByClientIdAndProviderAndReferenceNumberAndDueDateAfter(clientId, provider, reference, LocalDateTime.now());
         return invoice.map(invoiceMapper::toResDto).orElse(null);
@@ -57,6 +66,7 @@ public class InvoiceService {
         cCourantToDebit.setSolde(cCourantToDebit.getSolde()-invoiceToPay.getAmount());
         invoiceToPay.setPaid(true);
         invoiceToPay.setPaidDate(LocalDateTime.now());
+        invoiceToPay.setCompteId(invoicePayDTO.getCompteId());
 
         cCourantRepo.save(cCourantToDebit);
         Invoice invoiceUpdated = invoiceRepo.save(invoiceToPay);
