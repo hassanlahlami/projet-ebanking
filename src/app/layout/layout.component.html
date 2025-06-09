@@ -1,0 +1,62 @@
+<div class="app-container d-flex flex-column min-vh-100">
+  <!-- Header -->
+  <div class="app-container d-flex flex-column min-vh-100">
+    <!-- Header -->
+    <header class="app-header bg-primary text-white">
+      <nav class="navbar navbar-expand-lg navbar-dark px-4 py-3">
+        <!-- Logo -->
+        <a class="navbar-brand" routerLink="/dashboard">
+          <img src="assets/logo/logoBankino.png" alt="Logo" class="app-logo" />
+        </a>
+
+        <!-- Toggler Button (Hamburger) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible Content -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <!-- Navigation Links -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link text-white" routerLink="/dashboard">{{ 'navDashboard' | translate }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" routerLink="/accounts">{{ 'navAccounts' | translate }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" routerLink="/payments">{{ 'navPaiments' | translate }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" routerLink="/transfers">{{ 'navTransfers' | translate }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" routerLink="/crypto">{{ 'navCrypto' | translate }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" (click)="logout()">{{ 'navLogout' | translate }}</a>
+            </li>
+          </ul>
+
+          <!-- Language Selector -->
+          <select class="form-select w-auto" (change)="switchLang($event)">
+            <option value="en" [selected]="localStorage.getItem('lang') === 'en'">🇬🇧 English</option>
+            <option value="fr" [selected]="localStorage.getItem('lang') === 'fr'">🇫🇷 Français</option>
+          </select>
+        </div>
+      </nav>
+    </header>
+
+    <main class="app-main flex-grow-1 p-4 bg-light">
+      <router-outlet></router-outlet>
+      <chatbot></chatbot>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer bg-secondary text-white text-center py-2">
+      {{ 'footerText' | translate }}
+    </footer>
+  </div>
+
+</div>

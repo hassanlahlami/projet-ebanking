@@ -1,0 +1,17 @@
+<div class="ecode-modal-overlay">
+  <div class="ecode-modal-content">
+    <button class="ecode-close-button" (click)="cancel()">×</button>
+    <h3>Enter your eCode</h3>
+
+    <form (ngSubmit)="verifyEcode()">
+      <input name="ecode" [(ngModel)]="ecode" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4"
+        minlength="4" placeholder="Enter your e-code" required (keypress)="allowOnlyNumbers($event)" />
+
+
+      <div class="ecode-actions">
+        <button type="submit" class="validate-btn" [disabled]="!ecode">Validate</button>
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+<div *ngIf="showModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="close-button" (click)="closeModal()">×</button>
+    <h2>{{ 'PAYMENT.MODAL_TITLE' | translate:{ provider: provider } }}</h2>
+
+    <form (ngSubmit)="searchReference()">
+      <label for="reference">{{ 'PAYMENT.REFERENCE_LABEL' | translate }}</label>
+      <input
+        [(ngModel)]="reference"
+        name="reference"
+        id="reference"
+        type="text"
+        [placeholder]="'PAYMENT.REFERENCE_PLACEHOLDER' | translate"
+      />
+      <button type="submit">{{ 'PAYMENT.SEARCH_BUTTON' | translate }}</button>
+    </form>
+
+    <form>
+      <div class="invoice" *ngIf="showInvoiceToPay && invoiceResDto">
+        <div class="invoice-details">
+          <p><strong>{{ invoiceResDto?.amount }} DH</strong></p>
+          <p>{{ 'PAYMENT.INVOICE_DUE_DATE' | translate:{ date: invoiceResDto?.dueDate } }}</p>
+        </div>
+
+        <div
+          class="comptes-courant"
+          *ngFor="let compte of CCourantActifComptes"
+          [ngClass]="{
+            'enabled-compte': compte.autorisePaiementEnLigne && compte.solde > (invoiceResDto?.amount ?? 0),
+            'selected-enabled-compte': selectedCompte === compte,
+            'disabled-compte-dotation': !compte.autorisePaiementEnLigne,
+            'disabled-compte-insuffisant-sold': (invoiceResDto?.amount ?? 0) > compte.solde
+          }"
+          (click)="onSelectCompte(compte)"
+        >
+          <p><strong>{{ 'PAYMENT.SELECT_RIB' | translate:{ rib: compte.rib } }}</strong></p>
+          <p><strong>{{ 'PAYMENT.BALANCE' | translate:{ balance: compte.solde } }}</strong></p>
+
+          <p class="info-message" *ngIf="!compte.autorisePaiementEnLigne">
+            {{ 'PAYMENT.ENABLE_DOTATION' | translate }}
+          </p>
+          <p class="info-message" *ngIf="(invoiceResDto?.amount ?? 0) > compte.solde">
+            {{ 'PAYMENT.INSUFFICIENT_BALANCE' | translate }}
+          </p>
+        </div>
+
+        <button type="button" [disabled]="!isPayButtonEnabled" (click)="openEcodeModal()">
+          {{ 'PAYMENT.PAY_INVOICE' | translate }}
+        </button>
+      </div>
+    </form>
+
+    <div class="invoice-error" *ngIf="invoiceNotFound">
+      <p>{{ 'PAYMENT.NO_INVOICE_FOUND' | translate }}</p>
+    </div>
+  </div>
+
+  <!-- eCode Modal -->
+  <ecode-modal
+    *ngIf="showEcodeModal"
+    [showEcodeModal]="showEcodeModal"
+    [clientId]="clientId"
+    [provider]="provider"
+    [referenceNumber]="referenceNumber"
+    [compteId]="selectedCompte ? selectedCompte.id : 0"
+    (onCancel)="showEcodeModal = false"
+    (paymentSuccess)="handlePaymentSuccess()"
+    (paymentFailure)="handlePaymentFailure()"
+  ></ecode-modal>
+
+  <!-- Success Modal -->
+  <success-modal *ngIf="showSuccessModal" (close)="showSuccessModal = false"></success-modal>
+
+  <!-- Failure Modal -->
+  <failure-modal *ngIf="showFailureModal" (close)="showFailureModal = false"></failure-modal>
+</div>

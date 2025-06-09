@@ -1,0 +1,80 @@
+.success-modal-overlay,
+.failure-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+}
+
+/* Modal Content - Common Styles */
+.success-modal-content{
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: modalFadeIn 0.3s ease-out;
+
+}
+
+/* Close Buttons - Common Styles */
+.success-close-button{
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s;
+}
+
+.success-close-button:hover,
+.failure-close-button:hover {
+  color: #333;
+}
+
+/* Success Modal Specific Styles */
+.success-modal-content {
+  border-top: 5px solid #4CAF50;
+}
+
+.success-modal-content h2 {
+  color: #4CAF50;
+  margin-bottom: 15px;
+}
+
+.success-modal-content p {
+  color: #555;
+  font-size: 16px;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .success-modal-content{
+      width: 95%;
+      padding: 20px;
+    }
+    
+    .success-modal-content h2{
+      font-size: 20px;
+    }
+    
+    .success-modal-content p{
+      font-size: 14px;
+    }
+  }
