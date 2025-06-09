@@ -38,7 +38,7 @@ selectedRib: string = '';
     private http:CryptoserviceService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-
+// test
   }
   
   onCompteChange(event: any) {
