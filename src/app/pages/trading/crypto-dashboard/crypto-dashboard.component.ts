@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CryptoModel } from '../../../model/dto/CryptoModel';
 import {CryptoserviceService} from '../../../Service/cryptoservice.service';
+import { CompteResDTO } from '../../../model/dto/CompteResDTO';
+import { StatusCompte } from '../../../model/dto/StatusCompte';
+import { ComptesService } from '../../../Service/comptes.service';
 
 @Component({
   selector: 'app-crypto-dashboard',
@@ -17,21 +20,30 @@ export class CryptoDashboardComponent implements OnInit, OnDestroy ,OnChanges{
   @Input() valueboolean!:boolean;
   value:boolean=true;
 
-
+selectedRib: string = '';
   cryptoData: CryptoModel[] = [];
   hasBought: { [symbol: string]: boolean } = {};
   quantities: { [symbol: string]: number } = {};
   ribs: { [symbol: string]: string } = {}; // Propriété pour les RIB
   private activeInputSymbol: string | null = null;
-
+ selectedCompte: CompteResDTO | null = null; 
+ comptesCourants: CompteResDTO[] = [];
+ 
+  clientId: number = 1;
 
   constructor(
+     private comptesService: ComptesService,
     private wsService: BinanceWebSocketService,
     private cdr: ChangeDetectorRef,
     private http:CryptoserviceService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
 
+  }
+  
+  onCompteChange(event: any) {
+    this.selectedRib = event.target.value;
+    this.selectedCompte = this.comptesCourants.find(c => c.rib === this.selectedRib) || null;
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['valueboolean']) {
@@ -59,6 +71,15 @@ export class CryptoDashboardComponent implements OnInit, OnDestroy ,OnChanges{
     if (isPlatformBrowser(this.platformId)) {
       document.addEventListener('focusin', this.handleFocusIn.bind(this));
     }
+     this.comptesService.getCompte(this.clientId, "ccourant", StatusCompte.ACTIF)
+            .subscribe({
+              next: (response: CompteResDTO[]) => { // store the data returned from the service in a variable called response
+                this.comptesCourants=response;
+              },
+              error: (err: any) => {
+                console.error("Error fetching le compte courant de l'utilisateur :", this.clientId, err);
+              }
+            });
   }
 
   ngOnDestroy() {
@@ -100,7 +121,7 @@ export class CryptoDashboardComponent implements OnInit, OnDestroy ,OnChanges{
 
   buy(symbol: string,curent:string) {
       const quantity = this.quantities[symbol] || 0;
-  const rib = this.ribs[symbol] || '';
+  const rib =  this.selectedRib || '';
 
 
    let Object:any=`{"name":"${symbol}","montant":${quantity},"actuealprisecurrency":${curent}}`;

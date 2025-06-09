@@ -6,6 +6,8 @@ import { ComptesService } from '../../../Service/comptes.service'; // adjust pat
 import { StatusCompte } from '../../../model/dto/StatusCompte';
 import { CompteResDTO } from '../../../model/dto/CompteResDTO';
 import { InvoicePayDTO } from '../../../model/dto/InvoicePayDTO';
+import { ClientService } from '../../../Service/client.service';
+import { EcodeDTO } from '../../../model/dto/EcodeDTO';
 
 @Component({
   selector: 'invoice-modal',
@@ -15,7 +17,10 @@ import { InvoicePayDTO } from '../../../model/dto/InvoicePayDTO';
 })
 export class InvoiceModalComponent {
 
-  constructor(private invoiceService: InvoicesService, private comptesService: ComptesService) { }
+  constructor(private invoiceService: InvoicesService,
+     private comptesService: ComptesService,
+    private clientService: ClientService
+  ) { }
 
   @Input() showModal: boolean = false;
   @Input() provider: string = "";
@@ -29,6 +34,15 @@ export class InvoiceModalComponent {
   isPayButtonEnabled = false;
   invoiceNotFound: boolean = false;
   CCourantActifComptes: CompteResDTO[] = [];
+  code='';
+  isLoadingForEcodeVeriFication=false;
+  showEcodeModal=false;
+  ecodeDTO : EcodeDTO= {
+      clientId: this.clientId,
+      code: ''
+    };
+
+    @Output() onCancel = new EventEmitter<boolean>();
 
 
 
@@ -55,6 +69,25 @@ export class InvoiceModalComponent {
   closeFailureModal() {
     this.showFailureModal = false;
   }
+
+  allowOnlyNumbers(event: KeyboardEvent): void {
+    const charCode = event.key.charCodeAt(0);
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault(); // block non-digit input
+    }
+  }
+
+  cancel(){
+
+    this.showEcodeModal = false;
+    this.code = '';
+    this.isLoadingForEcodeVeriFication = false;
+    this.onCancel.emit(false);
+
+  }
+
+
+
 
 
 
@@ -110,28 +143,69 @@ export class InvoiceModalComponent {
   }
 
 
+  // afficher form pour saisir ecode et valider l'operation 
+  DisplayEcodeModal(){
+    this.showEcodeModal=true;
+    this.showInvoiceToPay=false;
+  }
 
 
 
+  
 
-  payInvoice() {
-    const invoiceDTO: InvoicePayDTO = {
+  confirmInvoice() {
+
+
+    this.ecodeDTO = {
       clientId: this.clientId,
-      provider: this.invoiceResDto.provider,
-      referenceNumber: this.invoiceResDto.referenceNumber,
-      compteId: this.selectedCompte.id
+      code: this.code
     };
-    this.invoiceService.payInvoice(invoiceDTO).subscribe({
-      next: (response) => {
-        console.log('Invoice paid successfully:', response);
-        this.openSuccessModal();
-        this.closeModal();
-      },
-      error: (error) => {
-        console.error('Error paying invoice:', error);
-        this.openFailureModal();
-        this.closeModal();
-      }
-    });
+    // verifier ecode saisie par client pour valider operation(virement,paiement)
+          this.clientService.checkEcodeForOperations(this.ecodeDTO).subscribe({
+            next: (sendResult: boolean) => {
+
+             console.log(sendResult);
+             if (sendResult) {
+
+              
+              const invoiceDTO: InvoicePayDTO = {
+                  clientId: this.clientId,
+                  provider: this.invoiceResDto.provider,
+                  referenceNumber: this.invoiceResDto.referenceNumber,
+                  compteId: this.selectedCompte.id
+                };
+                this.invoiceService.payInvoice(invoiceDTO).subscribe({
+                  next: (response) => {
+                    this.isLoadingForEcodeVeriFication=true;
+                    setTimeout(()=>{
+                    this.showSuccessModal=true;
+                    this.showEcodeModal = false;
+                    this.code='';
+                  },2000)
+                    console.log('Invoice paid successfully:', response);
+                  },
+                  error: (error) => {
+                    console.error('Error paying invoice:', error);
+                  }
+                });
+              } else {
+                this.isLoadingForEcodeVeriFication=true;
+                setTimeout(()=>{
+                  this.isLoadingForEcodeVeriFication=false;
+                  this.showEcodeModal = false;
+                  this.showFailureModal=true;
+                  this.code='';
+                },2000)
+              }
+            },
+            error: (err) => {
+              console.error("Erreur lors de l'appel à sendEcodeTokenForVerification :", err);
+            }
+          });
+
+    
+
+
+    
   }
 }
