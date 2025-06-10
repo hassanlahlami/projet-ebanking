@@ -63,19 +63,18 @@ public class ClientService {
     public void deleteClient(Long id) {
         clientRepo.deleteById(id);
     }
-    public void updateclient(long id,Clientchangedto clientchangedto) {
+
+    public void updateclient(long id, Clientchangedto clientchangedto) {
 
         Client client=getClientnodtoById(id);
-            client.setEmail(clientchangedto.getEmail());
-            client.setPhone(clientchangedto.getPhone());
-            client.setUsername(clientchangedto.getName());
-            clientRepo.save(client);
+        client.setEmail(clientchangedto.getEmail());
+        client.setPhone(clientchangedto.getPhone());
+        client.setUsername(clientchangedto.getUsername());
+        client.setJob(clientchangedto.getJob());
+        clientRepo.save(client);
 
 
     }
-//    public Client getclientbyEmail(String email) {
-//            return clientRepo.findByEmail(email);
-//    }
     public User getUserByEmail(String email) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User non trouvé avec l'Email: " + email));

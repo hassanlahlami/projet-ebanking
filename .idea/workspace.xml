@@ -10,26 +10,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d51e4d27-739c-4076-8922-44727200ba6c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/EmployeeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/StatsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/EmployeeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/StatsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/BalanceDistributionDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/CurrentAccountsSummaryStatsDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/DashboardStatsResDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/EmployeeDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/EmployeeResDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/mapper/EmployeeMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CEpargneRepo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/EmployeeRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/SavingsAccountSummaryStatsDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/ClientService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AppConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CCourantRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CCourantRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/ClientRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/ClientRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/UserRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/UserRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/EmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/StatsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/StatsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/VirementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/VirementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/EmployeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/StatsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/StatsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/VirementController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/VirementController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/ClientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/ClientDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/Clientchangedto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/Clientchangedto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CEpargneRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CEpargneRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/EmployeeRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/EmployeeRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/VirementRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/VirementRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +92,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;Tomcat Server.Tomcat 10.1.34.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;ebankingSecuredDev&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;BackEndHassanEmployeeAdded&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/HP/OneDrive/Documents/JavaIntellij/Auth-Service&quot;,
@@ -244,7 +241,9 @@
       <workItem from="1749411395014" duration="2019000" />
       <workItem from="1749424952909" duration="9249000" />
       <workItem from="1749458401250" duration="5733000" />
-      <workItem from="1749476367903" duration="1518000" />
+      <workItem from="1749476367903" duration="21506000" />
+      <workItem from="1749514492377" duration="3141000" />
+      <workItem from="1749535196078" duration="744000" />
     </task>
     <servers />
   </component>
@@ -273,5 +272,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CEpargneRepo.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

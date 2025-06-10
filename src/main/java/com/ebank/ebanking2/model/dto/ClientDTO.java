@@ -20,4 +20,5 @@ public class ClientDTO {
     private String phone;
     private String job;
     private String password;
+    private boolean valid;
 }

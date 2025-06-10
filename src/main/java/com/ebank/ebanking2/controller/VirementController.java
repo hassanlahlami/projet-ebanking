@@ -43,6 +43,11 @@ public class VirementController {
     public ResponseEntity<Page<VirementResDTO>> getAllVirementsByEmetteurCompteIdOrRecepteurCompteId(@PathVariable("id") @P("id") Long id, @RequestParam("offset") Integer offset, @RequestParam("size") Integer size) {
         return ResponseEntity.ok(virementService.getAllVirementByEmetteurCompteIdOrRecepteurCompteId(id,id,offset,size));
     }
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @GetMapping
+    public ResponseEntity<Page<VirementResDTO>> getAllVirements(@RequestParam("offset") Integer offset, @RequestParam("size") Integer size) {
+        return ResponseEntity.ok(virementService.getAllVirements(offset,size));
+    }
     @PreAuthorize("hasRole('EMPLOYEE') or ( hasRole('CLIENT') and ( @compteService.getClientByCompteId(@virementService.getById(#id).compteEmetteur.id).id == authentication.principal.id or @compteService.getClientByCompteId(@virementService.getById(#id).compteRecepteur.id).id == authentication.principal.id))")
     @GetMapping("/{id}/recu")
     public ResponseEntity<byte[]> getRecuPdf(@PathVariable("id") @P("id") Long id) throws IOException {
@@ -59,7 +64,7 @@ public class VirementController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdfContent);
     }
-    @PreAuthorize("hasRole('CLIENT') and @compteService.getClientByCompteRib(#request.compteEmetteur).id == authentication.principal.id")
+    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and @compteService.getClientByCompteRib(#request.compteEmetteur).id == authentication.principal.id)")
     @PostMapping("/virement")
     public ResponseEntity<?> executeVirement(@RequestBody @P("request") VirementDTOrib request) {
         try {
@@ -78,6 +83,7 @@ public class VirementController {
             ));
         }
     }
+
 
 
 

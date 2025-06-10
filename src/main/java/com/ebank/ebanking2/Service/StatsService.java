@@ -3,6 +3,8 @@ package com.ebank.ebanking2.Service;
 import com.ebank.ebanking2.model.dto.BalanceDistributionDTO;
 import com.ebank.ebanking2.model.dto.CurrentAccountsSummaryStatsDto;
 import com.ebank.ebanking2.model.dto.DashboardStatsResDTO;
+import com.ebank.ebanking2.model.dto.SavingsAccountSummaryStatsDTO;
+import com.ebank.ebanking2.model.entity.CEpargne;
 import com.ebank.ebanking2.repository.CCourantRepo;
 import com.ebank.ebanking2.repository.CEpargneRepo;
 import com.ebank.ebanking2.repository.ClientRepo;
@@ -13,7 +15,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StatsService {
@@ -176,6 +180,41 @@ public class StatsService {
         long newThisMonth = cCourantRepo.countByCreatedAtAfter(firstDay);
 
         return new CurrentAccountsSummaryStatsDto(totalAccounts, totalBalance, averageBalance, newThisMonth);
+    }
+
+    public Map<String, Long> getMonthlyStats(int lastN) {
+        LocalDateTime start = LocalDateTime.now().minusMonths(lastN - 1).withDayOfMonth(1);
+        List<CEpargne> accounts = cEpargneRepo.findByCreatedAtAfter(start);
+
+        return accounts.stream()
+                .collect(Collectors.groupingBy(
+                        acc -> acc.getCreatedAt().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH),
+                        TreeMap::new,
+                        Collectors.counting()
+                ));
+    }
+
+    public Map<String, Long> getYearlyStats(int lastN) {
+        int currentYear = LocalDate.now().getYear();
+        List<CEpargne> accounts = cEpargneRepo.findByCreatedAtAfter(LocalDateTime.of(currentYear - lastN + 1, 1, 1, 0, 0));
+
+        return accounts.stream()
+                .collect(Collectors.groupingBy(
+                        acc -> String.valueOf(acc.getCreatedAt().getYear()),
+                        TreeMap::new,
+                        Collectors.counting()
+                ));
+    }
+    public SavingsAccountSummaryStatsDTO getSavingsSummaryStats() {
+        double average = cEpargneRepo.calculateAverageDeposit();
+        int current = cEpargneRepo.countCurrentMonthAccounts();
+        int previous = cEpargneRepo.countPreviousMonthAccounts();
+
+        double growth = (previous == 0) ? 0 : ((double)(current - previous) / previous) * 100;
+
+        int newAccounts = cEpargneRepo.countNewAccountsThisMonth();
+
+        return new SavingsAccountSummaryStatsDTO(average, growth, newAccounts);
     }
 
 

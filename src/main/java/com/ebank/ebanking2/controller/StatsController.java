@@ -4,13 +4,16 @@ import com.ebank.ebanking2.Service.StatsService;
 import com.ebank.ebanking2.model.dto.BalanceDistributionDTO;
 import com.ebank.ebanking2.model.dto.CurrentAccountsSummaryStatsDto;
 import com.ebank.ebanking2.model.dto.DashboardStatsResDTO;
+import com.ebank.ebanking2.model.dto.SavingsAccountSummaryStatsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -56,6 +59,24 @@ public class StatsController {
     @GetMapping("/summary")
     public ResponseEntity<CurrentAccountsSummaryStatsDto> getAccountSummary() {
         CurrentAccountsSummaryStatsDto summary = statsService.getAccountSummaryStats();
+        return ResponseEntity.ok(summary);
+    }
+    @GetMapping("/cepargne")
+    public Map<String, Long> getSavingsStats(
+            @RequestParam(name="filter") String filter,
+            @RequestParam(defaultValue = "6", name = "lastN") int lastN
+    ) {
+        if ("month".equalsIgnoreCase(filter)) {
+            return statsService.getMonthlyStats(lastN);
+        } else if ("year".equalsIgnoreCase(filter)) {
+            return statsService.getYearlyStats(lastN);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid filter: must be 'month' or 'year'");
+        }
+    }
+    @GetMapping("/cepargne/summary")
+    public ResponseEntity<SavingsAccountSummaryStatsDTO> getSavingsAccountSummary() {
+        SavingsAccountSummaryStatsDTO summary = statsService.getSavingsSummaryStats();
         return ResponseEntity.ok(summary);
     }
 

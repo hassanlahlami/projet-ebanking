@@ -10,6 +10,7 @@ import com.ebank.ebanking2.model.dto.Clientchangedto;
 import com.ebank.ebanking2.model.entity.Client;
 import com.ebank.ebanking2.model.entity.User;
 import com.ebank.ebanking2.model.entity.tokenmail;
+import com.ebank.ebanking2.repository.ClientRepo;
 import com.ebank.ebanking2.repository.Tokenmailrepo;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class ClientController {
     Tokenmailrepo tokenrepo;
     @Autowired
     mail mailservice;
+    @Autowired
+    ClientRepo clientRepo;
 
     @PreAuthorize("hasRole('EMPLOYEE')")
     @PostMapping("/client")
@@ -94,5 +97,19 @@ public class ClientController {
     @DeleteMapping("/delete/token/{id}")
     public void delete(@PathVariable("id") long token) {
         tokenrepo.deleteById(token);
+    }
+    @PreAuthorize("hasRole('EMPLOYEE')") // or (hasRole('CLIENT') and #id == authentication.principal.id)
+    @PutMapping("/update/client/{id}")
+    public boolean updateclient(@RequestBody Clientchangedto clientchangedto, @PathVariable("id") long id) {
+        clientService.updateclient(id, clientchangedto);
+        return true;
+    }
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PostMapping("/validate/{id}")
+    public void validate(@PathVariable("id")long id){
+        Client client = clientService.getClientnodtoById(id);
+        client.setValid(true);
+        clientRepo.save(client);
+
     }
 }

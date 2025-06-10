@@ -1,9 +1,6 @@
 package com.ebank.ebanking2.Service;
 
-import com.ebank.ebanking2.model.dto.CCourantResDTO;
-import com.ebank.ebanking2.model.dto.VirementDTO;
-import com.ebank.ebanking2.model.dto.VirementDTOrib;
-import com.ebank.ebanking2.model.dto.VirementResDTO;
+import com.ebank.ebanking2.model.dto.*;
 import com.ebank.ebanking2.model.entity.*;
 import com.ebank.ebanking2.model.mapper.VirementMapper;
 import com.ebank.ebanking2.repository.ClientRepo;
@@ -138,7 +135,6 @@ public class VirementService{
     public CCourant getCCourantByRib(String rib){
         return compteRepo.findByRib(rib).orElseThrow();
     }
-
     public Page<VirementResDTO> getAllVirementByEmetteurCompteIdOrRecepteurCompteId(Long eCompteId, Long rCompteId, int offset, int size) {
         Pageable pageable = PageRequest.of(offset, size);
         Compte eCompte=compteRepo.findById(eCompteId).orElseThrow();
@@ -146,56 +142,13 @@ public class VirementService{
 
         return this.virementRepo.findVirementByCompteEmetteurOrCompteRecepteur((CCourant) eCompte, (CCourant) rCompte,pageable).map(virement -> virementMapper.toResDTO(virement));
     }
+    public Page<VirementResDTO> getAllVirements(int offset, int size) {
+        Pageable pageable = PageRequest.of(offset, size);
+        return this.virementRepo.findAll(pageable).map(virement -> virementMapper.toResDTO(virement));
+    }
     public Virement getById(Long virementId) throws AccountNotFoundException {
         return virementRepo.findById(virementId)
                 .orElseThrow(() -> new AccountNotFoundException("Virement with Id " + virementId + " not found"));
     }
-//    public VirementDTO effectuerVirement(VirementDTO dto) {
-//        // Validation des clients
-//
-////        Compte cEmetteur = compteRepo.findById(dto.getEmetteurCompteId())
-////                .orElseThrow(() -> new RuntimeException("Émetteur non trouvé avec l'ID: " + dto.getEmetteurCompteId()));
-////        Compte cRecepteur = compteRepo.findById(dto.getRecepteurCompteId())
-////                .orElseThrow(() -> new RuntimeException("Récepteur non trouvé avec l'ID: " + dto.getRecepteurCompteId()));
-////        if(cEmetteur instanceof CEpargne){
-////            throw new RuntimeException("le compte emetteur est epargne, vous ne pouver pas initier virement!");
-////        }
-////        if(cRecepteur instanceof CEpargne){
-////            throw new RuntimeException("le compte recepteur est epargne, vous ne pouver pas initier virement!");
-////        }
-////        CCourant ccEmetteur = (CCourant) cEmetteur;
-////        CCourant ccRecepteur = (CCourant) cRecepteur;
-////        if (ccEmetteur.getStatus() != StatusCompte.ACTIF || ccRecepteur.getStatus() != StatusCompte.ACTIF) {
-////            throw new RuntimeException("Le compte émetteur ou récepteur n'est pas actif");
-////        }
-////        if (ccEmetteur.getSolde() < dto.getMontant()) {
-////            throw new RuntimeException("Solde insuffisant sur le compte émetteur");
-////        }
-////        Virement virement = virementMapper.toEntity(dto);
-////        // Mise à jour des soldes
-////        cEmetteur.setSolde(cEmetteur.getSolde() - dto.getMontant());
-////        cRecepteur.setSolde(cRecepteur.getSolde() + dto.getMontant());
-//////        // Ajout de l'ID du virement aux comptes
-//////        compteEmetteur.getVirements().add(virement.getId());
-//////        compteRecepteur.getVirements().add(virement.getId());
-////        // Sauvegarde des entités
-////        Optional<Virement> lastVirement=virementRepo.getFirstByOrderByIdDesc();
-////        String id;
-////        if(lastVirement.isPresent()){
-////            id=idGenerator.generateNextId(lastVirement.get().getId());
-////        }else{
-////            id=idGenerator.generateNextId(null);
-////        }
-////        virement.setId(id);
-////        virementRepo.save(virement);
-////        compteRepo.save(cEmetteur);
-////        compteRepo.save(cRecepteur);
-////        return virementMapper.toDto(virement);
-//
-//        return null;
-//    }
-//
-//    public List<VirementDTO> getAllVirementByEmetteurCompteIdOrRecepteurCompteId(Long eCompteId, Long rCompteId) {
-//        return this.virementRepo.findVirementByEmetteurCompteIdOrRecepteurCompteId(eCompteId,rCompteId);
-//    }
+
 }

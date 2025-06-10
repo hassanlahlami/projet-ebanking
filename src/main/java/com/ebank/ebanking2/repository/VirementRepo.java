@@ -15,5 +15,6 @@ import java.util.Optional;
 public interface VirementRepo extends JpaRepository<Virement, Long> {
     Optional<Virement> getFirstByOrderByIdDesc();
     Page<Virement> findVirementByCompteEmetteurOrCompteRecepteur(CCourant ecompte, CCourant rCompte, Pageable pageable);
+    Page<Virement> findAll(Pageable pageable);
 
 }
