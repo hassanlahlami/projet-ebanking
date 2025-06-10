@@ -11,14 +11,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d51e4d27-739c-4076-8922-44727200ba6c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/BankingTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/BankingTools.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/ClientService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AppConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ChatbotController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ChatbotController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/CompteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/CompteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/chatController/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/chatController/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/exceptionHandler/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/exceptionHandler/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

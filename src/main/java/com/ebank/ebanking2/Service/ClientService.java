@@ -44,6 +44,10 @@ public class ClientService {
 
 
     public ClientResDTO addClient(ClientDTO clientDTO) {
+        Optional<Client> verifyClient = clientRepo.findByEmail(clientDTO.getEmail());
+        if (verifyClient.isPresent()){
+            throw new IllegalStateException("this email is already token");
+        }
         if (clientDTO.getPassword() == null || clientDTO.getPassword().length() < 8) {
             throw new IllegalStateException("Password must contain at least 8 characters");
         }

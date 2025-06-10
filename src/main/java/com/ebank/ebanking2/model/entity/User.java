@@ -26,6 +26,7 @@ public class User {
     private String firstName;
     private String lastName;
 
+
     private String username;
 
     private String password;
@@ -36,6 +37,7 @@ public class User {
 
     private LocalDateTime recoveryPasswordTokenExpirationTime;
 
+    @Column(unique = true)
     private String email;
 
     private String phone;
