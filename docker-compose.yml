@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    build:
-      context: ./projet-ebanking-ebankingSecuredDev/projet-ebanking-ebankingSecuredDev
-      dockerfile: Dockerfile
+    image : jozef952/bank-backend:v1
     container_name: ebanking-backend
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://ebanking.c0x6q2u2yn60.us-east-1.rds.amazonaws.com:5432/ebanking
@@ -15,9 +13,7 @@ services:
     restart: on-failure
 
   frontend:
-    build:
-      context: ./projet-ebanking-EbankingDevFront/projet-ebanking-EbankingDevFront
-      dockerfile: Dockerfile
+    image : jozef952/bank-frontend:v1
     container_name: ebanking-frontend
     ports:
       - "4200:4200"
@@ -26,9 +22,7 @@ services:
     restart: on-failure
 
   frontend-admin:
-    build:
-      context: ./projet-ebanking-admin-front
-      dockerfile: Dockerfile
+    image : jozef952/bank-frontend-admin:v1
     container_name: ebanking-frontend-admin
     ports:
       - "4100:4100"
