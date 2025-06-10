@@ -8,7 +8,7 @@
         <div class="mb-3">
           <label for="fromAccount" class="form-label">{{ 'TRANSFER.FROM_ACCOUNT' | translate }}</label>
           <select id="fromAccount" class="form-select" formControlName="compteEmetteur">
-            <option value="" disabled selected>{{ 'TRANSFER.CHOOSE_ACCOUNT' | translate }}</option>
+            <option value="" disabled>{{ 'TRANSFER.CHOOSE_ACCOUNT' | translate }}</option>
             <ng-container *ngFor="let item of fromComptes">
               <option [value]="item.rib">{{ item.rib }}</option>
             </ng-container>
@@ -28,7 +28,7 @@
         <div class="mb-3">
           <label for="typeTransaction" class="form-label">{{ 'TRANSFER.TYPE_TRANSACTION' | translate }}</label>
           <select id="typeTransaction" class="form-select" formControlName="type">
-            <option value="INSTANTANEE">{{ 'TRANSFER.TYPE_INSTANT' | translate }}</option>
+            <option value="INSTANTANEE" [selected]="true">{{ 'TRANSFER.TYPE_INSTANT' | translate }}</option>
             <option value="NORMAL">{{ 'TRANSFER.TYPE_NORMAL' | translate }}</option>
           </select>
         </div>

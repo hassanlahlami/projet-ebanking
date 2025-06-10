@@ -3,6 +3,8 @@
   "navDashboard": "Dashboard",
   "navAccounts": "Accounts",
   "navTransfers": "Transfers",
+  "navCrypto" : "crypto",
+  "navPaiments" : "Payment",
   "navLogout": "Logout",
   "footerText": "© 2025 eBanking App",
   "dashboardTitle": "Welcome to Your Bank Dashboard",
@@ -204,5 +206,8 @@
 
     "PHONE_RECHARGE": "Phone Recharge",
     "INVOICES": "Invoices"
-  }
+  },
+  "navSettings": "Settings"
+
+
 }

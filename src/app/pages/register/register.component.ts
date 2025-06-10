@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../Service/Auth.service';
 import { MaybeClientDTO } from '../../model/dto/MaybeClientDTO';
-import { RegisterVerification } from '../../Service/registerVerification.service';
 import { MaybeClientWithEmailTokenDTO } from '../../model/dto/MaybeClientWithEmailTokenDTO';
 import { UserRegisterDTO } from '../../model/dto/UserRegistryDTO';
+import {RegisterVerification} from '../../Service/RegisterVerification.service';
 
 @Component({
   selector: 'app-register',
@@ -140,6 +140,11 @@ export class RegisterComponent {
   continueToLastStep(): void{
     if (!this.dto.password) {
       this.error = 'Veuillez saisir votre mot de passe';
+      return;
+    }
+
+    if (this.dto.password.length < 8) {
+      this.error = 'Password must contain at least 8 characters.';
       return;
     }
 

@@ -44,13 +44,36 @@
             <option value="en" [selected]="localStorage.getItem('lang') === 'en'">EN</option>
             <option value="fr" [selected]="localStorage.getItem('lang') === 'fr'">FR</option>
           </select>
+
+          <ul class="navbar-nav ms-3">
+            <li class="nav-item dropdown profile-dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center text-white" href="#" id="navbarDropdownProfile">
+                <i class="bi bi-person-circle me-2"></i>
+                <span class="d-none d-md-inline">{{ username }}</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end mt-2 shadow-sm" aria-labelledby="navbarDropdownProfile">
+                <li>
+                  <a class="dropdown-item" routerLink="/settings">
+                    <i class="bi bi-person me-2"></i> {{ 'navSettings' | translate }}
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item text-danger" (click)="logout()">
+                    <i class="bi bi-box-arrow-right me-2"></i> {{ 'navLogout' | translate }}
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+
         </div>
       </nav>
     </header>
 
     <main class="app-main flex-grow-1 p-4 bg-light">
       <router-outlet></router-outlet>
-      <app-chatbot></app-chatbot>
+      <chatbot></chatbot>
+      <!--<app-chatbot></app-chatbot>-->
     </main>
 
     <!-- Footer -->

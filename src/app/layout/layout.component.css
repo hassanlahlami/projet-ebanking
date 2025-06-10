@@ -7,16 +7,15 @@
   --hover-bg: rgba(255, 255, 255, 0.1);
 }
 
-/* Header */
+/* -------- HEADER -------- */
 .app-header {
   background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   color: var(--text-light);
   padding: 1rem 2rem;
 }
 
-/* Use navbar classes */
 .navbar {
-  padding: 0; /* override bootstrap default */
+  padding: 0;
 }
 
 .navbar-brand img {
@@ -25,9 +24,11 @@
   object-fit: contain;
 }
 
+/* -------- NAV LINKS -------- */
 .navbar-nav {
   display: flex;
   gap: 1.5rem;
+  margin-left: 50px;
 }
 
 .navbar-nav .nav-link {
@@ -59,7 +60,7 @@
   transform: scaleX(1);
 }
 
-/* Language selector styling */
+/* -------- LANG SELECTOR -------- */
 select.form-select {
   appearance: none;
   background-color: #fff;
@@ -85,14 +86,14 @@ select.form-select:focus {
   border-color: var(--primary-color);
 }
 
-/* Main Content */
+/* -------- MAIN CONTENT -------- */
 .app-main {
   flex-grow: 1;
   padding: 2rem;
   background-color: var(--background-light);
 }
 
-/* Footer */
+/* -------- FOOTER -------- */
 .app-footer {
   background-color: var(--footer-bg);
   color: #fff;
@@ -101,7 +102,7 @@ select.form-select:focus {
   font-size: 0.9rem;
 }
 
-/* Responsive behavior */
+/* -------- RESPONSIVE -------- */
 @media (max-width: 768px) {
   .navbar-nav {
     flex-direction: column;
@@ -117,4 +118,96 @@ select.form-select:focus {
     margin-top: 1rem;
     margin-left: 0;
   }
+
+  .navbar-nav .dropdown-toggle span {
+    display: none !important;
+  }
+}
+
+:host {
+  --primary-color: #004080;
+  --text-light: #fff;
+  --background-light: #f5f7fa;
+}
+
+/* --- NAVBAR DROPDOWN PROFILE --- */
+.navbar-nav .dropdown-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.navbar-nav .dropdown-toggle::after {
+  margin-left: 0.5rem;
+}
+
+/* Icône du profil */
+.navbar-nav .dropdown-toggle i {
+  font-size: 1.2rem;
+}
+
+/* Username à droite de l'icône */
+.navbar-nav .dropdown-toggle span.d-none.d-md-inline {
+  font-weight: 500;
+}
+
+/* Container général */
+.navbar-nav.ms-3 {
+  margin-left: 1rem !important;
+}
+
+/* Ensure the parent dropdown item is a positioning context */
+.navbar-nav .nav-item.dropdown {
+  position: relative;
+}
+
+/* MENU hidden by default and positioned absolutely */
+.navbar-nav .nav-item.dropdown .dropdown-menu {
+  display: block; /* Use display block but control visibility */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out;
+  position: absolute;
+  top: 100%; /* Position right below the toggle */
+  right: 0; /* Align to the right */
+  z-index: 1000;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0;
+  min-width: 180px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* Show the menu on hover of the parent dropdown item */
+.navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  right: -50px; /* Move the dropdown further to the right */
+}
+
+/* Items */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  padding: 0.65rem 1.25rem;
+  color: #333;
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-item i {
+  font-size: 1.1rem;
+  color: inherit;
+}
+
+.dropdown-item:hover {
+  background-color: var(--primary-color);
+  color: var(--text-light);
+}
+
+/* Danger item */
+.dropdown-item.text-danger:hover {
+  background-color: #dc3545;
+  color: var(--text-light) !important;
 }

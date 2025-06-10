@@ -20,7 +20,7 @@ import { AuthService } from '../../Service/Auth.service';
 export class TransfersComponent implements OnInit {
 
   transfer = new FormGroup({
-    compteEmetteur: new FormControl<string | null>(null, Validators.required),
+    compteEmetteur: new FormControl<string | null>('', Validators.required),
     compteRecepteur: new FormControl<string | null>(null, Validators.required),
     montant: new FormControl<number | null>(null, [Validators.required, Validators.min(0.01)]),
     type: new FormControl<TypeTransaction>(TypeTransaction.INSTANTANEE)
@@ -111,7 +111,7 @@ export class TransfersComponent implements OnInit {
             this.idVirement=response.data.id;
           },
           error: (err) => {
-              if (err.status === 401 || err.status === 403) {
+            if (err.status === 401 || err.status === 403) {
               this.authService.logout();
             } else {
               console.error("Erreur virement :", err);

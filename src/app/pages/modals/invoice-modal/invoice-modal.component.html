@@ -15,7 +15,7 @@
       <button type="submit">{{ 'PAYMENT.SEARCH_BUTTON' | translate }}</button>
     </form>
 
-    <form (ngSubmit)="payInvoice()">
+    <form (ngSubmit)="payInvoice()"> <!--DisplayEcodeModal() ____-->
       <div class="invoice" *ngIf="showInvoiceToPay && invoiceResDto != null">
         <div class="invoice-details">
           <p><strong>{{ invoiceResDto?.amount }} DH</strong></p>
@@ -56,6 +56,42 @@
     </div>
   </div>
 </div>
+
+
+<!-- MODALE POUR VERIFICATION DE ECODE -->
+<div *ngIf="showEcodeModal" class="ecode-modal-overlay">
+  <div class="ecode-modal-content">
+    <button class="ecode-close-button" (click)="cancel()">×</button>
+    <h3>Enter Votre E-code</h3>
+    <p>Veuillez saisir votre E-code pour valider cette opération</p>
+
+    <form (ngSubmit)="confirmInvoice()">
+      <input
+        name="verificationCode"
+        [(ngModel)]="code"
+        type="text"
+        pattern="[0-9]*"
+        maxlength="4"
+        placeholder="Enter votre E-Code"
+        required
+        (keypress)="allowOnlyNumbers($event)"
+      />
+
+      <div class="ecode-actions">
+        <button type="submit" class="validate-btn">
+          <ng-container *ngIf="!isLoadingForEcodeVeriFication; else loadingTpl">Verify</ng-container>
+          <ng-template #loadingTpl>
+            <span class="spinner-btn"></span> ...Processing
+          </ng-template>
+        </button>
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
 
 <!-- Success Payment Modal -->
 <div class="success-modal-overlay" *ngIf="showSuccessModal">

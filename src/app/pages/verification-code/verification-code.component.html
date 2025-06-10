@@ -11,7 +11,7 @@
         type="text"
         class="code-input"
         [class.filled]="codesArray.at(i).value"
-        [class.error]="codesArray.at(i).invalid && codesArray.at(i).touched"
+        [class.error]="codesArray.at(i).invalid && !codesArray.at(i).untouched"
         [formControlName]="i"
         maxlength="1"
         inputmode="numeric"

@@ -1,5 +1,3 @@
-
-
 <ng-container *ngFor="let crypto of cryptoData; let i = index; trackBy: trackBySymbol">
   <div class="crypto-row" *ngIf="i % 2 === 0">
     <!-- Première carte -->
@@ -34,9 +32,16 @@
           <p *ngIf="crypto1.athDate"><strong>Date ATH :</strong> {{ crypto1.athDate }}</p>
         </div>
         <div class="card-actions">
+          <label for="compteId" class="form-label fw-bold">Btc</label>
           <input type="number" min="0" placeholder="Montant" class="quantity-input"
             [(ngModel)]="quantities[crypto1.symbol]" [attr.data-symbol]="crypto1.symbol">
-          <input type="text" placeholder="RIB" class="rib-input" [(ngModel)]="ribs[crypto1.symbol]">
+            <label for="compteId1" class="form-label fw-bold">Choisissez Votre Compte</label>
+            <select id="compteId1" class="form-select account-select" required (change)="onCompteChange($event)">
+              <option value="" disabled selected>-- Sélectionnez un compte --</option>
+              <option *ngFor="let compte of comptesCourants" [value]="compte.rib">
+                {{ compte.rib }}
+              </option>
+            </select>
           <div class="button-group">
             <button  class="buy-btn" (click)="buy(crypto1.symbol,crypto1.currentPrice|| crypto1.price||'0')">Acheter</button>
             <button  class="sell-btn" (click)="sell(crypto1.symbol,crypto1.currentPrice|| crypto1.price||'0')">Vendre</button>
@@ -77,9 +82,18 @@
           <p *ngIf="crypto2.athDate"><strong>Date ATH :</strong> {{ crypto2.athDate }}</p>
         </div>
         <div class="card-actions">
+           <label for="compteId" class="form-label fw-bold">Eth</label>
           <input type="number" min="0" placeholder="Montant" class="quantity-input"
             [(ngModel)]="quantities[crypto2.symbol]">
-          <input type="text" placeholder="RIB" class="rib-input" [(ngModel)]="ribs[crypto2.symbol]">
+            <div class="mb-3">
+        <label for="compteId" class="form-label fw-bold">Choisissez Votre Compte</label>
+        <select id="compteId" class="form-select account-select" required (change)="onCompteChange($event)">
+          <option value="" disabled selected>-- Sélectionnez un compte --</option>
+          <option *ngFor="let compte of comptesCourants" [value]="compte.rib">
+            {{ compte.rib }}
+          </option>
+        </select>
+      </div>
           <div class="button-group">
             <button  class="buy-btn" (click)="buy(crypto2.symbol,crypto2.currentPrice|| crypto2.price||'0')">Acheter</button>
             <button class="sell-btn" (click)="sell(crypto2.symbol,crypto2.currentPrice|| crypto2.price||'0')">Vendre</button>

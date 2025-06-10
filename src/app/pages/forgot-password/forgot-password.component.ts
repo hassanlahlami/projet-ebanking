@@ -3,12 +3,11 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../Service/Auth.service';
 import { MaybeClientDTO } from '../../model/dto/MaybeClientDTO';
-import { RegisterVerification } from '../../Service/registerVerification.service';
 import { MaybeClientWithEmailTokenDTO } from '../../model/dto/MaybeClientWithEmailTokenDTO';
 import { UserRegisterDTO } from '../../model/dto/UserRegistryDTO';
-import { ForgotPassword } from '../../Service/forgotPassword.service';
 import { CheckRecoveryTokenDTO } from '../../model/dto/CheckRecoveryTokenDTO';
 import { ChangePasswordDTO } from '../../model/dto/ChangePasswordDTO';
+import {ForgotPassword} from '../../Service/ForgotPassword.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -137,6 +136,10 @@ export class ForgotPasswordComponent {
       this.error = 'le mot de passe n\'est pas compatible';
       return
     }
+    if(this.password.newPassword.length < 8){
+      this.error = 'Password must contain at least 8 characters.';
+      return;
+    }
     this.changePassword.email = this.dto.email;
     this.changePassword.newPassword = this.password.newPassword;
     this.changePassword.currentToken = this.dto.recoveryPasswordToken;
@@ -154,7 +157,9 @@ export class ForgotPasswordComponent {
               this.authService.setAuthenticated(true);
               this.router.navigateByUrl('/dashboard');
             },
-            error: () => this.error = "Email ou Password incorrect"
+            error: (err) => {
+              this.error = "Email ou Password incorrect"
+            }
           });
         } else{
           this.error = "echoue de changement de mot de passe"

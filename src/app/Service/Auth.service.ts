@@ -52,7 +52,7 @@ export class AuthService {
         localStorage.removeItem('userid');
         this.router.navigate(['/login']);
       },
-      error: () => {
+      error: (err) => {
         // Even if logout fails, clear local state
         this.setAuthenticated(false);
         // sessionStorage.removeItem('userid');

@@ -15,6 +15,7 @@ import { AuthGuard } from './auth.guard';
 import { LoginGuard } from './login.guard';
 import { RegisterComponent } from './pages/register/register.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 const routes: Routes = [
   {path: 'register', component: RegisterComponent, canActivate: [LoginGuard]},
@@ -30,6 +31,8 @@ const routes: Routes = [
       { path: 'transfers', component: TransfersComponent },
       { path: 'crypto', component: TradingComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'settings', component: SettingsComponent },
+
       { path: 'payments', component: PaymentsComponent,
         children:[
           {path:'recharges', component:RechargeComponent},

@@ -12,7 +12,7 @@ import { CompteResDTO } from '../model/dto/CompteResDTO';
 })
 export class ChatService {
 
- 
+
   constructor(private http: HttpClient) {
 
    }
@@ -20,10 +20,10 @@ export class ChatService {
   private baseUrl = 'http://localhost:8080/e_banking_2_war_exploded';
 
   sendMessage(message: string): Observable<ChatResponse> {
-    return this.http.post<ChatResponse>(`${this.baseUrl}/api/chatbot`, { message });
+    return this.http.post<ChatResponse>(`${this.baseUrl}/api/chatbot`, { message }, { withCredentials: true });
   }
 
-  
+
 }
 interface ChatResponse {
   text: string;
@@ -35,4 +35,4 @@ interface ChatResponse {
 
 
 
-  
+

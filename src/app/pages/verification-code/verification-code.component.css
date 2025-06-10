@@ -153,7 +153,7 @@
 }
 
 /* High contrast mode support */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) { /*high*/
   .code-input {
     border-width: 3px;
   }

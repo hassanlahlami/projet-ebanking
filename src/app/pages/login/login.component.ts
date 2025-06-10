@@ -35,7 +35,9 @@ export class LoginComponent {
         this.authService.setAuthenticated(true);
         this.router.navigateByUrl(this.redirectUrl);
       },
-      error: () => this.error = "Email ou Password incorrect"
+      error: (err) => {
+        this.error = "Email ou Password incorrect"
+      }
     });
   }
 }

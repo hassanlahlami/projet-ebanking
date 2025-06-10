@@ -3,6 +3,8 @@
   "navDashboard": "Tableau de bord",
   "navAccounts": "Comptes",
   "navTransfers": "Virements",
+  "navPaiments" : "Paiement",
+  "navCrypto" : "crypto",
   "navLogout": "Se déconnecter",
   "footerText": "© 2025 Application eBanking",
   "dashboardTitle": "Bienvenue sur votre tableau de bord bancaire",
@@ -199,5 +201,6 @@
     "FAILURE_MESSAGE": "Malheureusement, votre paiement n'a pas pu être traité. Veuillez réessayer.",
     "PHONE_RECHARGE": "Rechargement téléphonique",
     "INVOICES": "Factures"
-  }
+  },
+  "navSettings": "Paramètres"
 }
