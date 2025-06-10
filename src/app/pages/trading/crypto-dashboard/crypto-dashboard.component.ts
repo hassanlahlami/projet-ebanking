@@ -4,11 +4,13 @@ import { BinanceWebSocketService } from '../../../Service/binance-api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CryptoModel } from '../../../model/dto/CryptoModel';
-import {CryptoserviceService} from '../../../Service/cryptoservice.service';
+import { CryptoserviceService } from '../../../Service/cryptoservice.service';
 import { AuthService } from '../../../Service/Auth.service';
 import { CompteResDTO } from '../../../model/dto/CompteResDTO';
 import { StatusCompte } from '../../../model/dto/StatusCompte';
 import { ComptesService } from '../../../Service/comptes.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-crypto-dashboard',
@@ -17,41 +19,56 @@ import { ComptesService } from '../../../Service/comptes.service';
   styleUrls: ['./crypto-dashboard.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CryptoDashboardComponent implements OnInit, OnDestroy ,OnChanges{
-  @Input() valueboolean!:boolean;
-  value:boolean=true;
+export class CryptoDashboardComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() valueboolean!: boolean;
+  value: boolean = true;
 
-selectedRib: string = '';
+  selectedRib: string = '';
   cryptoData: CryptoModel[] = [];
   hasBought: { [symbol: string]: boolean } = {};
   quantities: { [symbol: string]: number } = {};
-  ribs: { [symbol: string]: string } = {}; // Propriété pour les RIB
+  ribs: { [symbol: string]: string } = {};
   private activeInputSymbol: string | null = null;
- selectedCompte: CompteResDTO | null = null;
- comptesCourants: CompteResDTO[] = [];
+  private shouldRefocusInput: boolean = false;
+  private isDropdownOpen: boolean = false;
+  selectedCompte: CompteResDTO | null = null;
+  comptesCourants: CompteResDTO[] = [];
 
   clientId: number = Number(localStorage.getItem('userid'));
 
   constructor(
-     private comptesService: ComptesService,
+    private comptesService: ComptesService,
     private wsService: BinanceWebSocketService,
     private cdr: ChangeDetectorRef,
-    private http:CryptoserviceService,
+    private http: CryptoserviceService,
     private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-// test
-  }
+  ) {}
 
   onCompteChange(event: any) {
     this.selectedRib = event.target.value;
     this.selectedCompte = this.comptesCourants.find(c => c.rib === this.selectedRib) || null;
+    this.isDropdownOpen = false; // Reset dropdown state
+    this.cdr.markForCheck();
   }
+
+  // Add method to handle dropdown focus events
+  onDropdownFocus() {
+    this.isDropdownOpen = true;
+    this.shouldRefocusInput = false; // Prevent input refocus while dropdown is open
+  }
+
+  onDropdownBlur() {
+    // Use setTimeout to allow click events to complete before resetting
+    setTimeout(() => {
+      this.isDropdownOpen = false;
+    }, 150);
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['valueboolean']) {
-     this.value=this.valueboolean;
-     console.log(this.value);
-      // Handle the input change here
+      this.value = this.valueboolean;
+      this.cdr.markForCheck();
     }
   }
 
@@ -59,47 +76,60 @@ selectedRib: string = '';
     this.wsService.connect();
     this.wsService.cryptoData$.subscribe({
       next: data => {
-      this.updateCryptoData(data);
-      if (isPlatformBrowser(this.platformId) && this.activeInputSymbol) {
-        setTimeout(() => {
-          const input = document.querySelector(`input[data-symbol="${this.activeInputSymbol}"]`) as HTMLInputElement;
-          if (input) {
-            input.focus();
-          }
-        }, 0);
+        this.cryptoData = this.updateCryptoData(data);
+
+        // Only refocus if not interacting with dropdown and input was previously focused
+        if (isPlatformBrowser(this.platformId) && this.shouldRefocusInput && !this.isDropdownOpen) {
+          setTimeout(() => {
+            if (this.activeInputSymbol && !this.isDropdownOpen) {
+              const input = document.querySelector(`input[data-symbol="${this.activeInputSymbol}"]`) as HTMLInputElement;
+              if (input && document.activeElement !== input) {
+                input.focus();
+              }
+            }
+          }, 0);
+        }
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          this.authService.logout();
+        } else {
+          console.error('Error in WebSocket subscription', err);
+        }
       }
-      this.cdr.markForCheck();
-    }, error: (err)=>{
-      if (err.status === 401 || err.status === 403) {
-        this.authService.logout();
-      } else {
-        console.error('Error loading contents', err);
-      }
-    }});
+    });
 
     if (isPlatformBrowser(this.platformId)) {
       document.addEventListener('focusin', this.handleFocusIn.bind(this));
+      document.addEventListener('focusout', this.handleFocusOut.bind(this));
     }
-     this.comptesService.getCompte(this.clientId, "ccourant", StatusCompte.ACTIF)
-            .subscribe({
-              next: (response: CompteResDTO[]) => { // store the data returned from the service in a variable called response
-                this.comptesCourants=response;
-              },
-              error: (err: any) => {
-                if (err.status === 401 || err.status === 403) {
-                  this.authService.logout();
-                }
-                else{
-                  console.error("Error fetching le compte courant de l'utilisateur :", this.clientId, err);
-                }
-              }
-            });
+
+    this.loadComptesCourants();
+  }
+
+  private loadComptesCourants() {
+    this.comptesService.getCompte(this.clientId, "ccourant", StatusCompte.ACTIF)
+      .subscribe({
+        next: (response: CompteResDTO[]) => {
+          this.comptesCourants = [...response];
+          this.cdr.markForCheck();
+        },
+        error: (err: any) => {
+          if (err.status === 401 || err.status === 403) {
+            this.authService.logout();
+          } else {
+            console.error("Error fetching comptes courants:", err);
+          }
+        }
+      });
   }
 
   ngOnDestroy() {
     this.wsService.disconnect();
     if (isPlatformBrowser(this.platformId)) {
       document.removeEventListener('focusin', this.handleFocusIn.bind(this));
+      document.removeEventListener('focusout', this.handleFocusOut.bind(this));
     }
   }
 
@@ -107,20 +137,40 @@ selectedRib: string = '';
     const target = event.target as HTMLInputElement;
     if (target.classList.contains('quantity-input')) {
       this.activeInputSymbol = target.getAttribute('data-symbol');
+      this.shouldRefocusInput = true;
+      this.isDropdownOpen = false;
+    } else if (target.tagName === 'SELECT' || target.closest('select')) {
+      // User is interacting with dropdown
+      this.shouldRefocusInput = false;
+      this.isDropdownOpen = true;
     }
   }
 
-  private updateCryptoData(newData: CryptoModel[]) {
+  private handleFocusOut(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target.classList.contains('quantity-input')) {
+      // Delay clearing to allow for quick refocus
+      setTimeout(() => {
+        if (document.activeElement !== target) {
+          this.shouldRefocusInput = false;
+        }
+      }, 100);
+    }
+  }
+
+  private updateCryptoData(newData: CryptoModel[]): CryptoModel[] {
+    const updatedData = [...this.cryptoData];
+
     newData.forEach(newCrypto => {
-      const existingCrypto = this.cryptoData.find(c => c.symbol === newCrypto.symbol);
-      if (existingCrypto) {
-        Object.assign(existingCrypto, newCrypto);
+      const existingIndex = updatedData.findIndex(c => c.symbol === newCrypto.symbol);
+      if (existingIndex >= 0) {
+        updatedData[existingIndex] = { ...updatedData[existingIndex], ...newCrypto };
       } else {
-        this.cryptoData.push({ ...newCrypto });
+        updatedData.push({ ...newCrypto });
       }
     });
 
-    this.cryptoData = this.cryptoData.filter(c => newData.some(n => n.symbol === c.symbol));
+    return updatedData.filter(c => newData.some(n => n.symbol === c.symbol));
   }
 
   formatPrice(price: string | undefined): string {
@@ -133,47 +183,87 @@ selectedRib: string = '';
     return !isNaN(num) && num >= 0;
   }
 
-  buy(symbol: string,curent:string) {
-      const quantity = this.quantities[symbol] || 0;
-  const rib =  this.selectedRib || '';
+  buy(symbol: string, currentPrice: string) {
+    const quantity = this.quantities[symbol] || 0;
+    const rib = this.selectedRib || '';
 
+    if (!rib) {
+      console.error('No RIB selected');
+      return;
+    }
 
-  let Object:any=`{"name":"${symbol}","montant":${quantity},"actuealprisecurrency":${curent}}`;
-    this.http.post(Object,rib).subscribe({
-      next:
-    (ref:any)=>console.log(ref),
-    error: (err) => {
-      if (err.status === 401 || err.status === 403) {
-        this.authService.logout();
-      } else {
-        console.error('Error loading contents', err);
-    }}});
-    console.log(`${Object}+${rib}`);
-    this.hasBought[symbol] = true;
-    this.quantities[symbol] = 0; // Réinitialiser après achat
-    this.ribs[symbol] = ''; // Réinitialiser le RIB après achat
-    this.cdr.markForCheck();
+    const transaction = {
+      name: symbol,
+      montant: quantity,
+      actuealprisecurrency: currentPrice
+    };
+
+    this.http.post(transaction, rib).subscribe({
+      next: (ref: any) => {
+        if(ref===true){
+          console.log('Purchase successful', ref);
+          this.hasBought[symbol] = true;
+          this.quantities[symbol] = 0;
+          this.shouldRefocusInput = false; // Clear focus state after transaction
+          this.activeInputSymbol = null;
+          this.cdr.markForCheck();
+          Swal.fire({
+            title: 'Success!',
+            text: 'Your transaction was successful',
+            icon: 'success'
+          });
+        }
+        else{
+          Swal.fire({
+            title: 'error!',
+            text: 'Your transaction was failed',
+            icon: "error"
+          });
+        }
+
+      },
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          this.authService.logout();
+        } else {
+          console.error('Error in purchase', err);
+        }
+      }
+    });
   }
 
-  sell(symbol: string,curent:string) {
-      const quantity = this.quantities[symbol] || 0;
-  const rib = this.ribs[symbol] || '';
-  let Object:any=`{"name":"${symbol}","montant":${quantity},"actuealprisecurrency":${curent}}`;
-    console.log(`Vente de ${this.quantities[symbol] || 0} unités de ${symbol}`);
-    this.http.postvendre(Object,rib).subscribe({
-    next: (ref:any)=> console.log(ref),
-    error: (err) => {
-      if (err.status === 401 || err.status === 403) {
-            this.authService.logout();
-          } else {
-            console.error('Error loading contents', err);
-          }
+  sell(symbol: string, currentPrice: string) {
+    const quantity = this.quantities[symbol] || 0;
+    const rib = this.ribs[symbol] || '';
+
+    if (!rib) {
+      console.error('No RIB selected');
+      return;
     }
-  });
-    this.hasBought[symbol] = false;
-    this.quantities[symbol] = 0; // Réinitialiser après vente
-    this.ribs[symbol] = ''; // Réinitialiser le RIB après vente
-    this.cdr.markForCheck();
+
+    const transaction = {
+      name: symbol,
+      montant: quantity,
+      actuealprisecurrency: currentPrice
+    };
+
+    this.http.postvendre(transaction, rib).subscribe({
+      next: (ref: any) => {
+        console.log('Sale successful', ref);
+        this.hasBought[symbol] = false;
+        this.quantities[symbol] = 0;
+        this.shouldRefocusInput = false; // Clear focus state after transaction
+        this.activeInputSymbol = null;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        if (err.status === 401 || err.status === 403) {
+          this.authService.logout();
+        } else {
+          console.error('Error in sale', err);
+        }
+      }
+    });
   }
 
   trackBySymbol(index: number, crypto: CryptoModel): string {

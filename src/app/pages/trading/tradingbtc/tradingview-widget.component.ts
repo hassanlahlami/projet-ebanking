@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-tradingview-widget',
@@ -7,8 +7,8 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, View
   standalone: false
 })
 export class TradingViewWidgetComponent implements AfterViewInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
 
+  @ViewChild('container', { static: true }) container!: ElementRef;
 
   ngAfterViewInit(): void {
     const script = document.createElement('script');
@@ -16,15 +16,15 @@ export class TradingViewWidgetComponent implements AfterViewInit {
     script.async = true;
     script.innerHTML = `
       {
-        "autosize": true,
-        "symbol": "BINANCE:BTCUSDT",
-        "interval": "5",
-        "timezone": "Etc/UTC",
-        "theme": "light",
-        "style": "1",
-        "locale": "en",
-        "allow_symbol_change": true,
-        "support_host": "https://www.tradingview.com"
+         "autosize": true,
+      "symbol": "BINANCE:BTCUSDT",
+      "interval": "5",
+      "timezone": "Etc/UTC",
+      "theme": "light",
+      "style": "1",
+      "locale": "en",
+      "allow_symbol_change": true,
+      "support_host": "https://www.tradingview.com"
       }`;
 
     this.container.nativeElement.appendChild(script);
