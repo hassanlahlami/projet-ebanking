@@ -3,6 +3,8 @@ package com.ebank.ebanking2.controller;
 import com.ebank.ebanking2.Service.CompteService;
 import com.ebank.ebanking2.model.dto.*;
 import com.ebank.ebanking2.model.entity.Compte;
+import com.ebank.ebanking2.model.entity.StatusCompte;
+import com.ebank.ebanking2.repository.CompteRepo;
 import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ import java.util.List;
 public class CompteController {
     @Autowired
     private CompteService compteService;
+    @Autowired
+    private CompteRepo compteRepo;
+
     @PreAuthorize("hasRole('EMPLOYEE')")
     @GetMapping("{status}/{type}")
     public ResponseEntity<List<?>> getAll(@PathVariable("status") String status, @PathVariable("type") String type) {
@@ -96,6 +101,10 @@ public class CompteController {
     @PostMapping("activeDotation/{accountId}/{autorisePaiementEnLigne}")
     public boolean changeDotationStatus(@PathVariable("accountId") @P("accountId") Long accountId,@PathVariable("autorisePaiementEnLigne") boolean autorisePaiementEnLigne){
         return compteService.changeDotationStatus(accountId,autorisePaiementEnLigne);
+    }
+    @GetMapping("okok")
+    public  List<Compte> getComptes(){
+        return compteRepo.findByClientIdAndStatus((long) 1, StatusCompte.ACTIF);
     }
 
 

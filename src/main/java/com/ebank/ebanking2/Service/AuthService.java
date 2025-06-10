@@ -201,7 +201,7 @@ public class AuthService {
             }
         }
         if(userEmail != null){
-            User user = this.userService.getUserByEmail(userEmail);
+            User user = this.userService.getUserByEmail1(userEmail);
             boolean isTokenValid = (!tokenService.getTokenObjByToken(refreshToken).isExpired() && !tokenService.getTokenObjByToken(refreshToken).isRevoked());
             if(jwtService.validateToken(refreshToken, new UserPrincipal(user)) && isTokenValid){
                 TokenWrapper accessTokenDto = jwtService.generateAccessToken(request, user.getEmail());

@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Clientchangedto {
-    private String username;
-    private String email;
-    private String phone;
-    private String job;
+public class DashboardStatsResDTO {
+    private Long totalClients;
+    private Long totalAccountCurrent;
+    private Long totalAccountSavings;
 }

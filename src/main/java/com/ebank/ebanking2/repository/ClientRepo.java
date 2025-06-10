@@ -1,6 +1,5 @@
 package com.ebank.ebanking2.repository;
 
-import com.ebank.ebanking2.Service.CompteService;
 import com.ebank.ebanking2.model.entity.Client;
 import com.ebank.ebanking2.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +17,6 @@ public interface ClientRepo extends JpaRepository<Client, Long> {
     Optional<Client> findByEmailAndIsRecoveryPasswordTokenVerified(String email, boolean status);
     Optional<Client> findByEmailAndIsRecoveryPasswordTokenVerifiedAndRecoveryPasswordTokenAndRecoveryPasswordTokenExpirationTimeAfter(String email, boolean status, String recoveryToken, LocalDateTime recoveryPasswordTokenExpirationTimeAfter);
 
-//    Client findByEmail(String email);
+    Optional<User> findByEmailAndEmail(String email,String email1);
+    long count();
 }

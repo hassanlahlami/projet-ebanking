@@ -14,6 +14,7 @@ import com.ebank.ebanking2.model.mapper.ClientMapper;
 import com.ebank.ebanking2.model.mapper.MaybeClientMapper;
 import com.ebank.ebanking2.repository.ClientRepo;
 import jakarta.mail.MessagingException;
+import com.ebank.ebanking2.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,8 @@ public class ClientService {
     private Tokenmailservice tokenmailservice;
     @Autowired
     private Mail mail;
+    @Autowired
+    private UserRepo userRepo;
 
 
     public ClientResDTO addClient(ClientDTO clientDTO) {
@@ -103,10 +106,11 @@ public class ClientService {
     public void updateclient(Long id,Clientchangedto clientchangedto) {
 
         Client client=getClientnodtoById(id);
-            client.setEmail(clientchangedto.getEmail());
-            client.setPhone(clientchangedto.getPhone());
-            client.setUsername(clientchangedto.getName());
-            clientRepo.save(client);
+        client.setEmail(clientchangedto.getEmail());
+        client.setPhone(clientchangedto.getPhone());
+        client.setUsername(clientchangedto.getUsername());
+        client.setJob(clientchangedto.getJob());
+        clientRepo.save(client);
 
 
     }
@@ -119,6 +123,11 @@ public class ClientService {
     public Client getUserByEmail(String email) {
         return clientRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User non trouvé avec l'Email: " + email));
+    }
+    public User getUserByEmail1(String email) {
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User non trouvé avec l'Email: " + email));
+        return user;
     }
 //    public boolean changePassword(ChangePasswordDTO changePasswordDTO){
 //        Optional<Client> user = null;

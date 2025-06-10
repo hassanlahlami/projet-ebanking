@@ -9,7 +9,49 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d51e4d27-739c-4076-8922-44727200ba6c" name="Changes" comment="" />
+    <list default="true" id="d51e4d27-739c-4076-8922-44727200ba6c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/EmployeeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/StatsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/EmployeeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/StatsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/BalanceDistributionDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/CurrentAccountsSummaryStatsDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/EmployeeDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/EmployeeResDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/mapper/EmployeeMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CEpargneRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/EmployeeRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/BankingTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/BankingTools.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/Chatbot.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/ChatbotService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/ClientService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/Cryptoservice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/Cryptoservice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/VirementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/VirementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/chatService/Assistant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/chatService/Assistant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/chatService/ChatServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/Service/chatService/ChatServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AiConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AiConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/LangChainConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/configuration/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ChatbotController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/CompteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/CompteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/VirementController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/VirementController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/chatController/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/controller/chatController/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/ChatRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/DashboardStatsResDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/ChatbotResDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/SavingsAccountSummaryStatsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/ClientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/ClientDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/Clientchangedto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/dto/Clientchangedto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/model/entity/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CCourantRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/CCourantRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/ClientRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/ClientRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/UserRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/UserRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/VirementRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/repository/VirementRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ebank/ebanking2/tools/BankTools.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,27 +105,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.e-banking-2 [clean,install].executor": "Run",
-    "Maven.e-banking-2 [clean].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Tomcat Server.Tomcat 10.1.34.executor": "Run",
-    "git-widget-placeholder": "ebankingSecuredDev",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Documents/JavaIntellij/Ecode_Ebanking_backend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.e-banking-2 [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.e-banking-2 [clean].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Tomcat Server.Tomcat 10.1.34.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging ebankingSecuredDev&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Documents/JavaIntellij/Ecode_Ebanking_backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Documents\JavaIntellij\e-banking\src\main\java\com\ebank\ebanking2\model\entity" />
@@ -211,6 +253,7 @@
       <updated>1749165592762</updated>
       <workItem from="1749165594056" duration="35233000" />
       <workItem from="1749239792651" duration="108741000" />
+      <workItem from="1749551239366" duration="7668000" />
     </task>
     <servers />
   </component>

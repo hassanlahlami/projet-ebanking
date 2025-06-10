@@ -3,18 +3,22 @@ package com.ebank.ebanking2.Service.chatService;
 
 import com.ebank.ebanking2.model.dto.chatdto.ChatRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
-@RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
 
-    private final Assistant assistant;
+    @Autowired
+    private Assistant assistant;
 
     @Override
     public String getChatResponse(ChatRequest chatRequest) {
-        return assistant.chat(chatRequest.userId(), chatRequest.question(), chatRequest.userId());
+        System.out.println("entered 2 - userId: " + chatRequest.userId() + ", question: " + chatRequest.question());
+        String response = assistant.chat(chatRequest.userId(), chatRequest.question(), chatRequest.userId());
+        System.out.println("AI response: " + response);
+        return response;
     }
 
 

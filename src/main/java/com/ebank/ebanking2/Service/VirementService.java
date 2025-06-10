@@ -1,9 +1,6 @@
 package com.ebank.ebanking2.Service;
 
-import com.ebank.ebanking2.model.dto.CCourantResDTO;
-import com.ebank.ebanking2.model.dto.VirementDTO;
-import com.ebank.ebanking2.model.dto.VirementDTOrib;
-import com.ebank.ebanking2.model.dto.VirementResDTO;
+import com.ebank.ebanking2.model.dto.*;
 import com.ebank.ebanking2.model.entity.*;
 import com.ebank.ebanking2.model.mapper.VirementMapper;
 import com.ebank.ebanking2.repository.ClientRepo;
@@ -155,6 +152,10 @@ public class VirementService{
         Compte rCompte=compteRepo.findById(rCompteId).orElseThrow();
 
         return this.virementRepo.findVirementByCompteEmetteurOrCompteRecepteur((CCourant) eCompte, (CCourant) rCompte,pageable).map(virement -> virementMapper.toResDTO(virement));
+    }
+    public Page<VirementResDTO> getAllVirements(int offset, int size) {
+        Pageable pageable = PageRequest.of(offset, size);
+        return this.virementRepo.findAll(pageable).map(virement -> virementMapper.toResDTO(virement));
     }
     public Virement getById(Long virementId) throws AccountNotFoundException {
         return virementRepo.findById(virementId)

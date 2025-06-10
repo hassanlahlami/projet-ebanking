@@ -30,7 +30,11 @@ public class Cryptoservice {
          double prix_acheter=montant*actuealprisecurrency;
 
         double compte=compteService.getSolde(rib);
+        if(compte<prix_acheter){
+            return false;
+        }
         double prix_ajouter=compte-prix_acheter;
+
         System.out.println("he");
         CCourant compte1=compteRepo.findByRib(rib).get();
         System.out.println(compte1.getId());

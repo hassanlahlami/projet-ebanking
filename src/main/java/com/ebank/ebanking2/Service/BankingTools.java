@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 public class BankingTools {
 
     @Autowired
@@ -31,9 +30,10 @@ public class BankingTools {
     @Autowired
     VirementService virementService;
 
-    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #userId == authentication.principal.id)")
-    @Tool("Get user's account balances")
+//    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #userId == authentication.principal.id)")
+    @Tool("Obtenir les soldes des comptes bancaires de l'utilisateur. Utilise cette fonction quand l'utilisateur demande son solde, ses soldes, ou le montant sur ses comptes.")
     public String getUserSolde(@P("userId") @org.springframework.security.access.method.P("userId") Long userId) {
+        System.out.println("solde");
         List<Compte> comptes = compteRepo.findByClientIdAndStatus(userId, StatusCompte.ACTIF);
         if (comptes.isEmpty()) {
             return "Sorry, we couldn't find any active accounts for your ID.";
@@ -41,20 +41,23 @@ public class BankingTools {
         return comptes.stream()
                 .map(compte -> compte.getRib() + ": " + compte.getSolde() + " MAD")
                 .collect(Collectors.joining("\n"));
-    }
+}
 
-    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #userId == authentication.principal.id)")
+//    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #userId == authentication.principal.id)")
     @Tool("List user's accounts")
     public String listUserAccounts(@P("userId") Long userId) {
+        System.out.println("accounts");
         List<Compte> comptes = compteRepo.findByClientId(userId);
         return comptes.stream()
                 .map(compte -> compte.getRib())
                 .collect(Collectors.joining("\n"));
     }
 
-    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #userId == authentication.principal.id)")
+//    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #userId == authentication.principal.id)")
     @Tool("Get user's transaction history")
     public String getTransactionHistory(@P("userId") Long userId) {
+        System.out.println("history");
+
         Optional<List<Virement>> optionalVirements = virementRepo.getLastTransactions(userId);
 
         if (optionalVirements.isEmpty() || optionalVirements.get().isEmpty()) {
@@ -79,11 +82,13 @@ public class BankingTools {
                 .collect(Collectors.joining("\n"));
     }
 
-    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and @compteService.getClientByCompteRib(#ribFrom).id == authentication.principal.id)")
+//    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and @compteService.getClientByCompteRib(#ribFrom).id == authentication.principal.id)")
     @Tool("Make a transfer")
     public String makeTransfer(@P("fromAccount") @org.springframework.security.access.method.P("ribFrom") String ribFrom,
                                @P("toAccount") String ribTo,
                                @P("amount") double amount) {
+        System.out.println("transfert");
+
         try {
             VirementDTOrib dto = new VirementDTOrib();
             dto.setCompteEmetteur(ribFrom);

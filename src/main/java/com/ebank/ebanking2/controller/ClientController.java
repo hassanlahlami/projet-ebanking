@@ -7,6 +7,7 @@ import com.ebank.ebanking2.model.dto.*;
 import com.ebank.ebanking2.model.entity.Client;
 import com.ebank.ebanking2.model.entity.User;
 import com.ebank.ebanking2.model.entity.tokenmail;
+import com.ebank.ebanking2.repository.ClientRepo;
 import com.ebank.ebanking2.repository.Tokenmailrepo;
 import com.ebank.ebanking2.util.EcodeValidator;
 import jakarta.mail.MessagingException;
@@ -32,6 +33,8 @@ public class ClientController {
     Tokenmailrepo tokenrepo;
     @Autowired
     Mail mailservice;
+    @Autowired
+    private ClientRepo clientRepo;
 
     @PreAuthorize("hasRole('EMPLOYEE')")
     @PostMapping("/client")
@@ -39,14 +42,12 @@ public class ClientController {
         ClientResDTO cdto= clientService.addClient(clientdto);
         return new ResponseEntity<>(cdto, HttpStatus.CREATED);
     }
-
     @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #email == authentication.principal.username)")
     @GetMapping("/client/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable("email") @P("email") String email) {
         User client = clientService.getUserByEmail(email);
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
-
     @PreAuthorize("hasRole('EMPLOYEE')")
     @GetMapping
     public ResponseEntity<List<ClientResDTO>> allClients() {
@@ -58,7 +59,6 @@ public class ClientController {
     public ResponseEntity<ClientResDTO> getClient(@PathVariable("id") @P("id") Long id) {
         return ResponseEntity.ok(clientService.getClientById(id));
     }
-
     @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #id == authentication.principal.id)")
     @DeleteMapping("/{id}")
     public void deleteClient(@PathVariable("id") Long id) {
@@ -97,17 +97,29 @@ public class ClientController {
             return false;
         }
     }
-
     @PreAuthorize("hasRole('EMPLOYEE')")
     @GetMapping("/alltoken")
     public List<tokenmail>tokenmail(){
         return tokenrepo.findAll();
     }
-
     @PreAuthorize("hasRole('EMPLOYEE')")
     @DeleteMapping("/delete/token/{id}")
     public void delete(@PathVariable("id") long token) {
         tokenrepo.deleteById(token);
+    }
+    @PreAuthorize("hasRole('EMPLOYEE')") // or (hasRole('CLIENT') and #id == authentication.principal.id)
+    @PutMapping("/update/client/{id}")
+    public boolean updateclient(@RequestBody Clientchangedto clientchangedto, @PathVariable("id") long id) {
+        clientService.updateclient(id, clientchangedto);
+        return true;
+    }
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PostMapping("/validate/{id}")
+    public void validate(@PathVariable("id")long id){
+        Client client = clientService.getClientnodtoById(id);
+        client.setValid(true);
+        clientRepo.save(client);
+
     }
 
     @PostMapping("registry/emailSend/recoveryToken")
