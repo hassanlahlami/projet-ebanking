@@ -58,7 +58,7 @@ export class AddEmployeeModalComponent {
           Swal.fire({
             icon: 'error',
             title: translations['employee.addErrorTitle'] || 'Erreur',
-            text: errorMsg || translations['employee.addErrorMessage'] || 'Erreur inconnue'
+            text:  translations['employee.addErrorMessage'] || 'Erreur inconnue'
           });
         });
       }
