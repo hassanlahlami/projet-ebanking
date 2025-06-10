@@ -103,13 +103,14 @@ export class SavingsAccountStatsComponent implements OnInit {
           datasets: [
             {
               label: 'Savings Accounts',
-              data: fullData as (number | [number, number] | null)[],
+              data: fullData, // fullData is already number[]
               backgroundColor: '#198754',
               borderRadius: 8,
               barThickness: 30
             }
           ]
         };
+
       });
   }
   loadSummaryStats(): void {
