@@ -29,9 +29,9 @@ public class AppConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/ebanking");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/ebanking3");
         dataSource.setUsername("postgres");
-        dataSource.setPassword("1234");
+        dataSource.setPassword("0000");
         return dataSource;
     }
 

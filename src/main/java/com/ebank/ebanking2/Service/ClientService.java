@@ -44,6 +44,9 @@ public class ClientService {
 
 
     public ClientResDTO addClient(ClientDTO clientDTO) {
+        if (clientDTO.getPassword() == null || clientDTO.getPassword().length() < 8) {
+            throw new IllegalStateException("Password must contain at least 8 characters");
+        }
         SubMaybeClientDTO subMaybeClientDTO = maybeClientMapper.toDto(clientDTO);
         Client client = clientMapper.toEntity(clientDTO);
         System.out.println("okok25541o");
@@ -139,6 +142,10 @@ public class ClientService {
 //        }
 //    }
 public boolean changePassword(ChangePasswordDTO changePasswordDTO) {
+    if (changePasswordDTO.getNewPassword() == null || changePasswordDTO.getNewPassword().length() < 8) {
+        System.out.println("Password must contain at least 8 characters");
+        return false;
+    }
     Optional<Client> userOpt = clientRepo.findByEmailAndIsRecoveryPasswordTokenVerified(changePasswordDTO.getEmail(), true);
 
     if (userOpt.isEmpty()) {

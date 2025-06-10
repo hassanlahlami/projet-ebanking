@@ -23,8 +23,6 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse("USER_FETCH_FAILED", ex.getMessage()));
     }
 
-
-
     @ExceptionHandler(TokenCreationException.class)
     public ResponseEntity<?> handleTokenCreationException(TokenCreationException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -12,6 +12,7 @@ import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -30,8 +31,9 @@ public class BankingTools {
     @Autowired
     VirementService virementService;
 
+    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #userId == authentication.principal.id)")
     @Tool("Get user's account balances")
-    public String getUserSolde(@P("userId") Long userId) {
+    public String getUserSolde(@P("userId") @org.springframework.security.access.method.P("userId") Long userId) {
         List<Compte> comptes = compteRepo.findByClientIdAndStatus(userId, StatusCompte.ACTIF);
         if (comptes.isEmpty()) {
             return "Sorry, we couldn't find any active accounts for your ID.";
@@ -41,6 +43,7 @@ public class BankingTools {
                 .collect(Collectors.joining("\n"));
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #userId == authentication.principal.id)")
     @Tool("List user's accounts")
     public String listUserAccounts(@P("userId") Long userId) {
         List<Compte> comptes = compteRepo.findByClientId(userId);
@@ -49,6 +52,7 @@ public class BankingTools {
                 .collect(Collectors.joining("\n"));
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #userId == authentication.principal.id)")
     @Tool("Get user's transaction history")
     public String getTransactionHistory(@P("userId") Long userId) {
         Optional<List<Virement>> optionalVirements = virementRepo.getLastTransactions(userId);
@@ -75,9 +79,9 @@ public class BankingTools {
                 .collect(Collectors.joining("\n"));
     }
 
-
+    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and @compteService.getClientByCompteRib(#ribFrom).id == authentication.principal.id)")
     @Tool("Make a transfer")
-    public String makeTransfer(@P("fromAccount") String ribFrom,
+    public String makeTransfer(@P("fromAccount") @org.springframework.security.access.method.P("ribFrom") String ribFrom,
                                @P("toAccount") String ribTo,
                                @P("amount") double amount) {
         try {
@@ -99,7 +103,4 @@ public class BankingTools {
             return "❌ Une erreur inattendue est survenue : " + e.getMessage();
         }
     }
-
-
-
 }

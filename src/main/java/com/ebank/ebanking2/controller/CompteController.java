@@ -51,9 +51,13 @@ public class CompteController {
     public ResponseEntity<List<?>> getByClientId(@PathVariable("clientId") @P("clientId") Long clientId, @PathVariable("type") String type, @PathVariable("status") String status) {
         return ResponseEntity.ok(compteService.getByClientId(clientId, type, status));
     }
+
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PostMapping("/{clientId}/{type}/{status}")
     public ResponseEntity<List<?>> getComptes(@PathVariable("clientId") Long clientId, @PathVariable("type") String type, @PathVariable("status") String status) {
         return ResponseEntity.ok(compteService.getComptes(clientId,type,status));
     }
+
     @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #dto.clientId == authentication.principal.id)")
     @PostMapping("/comptecourant")
     public ResponseEntity<CCourantResDTO> create(@RequestBody @P("dto") CCourantDTO dto) {
@@ -88,9 +92,9 @@ public class CompteController {
     }
 
 
-
+    @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and @compteService.getClientByCompteId(#accountId).id == authentication.principal.id)")
     @PostMapping("activeDotation/{accountId}/{autorisePaiementEnLigne}")
-    public boolean changeDotationStatus(@PathVariable("accountId") Long accountId,@PathVariable("autorisePaiementEnLigne") boolean autorisePaiementEnLigne){
+    public boolean changeDotationStatus(@PathVariable("accountId") @P("accountId") Long accountId,@PathVariable("autorisePaiementEnLigne") boolean autorisePaiementEnLigne){
         return compteService.changeDotationStatus(accountId,autorisePaiementEnLigne);
     }
 

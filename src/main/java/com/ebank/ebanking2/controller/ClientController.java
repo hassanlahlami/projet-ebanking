@@ -39,12 +39,14 @@ public class ClientController {
         ClientResDTO cdto= clientService.addClient(clientdto);
         return new ResponseEntity<>(cdto, HttpStatus.CREATED);
     }
+
     @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #email == authentication.principal.username)")
     @GetMapping("/client/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable("email") @P("email") String email) {
         User client = clientService.getUserByEmail(email);
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
+
     @PreAuthorize("hasRole('EMPLOYEE')")
     @GetMapping
     public ResponseEntity<List<ClientResDTO>> allClients() {
@@ -56,6 +58,7 @@ public class ClientController {
     public ResponseEntity<ClientResDTO> getClient(@PathVariable("id") @P("id") Long id) {
         return ResponseEntity.ok(clientService.getClientById(id));
     }
+
     @PreAuthorize("hasRole('EMPLOYEE') or (hasRole('CLIENT') and #id == authentication.principal.id)")
     @DeleteMapping("/{id}")
     public void deleteClient(@PathVariable("id") Long id) {
@@ -71,14 +74,17 @@ public class ClientController {
         mailservice.javasend(client.getEmail(),tokenma,"validation token","token");
         return true;
     }
+
+    @PreAuthorize("hasRole('CLIENT') and #clientId == authentication.principal.id")
     @PostMapping("/emailSend/eCode/token/{clientId}")
-    public boolean sendTokenForEcode(@PathVariable("clientId") Long clientId) throws MessagingException {
+    public boolean sendTokenForEcode(@PathVariable("clientId") @P("clientId") Long clientId) throws MessagingException {
         String token = tokenmailservice.generateSixDigitToken();
         Client client = clientService.getClientnodtoById(clientId);
         String savedToken = tokenmailservice.savetoken(token, client).getToken();
         mailservice.sendTokenEmail(client.getEmail(), savedToken, "validation token pour E-Code","E-Code");
         return true;
     }
+
     @PreAuthorize("hasRole('EMPLOYEE')") // or (hasRole('CLIENT') and #id == authentication.principal.id)
     @PutMapping("/update/{id}")
     public boolean update(@RequestBody Clientchangedto clientchangedto, @RequestParam("token") String token, @PathVariable("id") @P("id") Long id) {
@@ -91,11 +97,13 @@ public class ClientController {
             return false;
         }
     }
+
     @PreAuthorize("hasRole('EMPLOYEE')")
     @GetMapping("/alltoken")
     public List<tokenmail>tokenmail(){
         return tokenrepo.findAll();
     }
+
     @PreAuthorize("hasRole('EMPLOYEE')")
     @DeleteMapping("/delete/token/{id}")
     public void delete(@PathVariable("id") long token) {
@@ -111,28 +119,34 @@ public class ClientController {
     public ResponseEntity<Boolean> changePassword(@RequestBody @P("changePasswordDTO") ChangePasswordDTO changePasswordDTO){
         return new ResponseEntity<>(clientService.changePassword(changePasswordDTO), HttpStatus.OK);
     }
+
     @PostMapping("registry/checkRecoveryToken")
     public ResponseEntity<Boolean> checkRecoveryToken(@RequestBody CheckRecoveryTokenDTO checkRecoveryTokenDTO){
         return new ResponseEntity<>(clientService.checkRecoveryToken(checkRecoveryTokenDTO), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('CLIENT') and #clientId == authentication.principal.id")
     @PostMapping("verifiytoken/ecode/{clientId}")
     public boolean validateTokenForEcode(@RequestParam("ecodeToken") String ecodeToken,
-                                         @PathVariable("clientId") long clientId) throws MessagingException {
+                                         @PathVariable("clientId") @P("clientId") long clientId) throws MessagingException {
         return tokenmailservice.validateToken(ecodeToken, clientId);
     }
     // Vérifier si le token (Ecode) saisi est sécurisé
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("isValid")
     public ResponseEntity<Boolean> validateSecureEcode(@RequestParam("ecode") String ecode) {
         boolean valid = EcodeValidator.isSecureCode(ecode);
         return new ResponseEntity<>(valid, HttpStatus.OK);
     }
+    @PreAuthorize("hasRole('CLIENT') and #ecodeDTO.clientId == authentication.principal.id")
     @PostMapping("saveEcode")
-    public boolean saveEcode(@RequestBody EcodeDTO ecodeDTO) throws MessagingException {
+    public boolean saveEcode(@RequestBody @P("ecodeDTO") EcodeDTO ecodeDTO) throws MessagingException {
         return clientService.saveEcode(ecodeDTO);
     }
 
+    @PreAuthorize("hasRole('CLIENT') and #ecodeDTO.clientId == authentication.principal.id")
     @PostMapping("verifyEcode")
-    public boolean verifyEcode(@RequestBody EcodeDTO ecodeDTO) throws MessagingException {
+    public boolean verifyEcode(@RequestBody @P("ecodeDTO") EcodeDTO ecodeDTO) throws MessagingException {
         return clientService.verifyEcode(ecodeDTO);
     }
 }

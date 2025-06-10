@@ -63,7 +63,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
 //                .formLogin(Customizer.withDefaults())
 //                .httpBasic(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults())
+                .httpBasic(AbstractHttpConfigurer::disable) //Customizer.withDefaults()
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout

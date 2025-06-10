@@ -7,6 +7,7 @@ import com.ebank.ebanking2.util.ChatResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class ChatbotController {
         this.objectMapper = objectMapper;
     }
 
+    @PreAuthorize("hasRole('CLIENT') or hasRole('EMPLOYEE')")
     @PostMapping
     public ChatResponse chat(@RequestBody ChatRequestDTO chatRequestDTO) {
         String response = chatbotService.chat(chatRequestDTO.getMessage());
