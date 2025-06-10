@@ -73,4 +73,30 @@ export class StatsService {
   getCurrentAccountsSummaryStats(): Observable<CurrentAccountsSummaryStats> {
     return this.http.get<CurrentAccountsSummaryStats>(`${this.apiUrl}/summary`,{ withCredentials: true });
   }
+  getSavingsAccountStats(filter: 'month' | 'year', lastN: number): Observable<{ [label: string]: number }> {
+    const params = new HttpParams()
+      .set('filter', filter)
+      .set('lastN', lastN.toString());
+
+    return this.http.get<{ [label: string]: number }>(
+      `${this.apiUrl}/cepargne`,
+      { params, withCredentials: true }
+    );
+  }
+  getSavingsAccountSummaryStats(): Observable<{
+    averageDeposit: number;
+    growthRate: number;
+    newAccounts: number;
+  }> {
+    return this.http.get<{
+      averageDeposit: number;
+      growthRate: number;
+      newAccounts: number;
+    }>(
+      `${this.apiUrl}/cepargne/summary`,
+      { withCredentials: true }
+    );
+  }
+
+
 }

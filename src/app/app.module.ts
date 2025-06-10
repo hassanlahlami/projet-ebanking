@@ -8,7 +8,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TransfersComponent } from './components/transfers/transfers.component';
 import { DepositComponent } from './components/deposit/deposit.component';
 import { ApplayoutComponent } from './applayout/applayout.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
@@ -17,6 +17,11 @@ import { CurrentAccountStatsComponent } from './components/dashboard/current-acc
 import { SavingsAccountStatsComponent } from './components/dashboard/savings-account-stats/savings-account-stats.component';
 import {NgChartsModule} from 'ng2-charts';
 import { ClientsComponent } from './components/clients/clients.component';
+import { TransferModalComponent } from './components/transfers/transfer-modal/transfer-modal.component';
+import { RecuModalComponent } from './components/transfers/recu-modal/recu-modal.component';
+import { EmployeesComponent } from './components/employees/employees.component';
+import { AddEmployeeModalComponent } from './components/employees/add-employee-modal/add-employee-modal.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -33,7 +38,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     ClientStatsComponent,
     CurrentAccountStatsComponent,
     SavingsAccountStatsComponent,
-    ClientsComponent
+    ClientsComponent,
+    TransferModalComponent,
+    RecuModalComponent,
+    EmployeesComponent,
+    AddEmployeeModalComponent,
+    UnauthorizedComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +58,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
     NgChartsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,6 +4,7 @@ import {
   ChartType,
   ChartOptions
 } from 'chart.js';
+import {StatsService} from '../../../services/stats.service';
 
 @Component({
   selector: 'app-savings-account-stats',
@@ -13,10 +14,8 @@ import {
 })
 export class SavingsAccountStatsComponent implements OnInit {
   filter: 'month' | 'year' = 'month';
-
-  // New property for last N selection
   lastNOptions = [2, 3, 4, 5, 6];
-  lastN: number = 6;  // default to last 12 months or years
+  lastN: number = 6;
 
   barChartType: 'bar' = 'bar';
   averageDeposit: number = 1520.75;
@@ -64,8 +63,12 @@ export class SavingsAccountStatsComponent implements OnInit {
     }
   };
 
+  constructor(private statsService: StatsService) {}
+
   ngOnInit(): void {
     this.loadChartData();
+    this.loadSummaryStats();
+
   }
 
   onFilterChange(): void {
@@ -73,36 +76,48 @@ export class SavingsAccountStatsComponent implements OnInit {
   }
 
   loadChartData(): void {
-    let labels: string[] = [];
-    let data: number[] = [];
+    this.statsService.getSavingsAccountStats(this.filter, this.lastN)
+      .subscribe((stats: { [label: string]: number }) => {
+        const fullLabels: string[] = [];
 
-    if (this.filter === 'month') {
-      labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      data = [10, 18, 12, 20, 25, 22, 27, 30, 15, 17, 14, 19];
-    } else {
-      labels = ['2020', '2021', '2022', '2023', '2024', '2025'];
-      data = [90, 140, 180, 210, 230, 260];
-    }
+        if (this.filter === 'month') {
+          const allMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          const currentMonthIndex = new Date().getMonth();
 
-    if (this.lastN < labels.length) {
-      labels = labels.slice(labels.length - this.lastN);
-      data = data.slice(data.length - this.lastN);
-    }
-
-    // Assign a new object to trigger change detection and re-render chart
-    this.barChartData = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Savings Accounts',
-          data: data,
-          backgroundColor: '#198754',
-          borderRadius: 8,
-          barThickness: 30
+          for (let i = this.lastN - 1; i >= 0; i--) {
+            const monthIndex = (currentMonthIndex - i + 12) % 12;
+            fullLabels.push(allMonths[monthIndex]);
+          }
+        } else {
+          const currentYear = new Date().getFullYear();
+          for (let i = this.lastN - 1; i >= 0; i--) {
+            fullLabels.push((currentYear - i).toString());
+          }
         }
-      ]
-    };
+
+        const fullData = fullLabels.map(label => stats[label] ?? 0);
+
+        this.barChartData = {
+          labels: fullLabels,
+          datasets: [
+            {
+              label: 'Savings Accounts',
+              data: fullData as (number | [number, number] | null)[],
+              backgroundColor: '#198754',
+              borderRadius: 8,
+              barThickness: 30
+            }
+          ]
+        };
+      });
+  }
+  loadSummaryStats(): void {
+    this.statsService.getSavingsAccountSummaryStats().subscribe(summary => {
+      this.averageDeposit = summary.averageDeposit;
+      this.growthRate = summary.growthRate;
+      this.newAccounts = summary.newAccounts;
+    });
   }
 
 }
