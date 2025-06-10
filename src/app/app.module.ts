@@ -24,6 +24,7 @@ import {InvoiceModalComponent} from './pages/modals/invoice-modal/invoice-modal.
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { VerificationCodeComponent } from './pages/verification-code/verification-code.component';
 // import { AuthInterceptor } from './Service/AuthInterceptor';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,7 +45,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     InvoiceModalComponent,
     LoginComponent,
     RegisterComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    VerificationCodeComponent
   ],
   imports: [
     CommonModule,

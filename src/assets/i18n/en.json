@@ -26,13 +26,93 @@
   "actionViewStatements": "View Statements",
 
 
-
   "LOGIN": {
-    "TITLE": "Authenticate",
+    "TITLE": "Login",
     "PASSWORD": "Password",
-    "CLICK": "Login",
-    "RECOVER": "Forgotten password?",
-    "CREATE": "Create an account"
+    "CLICK": "Log In",
+    "CREATE": "Create an account",
+    "RECOVER": "Forgot password?"
+  },
+  "REGISTER": {
+    "STEPS": {
+      "INFO": "Info",
+      "EMAIL": "Email",
+      "CONTACT": "Contact",
+      "SMS": "SMS",
+      "SECURITY": "Security",
+      "DONE": "Done"
+    },
+    "TITLES": {
+      "STEP1": "Personal Information",
+      "STEP2": "Email Verification",
+      "STEP3": "Contact Information",
+      "STEP4": "SMS Verification",
+      "STEP5": "Account Security",
+      "STEP6": "Finish Registration"
+    },
+    "PLACEHOLDERS": {
+      "FIRSTNAME": "First Name",
+      "LASTNAME": "Last Name",
+      "EMAIL": "Email",
+      "USERNAME": "Username",
+      "PHONE": "Phone",
+      "JOB": "Job",
+      "PASSWORD": "Password"
+    },
+    "BUTTONS": {
+      "CONTINUE": "Continue",
+      "SEND_EMAIL_CODE": "Send Code",
+      "VERIFY_EMAIL": "Verify Code",
+      "SEND_SMS_CODE": "Send SMS Code",
+      "VERIFY_SMS": "Verify Code",
+      "SUBMIT": "Create Account",
+      "BACK": "Back",
+      "LOGIN": "Back to Login"
+    },
+    "MESSAGES": {
+      "EMAIL_CODE_SENT": "Code sent to {{email}}",
+      "SMS_CODE_SENT": "SMS code sent to {{phone}}",
+      "EMAIL_INSTRUCTION": "We will send a verification code to your email",
+      "SMS_INSTRUCTION": "We will send a verification code via SMS to {{phone}}",
+      "ALL_DONE": "All information is complete",
+      "FINAL_PROMPT": "Click 'Create Account' to complete your registration",
+      "PASSWORD_NOTE": "Please enter 123456 as your password for now. This feature is not yet fully implemented."
+
+    }
+  },
+  "FORGOTPASSWORD": {
+    "STEPS": {
+      "EMAIL": "Email",
+      "VERIFYTOKEN": "Verify Code",
+      "MODIFYPASSWORD": "Change Password"
+    },
+    "TITLES": {
+      "STEP1": "Enter Your Email",
+      "STEP2": "Email Verification",
+      "STEP3": "Reset Your Password"
+    },
+    "PLACEHOLDERS": {
+      "EMAIL": "Email address",
+      "NEWPASSWORD": "New Password",
+      "CONFIRMPASSWORD": "Confirm Password"
+    },
+    "MESSAGES": {
+      "EMAILINSTRUCTION": "We will send a verification code to your email address",
+      "CODESENT": "Verification code sent to {{ email }}"
+    },
+    "BUTTONS": {
+      "CONTINUE": "Continue",
+      "SENDCODE": "Send Code",
+      "VERIFY": "Verify Code",
+      "BACK": "Back",
+      "BACKTOLOGIN": "Back to Login"
+    },
+    "ERRORS": {
+      "INVALIDEMAIL": "Please enter a valid email address.",
+      "INVALIDCODE": "The verification code is incorrect or expired.",
+      "PASSWORDMISMATCH": "Passwords do not match.",
+      "WEAKPASSWORD": "Password must be at least 8 characters and contain letters and numbers."
+    }
   },
 
   "STATUS": {
