@@ -6,7 +6,7 @@ import { EmployeeResDTO } from '../model/EmployeeResDTO';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeesService {
-  private apiUrl = `http://localhost:8080/api/employees`;
+  private apiUrl = `http://52.91.172.32/api/employees`;
 
   constructor(private http: HttpClient) {}
 

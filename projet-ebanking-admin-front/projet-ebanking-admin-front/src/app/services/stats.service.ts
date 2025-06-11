@@ -14,7 +14,7 @@ import {CurrentAccountsSummaryStats} from '../model/CurrentAccountsSummaryStats'
 })
 export class StatsService {
 
-  private apiUrl = `http://localhost:8080/api/stats`;
+  private apiUrl = `http://52.91.172.32/api/stats`;
 
   constructor(private http: HttpClient) {}
 

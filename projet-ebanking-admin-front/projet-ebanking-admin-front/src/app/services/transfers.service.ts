@@ -11,7 +11,7 @@ import {VirementDTO} from '../model/VirementDTO';
 })
 export class TransfersService {
 
-  private apiUrl = `http://localhost:8080/api/virements`;
+  private apiUrl = `http://52.91.172.32/api/virements`;
 
   constructor(private http: HttpClient) {}
 
