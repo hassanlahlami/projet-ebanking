@@ -13,7 +13,7 @@ services:
     restart: on-failure
 
   frontend:
-    image : jozef952/bank-frontend-client:v2
+    image : jozef952/bank-frontend-client:v3
     container_name: ebanking-frontend
     ports:
       - "4200:4200"
@@ -22,7 +22,7 @@ services:
     restart: on-failure
 
   frontend-admin:
-    image : jozef952/bank-frontend-admin:v2
+    image : jozef952/bank-frontend-admin:v3
     container_name: ebanking-frontend-admin
     ports:
       - "4100:4100"
